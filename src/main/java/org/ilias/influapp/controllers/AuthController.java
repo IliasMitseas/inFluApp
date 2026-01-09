@@ -1,6 +1,7 @@
 package org.ilias.influapp.controllers;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.services.UserService;
 import org.ilias.influapp.entities.RegisterRequest;
 import org.springframework.stereotype.Controller;
@@ -12,13 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequiredArgsConstructor
 public class AuthController {
 
     private final UserService userService;
-
-    public AuthController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping("/login")
     public String login() {
