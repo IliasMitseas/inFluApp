@@ -16,6 +16,8 @@ import java.util.List;
 @Setter
 public class User implements UserDetails {
 
+    public static final String DEFAULT_ROLE = "ROLE_USER";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,6 +30,13 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String role;
+
+    @PrePersist
+    public void ensureRole() {
+        if (this.role == null || this.role.isBlank()) {
+            this.role = DEFAULT_ROLE;
+        }
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
