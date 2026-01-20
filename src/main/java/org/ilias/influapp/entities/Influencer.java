@@ -19,11 +19,9 @@ public class Influencer extends User {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Category category;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private InfluencerType influencerType;
 
     private Integer totalFollowers;

@@ -30,56 +30,72 @@
             place-items: center;
             font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
             color: var(--text);
-            background: radial-gradient(1200px 600px at 20% 10%, rgba(255,255,255,0.20), rgba(255,255,255,0)),
-                        linear-gradient(135deg, var(--bg1), var(--bg2));
+            background:
+                    linear-gradient(135deg, rgba(14,165,233,0.30), rgba(99,102,241,0.30)),
+                    url('/auth-bg.svg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             padding: 24px;
         }
-
         .card {
             width: 100%;
-            max-width: 420px;
+            max-width: 520px; /* back to a more compact panel */
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 14px;
             box-shadow: var(--shadow);
             overflow: hidden;
         }
-
-        .card-header {
-            padding: 22px 22px 12px;
+        .hero {
+            width: 100%;
+            display: block;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255,255,255,0.6);
+            max-height: 190px;
+            object-fit: cover;
         }
-
+        .card-header {
+            padding: 18px 22px 10px;
+        }
+        /* FIX: logo next to title should never look broken */
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 12px;
+            margin-bottom: 8px;
         }
-
         .logo {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--primary), #22c55e);
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(37, 99, 235, 0.06);
+            border: 1px solid rgba(15, 23, 42, 0.10);
+            flex: 0 0 auto;
+            display: grid;
+            place-items: center;
         }
-
+        .logo img {
+            width: 30px;
+            height: 30px;
+            display: block;
+            object-fit: contain;
+        }
         h2 {
             margin: 0;
             font-size: 1.35rem;
             letter-spacing: -0.01em;
         }
-
         .subtitle {
             margin: 6px 0 0;
             color: var(--muted);
             font-size: 0.95rem;
             line-height: 1.4;
         }
-
         .card-body {
             padding: 0 22px 22px;
         }
-
         .alert {
             padding: 12px 12px;
             margin: 12px 0 14px;
@@ -122,7 +138,6 @@
             font-size: 0.85rem;
             line-height: 1.35;
         }
-
         button {
             width: 100%;
             padding: 12px 14px;
@@ -138,7 +153,6 @@
 
         button:hover { background-color: var(--primaryHover); }
         button:active { transform: translateY(1px); }
-
         .meta {
             margin-top: 14px;
             font-size: 0.92rem;
@@ -149,6 +163,11 @@
         a { color: var(--primary); text-decoration: none; }
         a:hover { text-decoration: underline; }
 
+        /* Remove the previous narrow-screen override that forced widths */
+        @media (max-width: 460px) {
+            .card { max-width: 420px; }
+        }
+
         /* Keep the card readable on very small screens */
         @media (max-width: 380px) {
             .card-header, .card-body { padding-left: 16px; padding-right: 16px; }
@@ -157,9 +176,12 @@
 </head>
 <body>
 <div class="card">
+    <img class="hero" th:src="@{/login-hero.svg}" alt="Login" />
     <div class="card-header">
         <div class="brand">
-            <div class="logo" aria-hidden="true"></div>
+            <div class="logo" aria-hidden="true">
+                <img th:src="@{/brand-logo.svg}" alt="inFluApp" />
+            </div>
             <div>
                 <h2>Welcome back</h2>
                 <p class="subtitle">Sign in with your email (or username) to continue.</p>

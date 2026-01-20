@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420" role="img" aria-label="Register illustration">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#22c55e" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#2563eb" stop-opacity="0.34"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#f8fafc" stop-opacity="0.95"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="420" rx="26" fill="url(#bg)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="120" cy="90" r="90" fill="#2563eb" fill-opacity="0.12"/>
+  <circle cx="820" cy="90" r="70" fill="#22c55e" fill-opacity="0.16"/>
+  <circle cx="760" cy="330" r="120" fill="#f97316" fill-opacity="0.10"/>
+
+  <!-- Checklist card -->
+  <rect x="250" y="80" width="400" height="260" rx="22" fill="url(#paper)"/>
+  <rect x="290" y="120" width="250" height="20" rx="10" fill="#c7d2fe"/>
+
+  <!-- Check items -->
+  <g transform="translate(290 165)" fill="none" stroke="#0f172a" stroke-opacity="0.35" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 10l8 8 18-20"/>
+    <path d="M42 10h250"/>
+
+    <g transform="translate(0 50)">
+      <path d="M0 10l8 8 18-20"/>
+      <path d="M42 10h210"/>
+    </g>
+
+    <g transform="translate(0 100)">
+      <path d="M0 10l8 8 18-20"/>
+      <path d="M42 10h235"/>
+    </g>
+  </g>
+
+  <!-- Badge -->
+  <g transform="translate(565 105)">
+    <rect x="0" y="0" width="70" height="34" rx="12" fill="#22c55e" fill-opacity="0.20"/>
+    <path d="M18 12h34" stroke="#16a34a" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>

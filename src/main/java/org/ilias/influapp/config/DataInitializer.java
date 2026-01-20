@@ -2,8 +2,6 @@ package org.ilias.influapp.config;
 
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.*;
-import org.ilias.influapp.repository.BusinessRepository;
-import org.ilias.influapp.repository.InfluencerRepository;
 import org.ilias.influapp.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,8 +12,6 @@ import org.springframework.stereotype.Component;
 public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
-    private final BusinessRepository businessRepository;
-    private final InfluencerRepository influencerRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -24,8 +20,6 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void seedOrUpgradeDemoBusiness() {
-        // If the email exists but is NOT a Business row, the /api/business/{id} will 404.
-        // For development simplicity, we recreate it as a proper Business subtype.
         var existing = userRepository.findByEmail("user@example.com");
         if (existing.isPresent() && !(existing.get() instanceof Business)) {
             userRepository.deleteById(existing.get().getId());

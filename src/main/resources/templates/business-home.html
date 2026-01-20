@@ -5,52 +5,199 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Business Home</title>
     <style>
-        body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 24px; background: #0b1220; color: #e5e7eb; }
-        .card { max-width: 900px; margin: 0 auto; background: #0f172a; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 18px; }
-        h1 { margin: 0 0 6px; }
-        .muted { color: #94a3b8; }
+        :root {
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: rgba(15, 23, 42, 0.12);
+            --shadow: 0 18px 40px rgba(2, 6, 23, 0.18);
+            --primary: #2563eb;
+            --primaryHover: #1d4ed8;
+            --success: #22c55e;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            color: var(--text);
+            background:
+                    linear-gradient(135deg, rgba(14,165,233,0.30), rgba(99,102,241,0.30)),
+                    url('/auth-bg.svg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 24px;
+        }
+        .card {
+            max-width: 980px;
+            margin: 0 auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        h1 { margin: 0 0 6px; font-size: 1.45rem; letter-spacing: -0.01em; }
+        .muted { color: var(--muted); }
         .grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 14px; }
         @media (min-width: 700px) { .grid { grid-template-columns: 1fr 1fr; } }
-        .box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 12px; }
-        a { color: #60a5fa; text-decoration: none; }
+        .box {
+            background: rgba(15, 23, 42, 0.03);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        a { color: var(--primary); text-decoration: none; }
         a:hover { text-decoration: underline; }
-        .top { display:flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+        .top { display:flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+        .brand { display:flex; align-items:center; gap: 12px; }
+        .logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(37, 99, 235, 0.06);
+            border: 1px solid rgba(15, 23, 42, 0.10);
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+        }
+        .logo img { width: 30px; height: 30px; display:block; object-fit: contain; }
+        .actions { display:flex; align-items:center; gap: 10px; }
+        .btn {
+            display: inline-block;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(15, 23, 42, 0.12);
+            background: #fff;
+            color: var(--text);
+            font-weight: 600;
+        }
+        .btn:hover { background: rgba(37, 99, 235, 0.06); text-decoration: none; }
+        .btn-primary { background: var(--primary); border-color: transparent; color: #fff; }
+        .btn-primary:hover { background: var(--primaryHover); }
+        .hero {
+            margin-top: 14px;
+            border-radius: 14px;
+            padding: 14px;
+            border: 1px solid rgba(15, 23, 42, 0.10);
+            background:
+                    radial-gradient(900px 260px at 20% 15%, rgba(255,255,255,0.55), rgba(255,255,255,0)),
+                    linear-gradient(135deg, rgba(14,165,233,0.18), rgba(99,102,241,0.14));
+        }
+        .hero-title { margin: 0; font-size: 1.05rem; letter-spacing: -0.01em; }
+        .hero-sub { margin: 6px 0 0; color: var(--muted); }
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        @media (min-width: 700px) {
+            .stats { grid-template-columns: repeat(3, 1fr); }
+        }
+        .stat {
+            background: rgba(255,255,255,0.92);
+            border: 1px solid rgba(15, 23, 42, 0.10);
+            border-radius: 12px;
+            padding: 12px;
+        }
+        .stat .label { color: var(--muted); font-size: 0.85rem; }
+        .stat .value { margin-top: 6px; font-weight: 800; font-size: 1.05rem; letter-spacing: -0.01em; }
+        .pill {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(15, 23, 42, 0.12);
+            background: rgba(37, 99, 235, 0.06);
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .pill-success {
+            background: rgba(34, 197, 94, 0.10);
+            color: #15803d;
+            border-color: rgba(34, 197, 94, 0.22);
+        }
+
+        @media (max-width: 380px) {
+            body { padding: 16px; }
+            .card { padding: 16px; }
+        }
     </style>
 </head>
 <body>
 <div class="card">
     <div class="top">
-        <div>
-            <h1 th:text="${business.companyName}">Business</h1>
-            <div class="muted">
-                <span th:text="${business.email}">email</span>
-                &nbsp;·&nbsp;
-                <span th:text="${business.username}">username</span>
+        <div class="brand">
+            <div class="logo" aria-hidden="true">
+                <img th:src="@{/brand-logo.svg}" alt="inFluApp" />
+            </div>
+            <div>
+                <h1 th:text="${business.companyName}">Business</h1>
+                <div class="muted">
+                    <span th:text="${business.email}">email</span>
+                    &nbsp;·&nbsp;
+                    <span th:text="${business.username}">username</span>
+                </div>
             </div>
         </div>
-        <div class="muted">
-            <a th:href="@{/logout}">Logout</a>
+        <div class="actions">
+            <a class="btn" th:href="@{'/api/business/' + ${business.id}}">API</a>
+            <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
+        </div>
+    </div>
+
+    <!-- NEW: hero summary -->
+    <div class="hero">
+        <p class="hero-title">Your business dashboard</p>
+        <p class="hero-sub">Quick overview of your profile info.</p>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="label">Category</div>
+                <div class="value" th:text="${business.category}">CATEGORY</div>
+            </div>
+            <div class="stat">
+                <div class="label">Website</div>
+                <div class="value" th:text="${business.webSite}">-</div>
+                <span class="pill">Link</span>
+            </div>
+            <div class="stat">
+                <div class="label">Profile</div>
+                <div class="value">Ready</div>
+                <span class="pill pill-success">Active</span>
+            </div>
         </div>
     </div>
 
     <div class="grid">
-        <div class="box">
-            <strong>Category</strong>
-            <div th:text="${business.category}">CATEGORY</div>
-        </div>
-        <div class="box">
-            <strong>Website</strong>
-            <div th:text="${business.webSite}">-</div>
-        </div>
         <div class="box" style="grid-column: 1 / -1;">
             <strong>Description</strong>
-            <div class="muted" th:text="${business.description}">-</div>
+            <div class="muted" th:text="${business.description}" style="margin-top: 6px;">-</div>
+        </div>
+
+        <div class="box">
+            <strong>Quick actions</strong>
+            <div class="muted" style="margin-top: 8px; display: flex; gap: 10px; flex-wrap: wrap;">
+                <a class="btn" th:href="@{'/api/business/' + ${business.id}}">View API</a>
+                <a class="btn" th:href="@{/logout}">Logout</a>
+            </div>
+        </div>
+
+        <div class="box">
+            <strong>Next</strong>
+            <div class="muted" style="margin-top: 6px;">
+                We can add campaigns, collaborations, and analytics widgets here.
+            </div>
         </div>
     </div>
-
-    <p class="muted" style="margin-top: 14px;">
-        API: <a th:href="@{'/api/business/' + ${business.id}}">/api/business/{id}</a>
-    </p>
 </div>
 </body>
 </html>

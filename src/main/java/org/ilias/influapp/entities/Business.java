@@ -28,7 +28,6 @@ public class Business extends User {
     private String webSite;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Category category;
 
     @Column(length = 1000)

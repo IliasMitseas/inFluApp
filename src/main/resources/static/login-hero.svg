@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420" role="img" aria-label="Login illustration">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0ea5e9" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#6366f1" stop-opacity="0.45"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#eef2ff" stop-opacity="0.95"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="420" rx="26" fill="url(#bg)"/>
+
+  <!-- Decorative blobs -->
+  <circle cx="120" cy="105" r="70" fill="#22c55e" fill-opacity="0.20"/>
+  <circle cx="790" cy="90" r="95" fill="#2563eb" fill-opacity="0.18"/>
+  <circle cx="720" cy="320" r="125" fill="#a855f7" fill-opacity="0.14"/>
+
+  <!-- Phone/card -->
+  <rect x="260" y="85" width="380" height="250" rx="22" fill="url(#card)"/>
+  <rect x="300" y="125" width="300" height="22" rx="11" fill="#c7d2fe"/>
+  <rect x="300" y="165" width="220" height="18" rx="9" fill="#e2e8f0"/>
+  <rect x="300" y="198" width="260" height="18" rx="9" fill="#e2e8f0"/>
+
+  <!-- Button -->
+  <rect x="300" y="255" width="210" height="44" rx="14" fill="#2563eb"/>
+  <rect x="525" y="255" width="75" height="44" rx="14" fill="#22c55e"/>
+
+  <!-- Lock icon -->
+  <g transform="translate(585 120)">
+    <rect x="0" y="22" width="40" height="40" rx="10" fill="#0f172a" fill-opacity="0.12"/>
+    <path d="M12 22v-7a8 8 0 0 1 16 0v7" fill="none" stroke="#0f172a" stroke-opacity="0.45" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="20" cy="42" r="4" fill="#0f172a" fill-opacity="0.45"/>
+  </g>
+
+  <!-- Small sparkles -->
+  <g fill="#ffffff" fill-opacity="0.55">
+    <path d="M140 300l10 4-10 4-4 10-4-10-10-4 10-4 4-10 4 10z"/>
+    <path d="M760 220l8 3-8 3-3 8-3-8-8-3 8-3 3-8 3 8z"/>
+  </g>
+</svg>

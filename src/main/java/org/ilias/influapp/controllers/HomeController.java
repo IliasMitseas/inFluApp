@@ -45,8 +45,7 @@ public class HomeController {
             throw new UnauthorizedException();
         }
         String login = authentication.getName();
-        return userRepository.findByEmailOrUsername(login, login)
-                .orElseThrow(UnauthorizedException::new);
+        return userRepository.findByEmailOrUsername(login, login).orElseThrow(UnauthorizedException::new);
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
