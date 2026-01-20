@@ -2,8 +2,8 @@ package org.ilias.influapp.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.ilias.influapp.services.UserService;
 import org.ilias.influapp.entities.RegisterRequest;
+import org.ilias.influapp.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

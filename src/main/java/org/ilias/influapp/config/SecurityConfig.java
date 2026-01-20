@@ -19,8 +19,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Public pages
                         .requestMatchers("/login", "/register", "/css/**", "/js/**", "/images/**").permitAll()
-                        // Dev/testing endpoint: either open it, or change to .hasRole("BUSINESS") etc.
-                        .requestMatchers("/api/users").permitAll()
+                        // Role landing pages
+                        .requestMatchers("/influencer/**").hasRole("INFLUENCER")
+                        .requestMatchers("/business/**").hasRole("BUSINESS")
+                        // API rules
+                        .requestMatchers("/api/users").hasRole("BUSINESS")
                         .requestMatchers("/api/influencer/**").hasRole("INFLUENCER")
                         .requestMatchers("/api/business/**").hasRole("BUSINESS")
                         .anyRequest().authenticated()
@@ -28,6 +31,18 @@ public class SecurityConfig {
                 // Enable session-based login for the Thymeleaf login page
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .successHandler((request, response, authentication) -> {
+                            var authorities = authentication.getAuthorities();
+                            boolean isInfluencer = authorities.stream().anyMatch(a -> "ROLE_INFLUENCER".equals(a.getAuthority()));
+                            boolean isBusiness = authorities.stream().anyMatch(a -> "ROLE_BUSINESS".equals(a.getAuthority()));
+                            if (isInfluencer) {
+                                response.sendRedirect("/influencer/home");
+                            } else if (isBusiness) {
+                                response.sendRedirect("/business/home");
+                            } else {
+                                response.sendRedirect("/");
+                            }
+                        })
                         .permitAll()
                 )
                 .logout(logout -> logout.permitAll())

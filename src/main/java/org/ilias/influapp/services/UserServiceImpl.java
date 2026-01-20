@@ -1,9 +1,7 @@
 package org.ilias.influapp.services;
 
-import org.ilias.influapp.entities.User;
-import org.ilias.influapp.entities.UserRole;
+import org.ilias.influapp.entities.*;
 import org.ilias.influapp.repository.UserRepository;
-import org.ilias.influapp.entities.RegisterRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,30 +37,31 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Passwords do not match");
         }
 
-        User user = new User();
+        UserRole role = request.getRole() == null ? UserRole.BUSINESS : request.getRole();
+
+        // Create the correct subtype so JOINED inheritance stores rows in users + businesses/influencers.
+        User user;
+        if (role == UserRole.INFLUENCER) {
+            Influencer influencer = new Influencer();
+            // TODO: collect these fields in a dedicated InfluencerRegisterRequest
+            influencer.setName(email.split("@", 2)[0]);
+            // Influencer.category and influencerType are nullable=false in entity; we must set safe defaults.
+            influencer.setCategory(Category.FASHION);
+            influencer.setInfluencerType(InfluencerType.MICRO);
+            user = influencer;
+        } else {
+            Business business = new Business();
+            // TODO: collect these fields in a dedicated BusinessRegisterRequest
+            business.setCompanyName(email.split("@", 2)[0]);
+            business.setCategory(Category.FASHION);
+            user = business;
+        }
+
         user.setEmail(email);
-        user.setUsername(generateUniqueUsernameFromEmail(email));
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(UserRole.BUSINESS);
+        user.setRole(role);
 
         return userRepository.save(user);
     }
 
-    private String generateUniqueUsernameFromEmail(String email) {
-        String base = email.split("@", 2)[0]
-                .replaceAll("[^a-zA-Z0-9._-]", "")
-                .toLowerCase();
-
-        if (base.isBlank()) {
-            base = "user";
-        }
-
-        String candidate = base;
-        int i = 1;
-        while (userRepository.findByUsername(candidate).isPresent()) {
-            candidate = base + i;
-            i++;
-        }
-        return candidate;
-    }
 }

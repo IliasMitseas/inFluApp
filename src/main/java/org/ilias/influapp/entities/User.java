@@ -1,8 +1,11 @@
 package org.ilias.influapp.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +18,9 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 public class User implements UserDetails {
 
     @Id
@@ -24,7 +30,7 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -40,9 +46,7 @@ public class User implements UserDetails {
             this.role = UserRole.BUSINESS;
         }
         if (this.username == null || this.username.isBlank()) {
-            // fallback: derive username from email to satisfy NOT NULL constraint
-            String base = (this.email == null ? "user" : this.email.split("@", 2)[0]);
-            this.username = base;
+            this.username = (this.email == null ? "user" : this.email.split("@", 2)[0]);
         }
     }
 

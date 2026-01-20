@@ -1,50 +1,233 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Register</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .register-container { border: 1px solid #ccc; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 420px; }
-        .form-group { margin-bottom: 1rem; }
-        label { display: block; margin-bottom: 0.5rem; }
-        input { width: 100%; padding: 0.5rem; box-sizing: border-box; }
-        button { width: 100%; padding: 0.75rem; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        .alert { padding: 1rem; margin-bottom: 1rem; border-radius: 4px; }
-        .alert-danger { background-color: #f8d7da; color: #721c24; }
-        .field-error { color: #b00020; font-size: 0.9rem; margin-top: 0.25rem; }
-        .meta { margin-top: 1rem; font-size: 0.9rem; }
+        :root {
+            --bg1: #0ea5e9;
+            --bg2: #6366f1;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: rgba(15, 23, 42, 0.12);
+            --shadow: 0 18px 40px rgba(2, 6, 23, 0.18);
+            --primary: #2563eb;
+            --primaryHover: #1d4ed8;
+            --dangerBg: #fef2f2;
+            --dangerText: #991b1b;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            color: var(--text);
+            background: radial-gradient(1200px 600px at 20% 10%, rgba(255,255,255,0.20), rgba(255,255,255,0)),
+                        linear-gradient(135deg, var(--bg1), var(--bg2));
+            padding: 24px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 520px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 22px 22px 12px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), #22c55e);
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 1.35rem;
+            letter-spacing: -0.01em;
+        }
+
+        .subtitle {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .card-body {
+            padding: 0 22px 22px;
+        }
+
+        .alert {
+            padding: 12px 12px;
+            margin: 12px 0 14px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            border: 1px solid rgba(153, 27, 27, 0.25);
+            background: var(--dangerBg);
+            color: var(--dangerText);
+        }
+
+        form { margin-top: 6px; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        @media (min-width: 560px) {
+            .grid.two {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .form-group { margin: 0; }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 11px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            outline: none;
+            font-size: 1rem;
+            background: #fff;
+            transition: box-shadow 120ms ease, border-color 120ms ease;
+        }
+
+        input:focus, select:focus {
+            border-color: rgba(37, 99, 235, 0.55);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        }
+
+        .field-error {
+            margin-top: 6px;
+            color: var(--dangerText);
+            font-size: 0.88rem;
+            line-height: 1.35;
+        }
+
+        .help {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 0.85rem;
+            line-height: 1.35;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 14px;
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 120ms ease, transform 60ms ease;
+            margin-top: 14px;
+        }
+
+        button:hover { background-color: var(--primaryHover); }
+        button:active { transform: translateY(1px); }
+
+        .meta {
+            margin-top: 14px;
+            font-size: 0.92rem;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        @media (max-width: 380px) {
+            .card-header, .card-body { padding-left: 16px; padding-right: 16px; }
+        }
     </style>
 </head>
 <body>
-<div class="register-container">
-    <h2>Create account</h2>
-
-    <div th:if="${registerError}" class="alert alert-danger" th:text="${registerError}"></div>
-
-    <form th:action="@{/register}" th:object="${registerRequest}" method="post">
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input id="email" type="email" th:field="*{email}" required autofocus />
-            <div class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+<div class="card">
+    <div class="card-header">
+        <div class="brand">
+            <div class="logo" aria-hidden="true"></div>
+            <div>
+                <h2>Create account</h2>
+                <p class="subtitle">Choose your account type and set your credentials.</p>
+            </div>
         </div>
+    </div>
 
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input id="password" type="password" th:field="*{password}" required />
-            <div class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+    <div class="card-body">
+        <div th:if="${registerError}" class="alert" th:text="${registerError}"></div>
+
+        <form th:action="@{/register}" th:object="${registerRequest}" method="post">
+            <div class="grid">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" th:field="*{email}" placeholder="you@example.com" required autofocus />
+                    <div class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Account type</label>
+                    <select id="role" th:field="*{role}" required>
+                        <option value="" disabled selected>Select a role...</option>
+                        <option value="BUSINESS">Business</option>
+                        <option value="INFLUENCER">Influencer</option>
+                    </select>
+                    <div class="help">You can change profile details later; the role controls access.</div>
+                    <div class="field-error" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></div>
+                </div>
+
+                <div class="grid two">
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input id="password" type="password" th:field="*{password}" placeholder="Create a strong password" required />
+                        <div class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm password</label>
+                        <input id="confirmPassword" type="password" th:field="*{confirmPassword}" placeholder="Repeat your password" required />
+                        <div class="field-error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+                    </div>
+                </div>
+
+                <button type="submit">Create account</button>
+            </div>
+        </form>
+
+        <div class="meta">
+            Already have an account? <a th:href="@{/login}">Back to login</a>
         </div>
-
-        <div class="form-group">
-            <label for="confirmPassword">Confirm password</label>
-            <input id="confirmPassword" type="password" th:field="*{confirmPassword}" required />
-            <div class="field-error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
-        </div>
-
-        <button type="submit">Register</button>
-    </form>
-
-    <div class="meta">
-        Already have an account? <a th:href="@{/login}">Back to login</a>
     </div>
 </div>
 </body>
