@@ -34,16 +34,35 @@ public class Influencer extends User {
     private List<Collaboration> collaborations;
 
     public void addSocialMediaAccount(SocialMedia account) {
+        socialMediaAccounts.add(account);
+        account.setInfluencer(this);
+        updateTotalFollowers();
     }
 
     public void addCollaboration(Collaboration collaboration) {
+        collaborations.add(collaboration);
+        collaboration.setInfluencer(this);
     }
 
 
     public void updateEngagementRate() {
+        if (socialMediaAccounts != null && !socialMediaAccounts.isEmpty()) {
+            this.engagementRate = socialMediaAccounts.stream()
+                    .mapToDouble(SocialMedia::getEngagementRate)
+                    .average()
+                    .orElse(0.0);
+        } else {
+            this.engagementRate = 0.0;
+        }
     }
 
     public void updateTotalFollowers() {
-
+        if (socialMediaAccounts != null && !socialMediaAccounts.isEmpty()) {
+            this.totalFollowers = socialMediaAccounts.stream()
+                    .mapToInt(SocialMedia::getFollowers)
+                    .sum();
+        } else {
+            this.totalFollowers = 0;
+        }
     }
 }

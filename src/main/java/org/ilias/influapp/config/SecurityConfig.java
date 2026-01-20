@@ -13,21 +13,25 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll()
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        // Public pages
+                        .requestMatchers("/login", "/register", "/css/**", "/js/**", "/images/**").permitAll()
+                        // Dev/testing endpoint: either open it, or change to .hasRole("BUSINESS") etc.
+                        .requestMatchers("/api/users").permitAll()
+                        .requestMatchers("/api/influencer/**").hasRole("INFLUENCER")
+                        .requestMatchers("/api/business/**").hasRole("BUSINESS")
                         .anyRequest().authenticated()
                 )
-                .formLogin(formLogin -> formLogin
+                // Enable session-based login for the Thymeleaf login page
+                .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/api/users", true)
                         .permitAll()
                 )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
-                );
-        return http.build();
+                .logout(logout -> logout.permitAll())
+                .build();
     }
 
     @Bean

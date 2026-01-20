@@ -1,6 +1,7 @@
 package org.ilias.influapp.config;
 
 import org.ilias.influapp.entities.User;
+import org.ilias.influapp.entities.UserRole;
 import org.ilias.influapp.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,8 +24,9 @@ public class DataInitializer implements CommandLineRunner {
         if (userRepository.findByEmail("user@example.com").isEmpty()) {
             User user = new User();
             user.setEmail("user@example.com");
+            user.setUsername("user"); // Set a non-null unique username
             user.setPassword(passwordEncoder.encode("password"));
-            user.setRole("ROLE_USER"); // Set a default role
+            user.setRole(UserRole.BUSINESS); // Set a default role
             userRepository.save(user);
         }
     }

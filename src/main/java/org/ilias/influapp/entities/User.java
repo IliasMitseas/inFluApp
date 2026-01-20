@@ -17,8 +17,6 @@ import java.util.List;
 @Setter
 public class User implements UserDetails {
 
-    public static final String DEFAULT_ROLE = "ROLE_USER";
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,27 +24,39 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false, unique = true)
+    private String username;
+
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String role;
+    private UserRole role;
 
     @PrePersist
-    public void ensureRole() {
-        if (this.role == null || this.role.isBlank()) {
-            this.role = DEFAULT_ROLE;
+    public void prePersistDefaults() {
+        if (this.role == null) {
+            this.role = UserRole.BUSINESS;
+        }
+        if (this.username == null || this.username.isBlank()) {
+            // fallback: derive username from email to satisfy NOT NULL constraint
+            String base = (this.email == null ? "user" : this.email.split("@", 2)[0]);
+            this.username = base;
         }
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(this.role));
+        if (this.role == null) {
+            return List.of();
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
     }
 
     @Override
     public String getUsername() {
-        return this.email;
+        return this.username;
     }
 
     @Override
