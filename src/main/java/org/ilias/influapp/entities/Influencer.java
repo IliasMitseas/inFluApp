@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +16,7 @@ import java.util.List;
 @SuperBuilder
 public class Influencer extends User {
 
-    @Column(nullable = false)
+    // Optional at registration; can be completed later in profile.
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -28,11 +29,13 @@ public class Influencer extends User {
 
     private Double engagementRate;
 
-    @OneToMany(mappedBy = "influencer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SocialMedia> socialMediaAccounts;
+    private Double influencerScore;
 
     @OneToMany(mappedBy = "influencer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Collaboration> collaborations;
+    private List<SocialMedia> socialMediaAccounts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "influencer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Collaboration> collaborations = new ArrayList<>();
 
     public void addSocialMediaAccount(SocialMedia account) {
         socialMediaAccounts.add(account);
@@ -44,7 +47,6 @@ public class Influencer extends User {
         collaborations.add(collaboration);
         collaboration.setInfluencer(this);
     }
-
 
     public void updateEngagementRate() {
         if (socialMediaAccounts != null && !socialMediaAccounts.isEmpty()) {
@@ -60,7 +62,7 @@ public class Influencer extends User {
     public void updateTotalFollowers() {
         if (socialMediaAccounts != null && !socialMediaAccounts.isEmpty()) {
             this.totalFollowers = socialMediaAccounts.stream()
-                    .mapToInt(SocialMedia::getFollowers)
+                    .mapToInt(sm -> sm.getFollowers() == null ? 0 : sm.getFollowers())
                     .sum();
         } else {
             this.totalFollowers = 0;

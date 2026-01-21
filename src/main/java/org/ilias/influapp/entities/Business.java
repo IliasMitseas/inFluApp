@@ -19,7 +19,6 @@ import java.util.List;
 @SuperBuilder
 public class Business extends User {
 
-    @Column(nullable = false)
     private String companyName;
 
     @Column(length = 2000)

@@ -31,13 +31,9 @@ public class UserServiceImpl implements UserService {
         UserRole role = request.getRole() == null ? UserRole.BUSINESS : request.getRole();
         User user;
         if (role == UserRole.INFLUENCER) {
-            Influencer influencer = new Influencer();
-            influencer.setName(email.split("@", 2)[0]);
-            user = influencer;
+            user = new Influencer();
         } else {
-            Business business = new Business();
-            business.setCompanyName(email.split("@", 2)[0]);
-            user = business;
+            user = new Business();
         }
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(request.getPassword()));

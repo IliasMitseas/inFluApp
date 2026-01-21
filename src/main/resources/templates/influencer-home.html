@@ -83,50 +83,16 @@
         .btn:hover { background: rgba(37, 99, 235, 0.06); text-decoration: none; }
         .btn-primary { background: var(--primary); border-color: transparent; color: #fff; }
         .btn-primary:hover { background: var(--primaryHover); }
-        .hero {
+
+        .notice {
             margin-top: 14px;
             border-radius: 14px;
-            padding: 14px;
-            border: 1px solid rgba(15, 23, 42, 0.10);
-            background:
-                    radial-gradient(900px 260px at 20% 15%, rgba(255,255,255,0.55), rgba(255,255,255,0)),
-                    linear-gradient(135deg, rgba(14,165,233,0.18), rgba(99,102,241,0.14));
-        }
-        .hero-title { margin: 0; font-size: 1.05rem; letter-spacing: -0.01em; }
-        .hero-sub { margin: 6px 0 0; color: var(--muted); }
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            margin-top: 12px;
-        }
-        @media (min-width: 700px) {
-            .stats { grid-template-columns: repeat(4, 1fr); }
-        }
-        .stat {
-            background: rgba(255,255,255,0.92);
-            border: 1px solid rgba(15, 23, 42, 0.10);
-            border-radius: 12px;
             padding: 12px;
-        }
-        .stat .label { color: var(--muted); font-size: 0.85rem; }
-        .stat .value { margin-top: 6px; font-weight: 800; font-size: 1.05rem; letter-spacing: -0.01em; }
-        .pill {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 4px 8px;
-            border-radius: 999px;
-            font-size: 0.8rem;
-            border: 1px solid rgba(15, 23, 42, 0.12);
+            border: 1px solid rgba(15, 23, 42, 0.10);
             background: rgba(37, 99, 235, 0.06);
-            color: var(--primary);
-            font-weight: 700;
         }
-        .pill-success {
-            background: rgba(34, 197, 94, 0.10);
-            color: #15803d;
-            border-color: rgba(34, 197, 94, 0.22);
-        }
+        .notice strong { display:block; }
+        .notice .muted { margin-top: 6px; }
 
         @media (max-width: 380px) {
             body { padding: 16px; }
@@ -156,54 +122,31 @@
         </div>
     </div>
 
-    <!-- NEW: hero summary -->
-    <div class="hero">
-        <p class="hero-title">Your influencer dashboard</p>
-        <p class="hero-sub">Quick overview of your profile metrics and info.</p>
-
-        <div class="stats">
-            <div class="stat">
-                <div class="label">Category</div>
-                <div class="value" th:text="${influencer.category}">CATEGORY</div>
-            </div>
-            <div class="stat">
-                <div class="label">Influencer type</div>
-                <div class="value" th:text="${influencer.influencerType}">TYPE</div>
-            </div>
-            <div class="stat">
-                <div class="label">Total followers</div>
-                <div class="value" th:text="${influencer.totalFollowers}">0</div>
-                <span class="pill pill-success">Follow</span>
-            </div>
-            <div class="stat">
-                <div class="label">Engagement rate</div>
-                <div class="value" th:text="${influencer.engagementRate}">0</div>
-                <span class="pill">Impact</span>
-            </div>
+    <div class="notice" th:if="${influencer.category == null or influencer.influencerType == null}">
+        <strong>Complete your profile</strong>
+        <div class="muted">Add category and influencer type so businesses can find you.</div>
+        <div style="margin-top: 10px;">
+            <a class="btn btn-primary" th:href="@{/influencer/profile}">Complete profile</a>
         </div>
     </div>
 
+    <!-- Keep only a minimal grid with essentials (no duplicates) -->
     <div class="grid">
-        <div class="box" style="grid-column: 1 / -1;">
-            <strong>About</strong>
-            <div class="muted" style="margin-top: 6px;">
-                Here you’ll see your profile metrics, collaborations, and campaign activity.
-            </div>
-        </div>
-
         <div class="box">
-            <strong>Quick actions</strong>
-            <div class="muted" style="margin-top: 8px; display: flex; gap: 10px; flex-wrap: wrap;">
-                <a class="btn" th:href="@{'/api/influencer/' + ${influencer.id}}">View API</a>
-                <a class="btn" th:href="@{/logout}">Logout</a>
-            </div>
+            <strong>Category</strong>
+            <div class="muted" th:text="${influencer.category != null ? influencer.category : 'Not set'}">Not set</div>
         </div>
-
         <div class="box">
-            <strong>Tip</strong>
-            <div class="muted" style="margin-top: 6px;">
-                More features (campaigns/collaborations) can appear here as we add the next entities.
-            </div>
+            <strong>Type</strong>
+            <div class="muted" th:text="${influencer.influencerType != null ? influencer.influencerType : 'Not set'}">Not set</div>
+        </div>
+        <div class="box">
+            <strong>Total followers</strong>
+            <div class="muted" th:text="${influencer.totalFollowers}">0</div>
+        </div>
+        <div class="box">
+            <strong>Engagement rate</strong>
+            <div class="muted" th:text="${influencer.engagementRate}">0</div>
         </div>
     </div>
 </div>

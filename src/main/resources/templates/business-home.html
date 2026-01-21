@@ -81,50 +81,15 @@
         .btn:hover { background: rgba(37, 99, 235, 0.06); text-decoration: none; }
         .btn-primary { background: var(--primary); border-color: transparent; color: #fff; }
         .btn-primary:hover { background: var(--primaryHover); }
-        .hero {
+        .notice {
             margin-top: 14px;
             border-radius: 14px;
-            padding: 14px;
-            border: 1px solid rgba(15, 23, 42, 0.10);
-            background:
-                    radial-gradient(900px 260px at 20% 15%, rgba(255,255,255,0.55), rgba(255,255,255,0)),
-                    linear-gradient(135deg, rgba(14,165,233,0.18), rgba(99,102,241,0.14));
-        }
-        .hero-title { margin: 0; font-size: 1.05rem; letter-spacing: -0.01em; }
-        .hero-sub { margin: 6px 0 0; color: var(--muted); }
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            margin-top: 12px;
-        }
-        @media (min-width: 700px) {
-            .stats { grid-template-columns: repeat(3, 1fr); }
-        }
-        .stat {
-            background: rgba(255,255,255,0.92);
-            border: 1px solid rgba(15, 23, 42, 0.10);
-            border-radius: 12px;
             padding: 12px;
-        }
-        .stat .label { color: var(--muted); font-size: 0.85rem; }
-        .stat .value { margin-top: 6px; font-weight: 800; font-size: 1.05rem; letter-spacing: -0.01em; }
-        .pill {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 4px 8px;
-            border-radius: 999px;
-            font-size: 0.8rem;
-            border: 1px solid rgba(15, 23, 42, 0.12);
+            border: 1px solid rgba(15, 23, 42, 0.10);
             background: rgba(37, 99, 235, 0.06);
-            color: var(--primary);
-            font-weight: 700;
         }
-        .pill-success {
-            background: rgba(34, 197, 94, 0.10);
-            color: #15803d;
-            border-color: rgba(34, 197, 94, 0.22);
-        }
+        .notice strong { display:block; }
+        .notice .muted { margin-top: 6px; }
 
         @media (max-width: 380px) {
             body { padding: 16px; }
@@ -154,49 +119,31 @@
         </div>
     </div>
 
-    <!-- NEW: hero summary -->
-    <div class="hero">
-        <p class="hero-title">Your business dashboard</p>
-        <p class="hero-sub">Quick overview of your profile info.</p>
-
-        <div class="stats">
-            <div class="stat">
-                <div class="label">Category</div>
-                <div class="value" th:text="${business.category}">CATEGORY</div>
-            </div>
-            <div class="stat">
-                <div class="label">Website</div>
-                <div class="value" th:text="${business.webSite}">-</div>
-                <span class="pill">Link</span>
-            </div>
-            <div class="stat">
-                <div class="label">Profile</div>
-                <div class="value">Ready</div>
-                <span class="pill pill-success">Active</span>
-            </div>
+    <div class="notice" th:if="${business.category == null}">
+        <strong>Complete your profile</strong>
+        <div class="muted">Add category, website, description, and contact details.</div>
+        <div style="margin-top: 10px;">
+            <a class="btn btn-primary" th:href="@{/business/profile}">Complete profile</a>
         </div>
     </div>
 
     <div class="grid">
+        <div class="box">
+            <strong>Category</strong>
+            <div class="muted" th:text="${business.category != null ? business.category : 'Not set'}">Not set</div>
+        </div>
+        <div class="box">
+            <strong>Website</strong>
+            <div class="muted" th:text="${business.webSite != null ? business.webSite : '-'}">-</div>
+        </div>
         <div class="box" style="grid-column: 1 / -1;">
             <strong>Description</strong>
-            <div class="muted" th:text="${business.description}" style="margin-top: 6px;">-</div>
+            <div class="muted" th:text="${business.description != null ? business.description : '-'}">-</div>
         </div>
+    </div>
 
-        <div class="box">
-            <strong>Quick actions</strong>
-            <div class="muted" style="margin-top: 8px; display: flex; gap: 10px; flex-wrap: wrap;">
-                <a class="btn" th:href="@{'/api/business/' + ${business.id}}">View API</a>
-                <a class="btn" th:href="@{/logout}">Logout</a>
-            </div>
-        </div>
-
-        <div class="box">
-            <strong>Next</strong>
-            <div class="muted" style="margin-top: 6px;">
-                We can add campaigns, collaborations, and analytics widgets here.
-            </div>
-        </div>
+    <div style="margin-top: 14px; display:flex; gap: 10px; flex-wrap: wrap;">
+        <a class="btn" th:href="@{/business/profile}">Edit profile</a>
     </div>
 </div>
 </body>

@@ -20,6 +20,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Public pages
                         .requestMatchers("/login", "/register", "/css/**", "/js/**", "/images/**").permitAll()
+                        // Static assets under src/main/resources/static
+                        .requestMatchers("/*.svg", "/*.png", "/*.jpg", "/*.jpeg", "/*.webp", "/*.ico").permitAll()
                         // Role landing pages
                         .requestMatchers("/influencer/**").hasRole("INFLUENCER")
                         .requestMatchers("/business/**").hasRole("BUSINESS")

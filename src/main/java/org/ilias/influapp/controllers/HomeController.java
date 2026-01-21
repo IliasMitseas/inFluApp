@@ -40,6 +40,24 @@ public class HomeController {
         return "business-home";
     }
 
+    @GetMapping("/influencer/profile")
+    public String influencerProfile(Authentication authentication, Model model) {
+        User user = currentUser(authentication);
+        Influencer influencer = influencerRepository.findById(user.getId())
+                .orElseThrow(NotFoundException::new);
+        model.addAttribute("influencer", influencer);
+        return "influencer-profile";
+    }
+
+    @GetMapping("/business/profile")
+    public String businessProfile(Authentication authentication, Model model) {
+        User user = currentUser(authentication);
+        Business business = businessRepository.findById(user.getId())
+                .orElseThrow(NotFoundException::new);
+        model.addAttribute("business", business);
+        return "business-profile";
+    }
+
     private User currentUser(Authentication authentication) {
         if (authentication == null || authentication.getName() == null) {
             throw new UnauthorizedException();
