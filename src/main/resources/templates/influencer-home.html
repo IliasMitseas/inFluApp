@@ -146,7 +146,7 @@
             <div class="muted" th:if="${influencer.socialMediaAccounts == null or influencer.socialMediaAccounts.isEmpty()}">Not set</div>
             <div class="muted" th:if="${influencer.socialMediaAccounts != null and !influencer.socialMediaAccounts.isEmpty()}">
                 <span th:each="acc, stat : ${influencer.socialMediaAccounts}">
-                    <span th:text="${acc.platform}">INSTAGRAM</span><span th:if="${!stat.last}">, </span>
+                    <a th:href="@{'/influencer/social/' + ${acc.platform}}" th:text="${acc.platform}">INSTAGRAM</a><span th:if="${!stat.last}">, </span>
                 </span>
             </div>
         </div>
