@@ -42,7 +42,6 @@
             padding: 18px;
             box-shadow: var(--shadow);
         }
-
         .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
         .brand { display:flex; align-items:center; gap: 12px; }
         .logo {
@@ -134,55 +133,78 @@
 
     <div class="hint">
         <strong>Tip</strong>
-        <div class="muted" style="margin-top: 6px;">Fill the basics so businesses can discover you faster.</div>
+        <div class="muted" style="margin-top: 6px;">Press save to persist changes</div>
     </div>
 
-    <div class="hint">
-        <strong>UI-only demo</strong>
-        <div class="muted" style="margin-top: 6px;">This page is only UI for now. The “Save” button will show a confirmation, but it won’t persist yet.</div>
-    </div>
-
-    <div id="toast" class="toast">Saved (demo). Return to home.</div>
-
-    <form>
+    <!-- Profile form (POST /influencer/profile) -->
+    <form th:action="@{/influencer/profile}" method="post" th:object="${influencer}">
         <div class="grid">
             <div>
                 <label for="name">Display name</label>
-                <input id="name" name="name" type="text" th:value="${influencer.name}" placeholder="Your name" />
+                <input id="name" type="text" th:field="*{name}" placeholder="Your name" />
             </div>
 
             <div class="grid two">
                 <div>
                     <label for="category">Category</label>
-                    <select id="category" name="category" disabled>
-                        <option th:text="${influencer.category != null ? influencer.category : 'Not set (TODO)'}">Not set (TODO)</option>
+                    <select id="category" th:field="*{category}">
+                        <option value="">-- Select category --</option>
+                        <option th:each="category : ${T(org.ilias.influapp.entities.Category).values()}"
+                                th:value="${category}"
+                                th:text="${category}">
+                        </option>
                     </select>
-                    <div class="muted" style="margin-top: 6px; font-size: 0.9rem;">Enable this when you add categories list + POST.</div>
                 </div>
                 <div>
                     <label for="influencerType">Influencer type</label>
-                    <select id="influencerType" name="influencerType" disabled>
-                        <option th:text="${influencer.influencerType != null ? influencer.influencerType : 'Not set (TODO)'}">Not set (TODO)</option>
+                    <select id="influencerType" th:field="*{influencerType}">
+                        <option value="">-- Select type --</option>
+                        <option th:each="type : ${T(org.ilias.influapp.entities.InfluencerType).values()}"
+                                th:value="${type}"
+                                th:text="${type}">
+                        </option>
                     </select>
-                    <div class="muted" style="margin-top: 6px; font-size: 0.9rem;">Enable this when you add influencerTypes list + POST.</div>
                 </div>
             </div>
 
             <div class="grid two">
                 <div>
                     <label for="totalFollowers">Total followers</label>
-                    <input id="totalFollowers" name="totalFollowers" type="number" min="0" th:value="${influencer.totalFollowers}" placeholder="0" />
+                    <input id="totalFollowers" type="number" min="0" th:field="*{totalFollowers}" placeholder="0" />
                 </div>
                 <div>
                     <label for="engagementRate">Engagement rate</label>
-                    <input id="engagementRate" name="engagementRate" type="number" step="0.01" min="0" th:value="${influencer.engagementRate}" placeholder="0.00" />
+                    <input id="engagementRate" type="number" step="0.01" min="0" th:field="*{engagementRate}" placeholder="0.00" />
                 </div>
             </div>
         </div>
 
         <div class="actions">
-            <a class="btn btn-primary" th:href="@{/influencer/home}">Back to home</a>
+            <button class="btn btn-primary" type="submit">Save profile</button>
             <a class="btn" th:href="@{/influencer/home}">Cancel</a>
+        </div>
+    </form>
+
+    <!-- Platforms form (POST /influencer/profile/platforms) -->
+    <div class="hint" style="margin-top: 14px;">
+        <strong>Social media platforms</strong>
+        <div class="muted" style="margin-top: 6px;">
+            Select the platforms you have. (You'll edit URLs/followers in a separate page later.)
+        </div>
+    </div>
+
+    <form th:action="@{/influencer/profile/platforms}" method="post" th:object="${platformsForm}">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 10px;">
+            <label th:each="p : ${allPlatforms}" style="display:flex; gap:10px; align-items:center; padding:10px; border:1px solid rgba(15,23,42,0.10); border-radius:12px; background:#fff;">
+                <input type="checkbox"
+                       th:field="*{selectedPlatforms}"
+                       th:value="${p}" />
+                <span th:text="${p}">PLATFORM</span>
+            </label>
+        </div>
+
+        <div class="actions" style="margin-top: 12px;">
+            <button class="btn" type="submit">Save platforms</button>
         </div>
     </form>
 </div>

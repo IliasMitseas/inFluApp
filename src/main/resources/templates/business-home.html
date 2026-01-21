@@ -114,6 +114,7 @@
             </div>
         </div>
         <div class="actions">
+            <a class="btn" th:href="@{/business/profile}">Edit profile</a>
             <a class="btn" th:href="@{'/api/business/' + ${business.id}}">API</a>
             <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
         </div>
@@ -140,10 +141,6 @@
             <strong>Description</strong>
             <div class="muted" th:text="${business.description != null ? business.description : '-'}">-</div>
         </div>
-    </div>
-
-    <div style="margin-top: 14px; display:flex; gap: 10px; flex-wrap: wrap;">
-        <a class="btn" th:href="@{/business/profile}">Edit profile</a>
     </div>
 </div>
 </body>
