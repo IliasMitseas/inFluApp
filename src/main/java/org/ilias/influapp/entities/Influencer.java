@@ -48,6 +48,7 @@ public class Influencer extends User {
         collaboration.setInfluencer(this);
     }
 
+    // TODO
     public void updateEngagementRate() {
         if (socialMediaAccounts != null && !socialMediaAccounts.isEmpty()) {
             this.engagementRate = socialMediaAccounts.stream()
