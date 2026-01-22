@@ -131,10 +131,88 @@
         </div>
     </div>
 
-    <div class="hint">
-        <strong>Tip</strong>
-        <div class="muted" style="margin-top: 6px;">Press save to persist changes</div>
-    </div>
+    <style>
+        .dropzone {
+            border: 2px dashed rgba(15, 23, 42, 0.25);
+            border-radius: 12px;
+            padding: 14px;
+            background: rgba(15, 23, 42, 0.03);
+            cursor: pointer;
+        }
+        .dropzone.dragover {
+            border-color: rgba(37, 99, 235, 0.65);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        }
+        .dropzone .row { display:flex; gap:12px; align-items:center; }
+        .dropzone img { width: 56px; height: 56px; border-radius: 12px; object-fit: cover; border: 1px solid rgba(15, 23, 42, 0.12); }
+    </style>
+
+    <form th:action="@{/influencer/profile/image}" method="post" enctype="multipart/form-data">
+        <label>Profile image (drag \& drop)</label>
+
+        <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Upload profile image">
+            <div class="row">
+                <img id="preview"
+                     th:src="${influencer.imageUrl != null and !#strings.isEmpty(influencer.imageUrl)} ? ${influencer.imageUrl} : @{/brand-logo.svg}"
+                     alt="Preview" />
+                <div>
+                    <div><strong>Drop an image here</strong> or click to select</div>
+                    <div class="muted">PNG/JPG, recommended square</div>
+                </div>
+            </div>
+        </div>
+
+        <input id="fileInput" name="file" type="file" accept="image/*" style="display:none;" />
+
+        <div class="actions" style="margin-top: 12px;">
+            <button class="btn btn-primary" type="submit">Upload image</button>
+        </div>
+    </form>
+    <script>
+        (function () {
+            const dropzone = document.getElementById('dropzone');
+            const fileInput = document.getElementById('fileInput');
+            const preview = document.getElementById('preview');
+
+            function setPreview(file) {
+                if (!file) return;
+                if (!file.type || !file.type.startsWith('image/')) return;
+                const url = URL.createObjectURL(file);
+                preview.src = url;
+            }
+
+            dropzone.addEventListener('click', () => fileInput.click());
+            dropzone.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') fileInput.click();
+            });
+
+            fileInput.addEventListener('change', () => {
+                const file = fileInput.files && fileInput.files[0];
+                setPreview(file);
+            });
+
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropzone.classList.add('dragover');
+            });
+
+            dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('dragover');
+                const file = e.dataTransfer.files && e.dataTransfer.files[0];
+                if (!file) return;
+
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                fileInput.files = dt.files;
+
+                setPreview(file);
+            });
+        })();
+    </script>
+
 
     <!-- Profile form (POST /influencer/profile) -->
     <form th:action="@{/influencer/profile}" method="post" th:object="${influencer}">
@@ -143,7 +221,29 @@
                 <label for="name">Display name</label>
                 <input id="name" type="text" th:field="*{name}" placeholder="Your name" />
             </div>
-
+            <div>
+                <label for="age">Age</label>
+                <input id="age" type="text" th:field="*{age}" placeholder="Your age" />
+            </div>
+            <div>
+                <label for="location">Location</label>
+                <input id="location" type="text" th:field="*{location}" placeholder="Your location" />
+            </div>
+            <div>
+                <label for="bio">About me</label>
+                <input id="bio" type="text" th:field="*{bio}" placeholder="Information about you" />
+            </div>
+            <div>
+                <label for="available">Availability</label>
+                <select id="available" th:field="*{isAvailable}">
+                    <option th:value="true" th:text="'Available for collaborations'"></option>
+                    <option th:value="false" th:text="'Not available for collaborations'"></option>
+                </select>
+            </div>
+            <div>
+                <label for="minBudget">Minimum collaboration budget</label>
+                <input id="minBudget" type="number" th:field="*{minCollaborationBudget}" placeholder="Your minimum dudget" />
+            </div>
             <div class="grid two">
                 <div>
                     <label for="category">Category</label>

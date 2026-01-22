@@ -16,8 +16,19 @@ import java.util.List;
 @SuperBuilder
 public class Influencer extends User {
 
-    // Optional at registration; can be completed later in profile.
     private String name;
+
+    private String age;
+
+    private String location;
+
+    private String bio;
+
+    private Boolean isAvailable;
+
+    private Integer minCollaborationBudget;
+
+    private String imageUrl;
 
     @Enumerated(EnumType.STRING)
     private Category category;

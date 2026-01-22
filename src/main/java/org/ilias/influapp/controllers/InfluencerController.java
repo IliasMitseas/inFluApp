@@ -11,7 +11,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.EnumSet;
 
 @Controller
@@ -82,10 +87,48 @@ public class InfluencerController {
         User user = currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
         influencer.setName(updateInfluencer.getName());
+        influencer.setAge(updateInfluencer.getAge());
+        influencer.setLocation(updateInfluencer.getLocation());
+        influencer.setBio(updateInfluencer.getBio());
+        influencer.setIsAvailable(updateInfluencer.getIsAvailable());
+        influencer.setMinCollaborationBudget(updateInfluencer.getMinCollaborationBudget());
         influencer.setCategory(updateInfluencer.getCategory());
         influencer.setInfluencerType(updateInfluencer.getInfluencerType());
         influencer.setTotalFollowers(updateInfluencer.getTotalFollowers());
         influencer.setEngagementRate(updateInfluencer.getEngagementRate());
+        influencerRepository.save(influencer);
+        return "redirect:/influencer/profile";
+    }
+
+    @PostMapping("/influencer/profile/image")
+    public String uploadProfileImage(Authentication authentication, @RequestParam("file") MultipartFile file) {
+        User user = currentUser(authentication);
+        Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
+
+        if (file == null || file.isEmpty()) {
+            return "redirect:/influencer/profile";
+        }
+        if (file.getContentType() == null || !file.getContentType().startsWith("image/")) {
+            return "redirect:/influencer/profile";
+        }
+
+        String original = file.getOriginalFilename() == null ? "image" : file.getOriginalFilename();
+        String safe = original.replaceAll("[^a-zA-Z0-9.\\-_/]", "_");
+        String filename = "influencer-" + influencer.getId() + "-" + System.currentTimeMillis() + "-" + safe;
+
+        Path uploadDir = Paths.get("uploads").toAbsolutePath().normalize();
+        try {
+            Files.createDirectories(uploadDir);
+            Path target = uploadDir.resolve(filename).normalize();
+            if(!target.startsWith(uploadDir)) {
+                return "redirect:/influencer/profile";
+            }
+            file.transferTo(target.toFile());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        influencer.setImageUrl("/uploads/" + filename);
         influencerRepository.save(influencer);
         return "redirect:/influencer/profile";
     }

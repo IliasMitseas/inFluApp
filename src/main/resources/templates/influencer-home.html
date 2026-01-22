@@ -108,7 +108,6 @@
                 <img th:src="@{/brand-logo.svg}" alt="inFluApp" />
             </div>
             <div>
-                <h1 th:text="${influencer.name}">Influencer</h1>
                 <div class="muted">
                     <span th:text="${influencer.email}">email</span>
                     &nbsp;·&nbsp;
@@ -131,8 +130,42 @@
         </div>
     </div>
 
+    <div class="logo" aria-hidden="true" style="overflow:hidden;">
+        <img th:if="${influencer.imageUrl != null and !#strings.isEmpty(influencer.imageUrl)}"
+             th:src="${influencer.imageUrl}"
+             alt="Profile image"
+             style="width:42px;height:42px;object-fit:cover;" />
+        <img th:if="${influencer.imageUrl == null or #strings.isEmpty(influencer.imageUrl)}"
+             th:src="@{/brand-logo.svg}"
+             alt="inFluApp" />
+    </div>
+
     <!-- Keep only a minimal grid with essentials (no duplicates) -->
     <div class="grid">
+        <div class="box">
+            <strong>Name</strong>
+            <div class="muted" th:text="${influencer.name}">0</div>
+        </div>
+        <div class="box">
+            <strong>Age</strong>
+            <div class="muted" th:text="${influencer.age}">0</div>
+        </div>
+        <div class="box">
+            <strong>Location</strong>
+            <div class="muted" th:text="${influencer.location}">0</div>
+        </div>
+        <div class="box">
+            <strong>About me</strong>
+            <div class="muted" th:text="${influencer.bio}">0</div>
+        </div>
+        <div class="box">
+            <strong>Availability</strong>
+            <div class="muted" th:text="${influencer.isAvailable}">0</div>
+        </div>
+        <div class="box">
+            <strong>Minimum budget</strong>
+            <div class="muted" th:text="${influencer.minCollaborationBudget}">0</div>
+        </div>
         <div class="box">
             <strong>Category</strong>
             <div class="muted" th:text="${influencer.category != null ? influencer.category : 'Not set'}">Not set</div>
