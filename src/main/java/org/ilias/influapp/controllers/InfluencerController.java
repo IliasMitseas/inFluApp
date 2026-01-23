@@ -87,6 +87,7 @@ public class InfluencerController {
         User user = currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
         influencer.setName(updateInfluencer.getName());
+        influencer.setUsername(updateInfluencer.getUsername());
         influencer.setAge(updateInfluencer.getAge());
         influencer.setLocation(updateInfluencer.getLocation());
         influencer.setBio(updateInfluencer.getBio());
@@ -97,7 +98,7 @@ public class InfluencerController {
         influencer.setTotalFollowers(updateInfluencer.getTotalFollowers());
         influencer.setEngagementRate(updateInfluencer.getEngagementRate());
         influencerRepository.save(influencer);
-        return "redirect:/influencer/profile";
+        return "redirect:/influencer/home";
     }
 
     @PostMapping("/influencer/profile/image")
@@ -134,7 +135,7 @@ public class InfluencerController {
     }
 
     @GetMapping("/influencer/social/{platform}")
-    public String influencerSocialPlatform(Authentication authentication, @PathVariable("platform") Platform platform, Model model) {
+    public String influencerSocialPlatform(Authentication authentication, @PathVariable Platform platform, Model model) {
         User user = currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
 
@@ -151,6 +152,32 @@ public class InfluencerController {
         model.addAttribute("socialMedia", socialMedia);
         return "influencer-platform";
     }
+
+    @PostMapping("/influencer/social/{platform}/edit")
+    public String editInfluencerSocialPlatform(Authentication authentication,
+                                               @PathVariable Platform platform,
+                                               @ModelAttribute SocialMedia socialMediaUpdate) {
+        User user = currentUser(authentication);
+        Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
+        SocialMedia socialMedia = null;
+        if (influencer.getSocialMediaAccounts() != null) {
+            socialMedia = influencer.getSocialMediaAccounts().stream()
+                    .filter(sm -> sm != null && platform.equals(sm.getPlatform()))
+                    .findFirst()
+                    .orElse(null);
+        }
+        if (socialMedia != null) {
+            socialMedia.setAccountUrl(socialMediaUpdate.getAccountUrl());
+            socialMedia.setFollowers(socialMediaUpdate.getFollowers());
+            socialMedia.setUsername(socialMediaUpdate.getUsername());
+            socialMedia.setAverageComments(socialMediaUpdate.getAverageComments());
+            socialMedia.setProfileViews(socialMediaUpdate.getProfileViews());
+            socialMedia.setAverageLikes(socialMediaUpdate.getAverageLikes());
+            influencerRepository.save(influencer);
+        }
+        return "redirect:/influencer/home";
+    }
+
 
     private User currentUser(Authentication authentication) {
         if (authentication == null || authentication.getName() == null) {

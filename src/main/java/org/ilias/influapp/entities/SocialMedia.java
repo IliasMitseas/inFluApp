@@ -29,6 +29,18 @@ public class SocialMedia {
     @Column(name = "account_url", nullable = false)
     private String accountUrl;
 
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "average_comments")
+    private Integer averageComments;
+
+    @Column(name = "average_likes")
+    private Integer averageLikes;
+
+    @Column(name = "profile_views")
+    private Integer profileViews;
+
     private Integer followers;
 
     private Double engagementRate;
@@ -37,13 +49,9 @@ public class SocialMedia {
     private List<Post> posts = new ArrayList<>();
 
     public void addPost(Post post) {
-        posts.add(post);
-        post.setSocialMedia(this);
     }
 
     public void removePost(Post post) {
-        posts.remove(post);
-        post.setSocialMedia(null);
     }
 
     // TODO

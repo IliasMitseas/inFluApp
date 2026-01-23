@@ -120,17 +120,54 @@
             <strong>Status</strong>
             <div class="muted" th:text="${socialMedia != null ? 'Saved' : 'Not saved yet'}">Saved</div>
         </div>
+        <!-- Add this inside the grid, after the Posts box and before the "Not connected" box -->
         <div class="box" style="grid-column: 1 / -1;" th:if="${socialMedia != null}">
-            <strong>Account URL</strong>
-            <div class="muted" th:text="${socialMedia.accountUrl}">https://...</div>
-        </div>
-        <div class="box" th:if="${socialMedia != null}">
-            <strong>Followers</strong>
-            <div class="muted" th:text="${socialMedia.followers}">0</div>
-        </div>
-        <div class="box" th:if="${socialMedia != null}">
-            <strong>Engagement rate (account)</strong>
-            <div class="muted" th:text="${socialMedia.engagementRate}">0</div>
+            <strong>Edit platform info</strong>
+
+            <form th:action="@{|/influencer/social/${platform}/edit|}" method="post" style="margin-top:10px; display:grid; gap:10px;">
+                <div>
+                    <label for="userName" class="muted">Profile user name</label>
+                    <input id="userName" name="userName" type="text"
+                           th:value="${socialMedia.username}"
+                           style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(15,23,42,0.12);" />
+                </div>
+                <div>
+                    <label for="accountUrl" class="muted">Account URL</label>
+                    <input id="accountUrl" name="accountUrl" type="url"
+                           th:value="${socialMedia.accountUrl}"
+                           style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(15,23,42,0.12);" />
+                </div>
+                <div>
+                    <label for="followers" class="muted">Followers</label>
+                    <input id="followers" name="followers" type="number" min="0"
+                           th:value="${socialMedia.followers}"
+                           style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(15,23,42,0.12);" />
+                </div>
+                <div>
+                    <label for="profileViews" class="muted">Average profile views</label>
+                    <input id="profileViews" name="profileViews" type="number" min="0"
+                           th:value="${socialMedia.profileViews}"
+                           style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(15,23,42,0.12);" />
+                </div>
+                <div>
+                    <label for="averageComments" class="muted">Average comments</label>
+                    <input id="averageComments" name="averageComments" type="number" min="0"
+                           th:value="${socialMedia.averageComments}"
+                           style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(15,23,42,0.12);" />
+                </div>
+                <div>
+                    <label for="averageLikes" class="muted">Average likes per post</label>
+                    <input id="averageLikes" name="averageLikes" type="number" min="0"
+                           th:value="${socialMedia.averageLikes}"
+                           style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(15,23,42,0.12);" />
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <a class="btn" th:href="@{|/influencer/social/${platform}/posts|}">View/Add posts</a>
+                </div>
+                <div class="actions" style="margin-top: 12px;">
+                    <button class="btn btn-primary" type="submit">Save changes</button>
+                </div>
+            </form>
         </div>
 
         <div class="box" style="grid-column: 1 / -1;" th:if="${socialMedia == null}">

@@ -49,26 +49,14 @@ public class Campaign {
     private List<Collaboration> collaborations = new ArrayList<>();
 
     public void addCollaboration(Collaboration collaboration) {
-        collaborations.add(collaboration);
-        collaboration.setCampaign(this);
     }
 
     public  void removeCollaboration(Collaboration collaboration) {
-        collaborations.remove(collaboration);
-        collaboration.setCampaign(null);
     }
 
-    public boolean isActive() {
-        return status == CampaignStatus.ACTIVE;
+    public void isActive() {
     }
 
-    public Double getRemainingBudget() {
-        double spent = collaborations.stream()
-                .filter(c -> c.getStatus() == CollaborationStatus.ACCEPTED ||
-                             c.getStatus() == CollaborationStatus.IN_PROGRESS ||
-                             c.getStatus() == CollaborationStatus.COMPLETED)
-                .mapToDouble(Collaboration::getPaymentAmount)
-                .sum();
-        return budget - spent;
+    public void getRemainingBudget() {
     }
 }

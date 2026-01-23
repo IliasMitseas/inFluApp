@@ -38,22 +38,13 @@ public class Business extends User {
     private List<Campaign> campaigns = new ArrayList<>();
 
     public void addCampaign(Campaign campaign) {
-        campaigns.add(campaign);
-        campaign.setBusiness(this);
     }
 
     public void removeCampaign(Campaign campaign) {
-        campaigns.remove(campaign);
-        campaign.setBusiness(null);
     }
 
-    public int getCampaignsSize() {
-        return campaigns.size();
+    public void getCampaignsSize() {
     }
 
-    public double getTotalBudget() {
-        return campaigns.stream()
-                .mapToDouble(Campaign::getBudget)
-                .sum();
-    }
+    public void getTotalBudget() {}
 }

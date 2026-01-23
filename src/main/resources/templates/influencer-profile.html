@@ -218,8 +218,12 @@
     <form th:action="@{/influencer/profile}" method="post" th:object="${influencer}">
         <div class="grid">
             <div>
-                <label for="name">Display name</label>
+                <label for="name">Name</label>
                 <input id="name" type="text" th:field="*{name}" placeholder="Your name" />
+            </div>
+            <div>
+                <label for="display name">Display name</label>
+                <input id="display name" type="text" th:field="*{username}" placeholder="Your user name" />
             </div>
             <div>
                 <label for="age">Age</label>

@@ -8,5 +8,6 @@ public enum Platform {
     TWITTER,
     FACEBOOK,
     SNAPCHAT,
-    LINKEDIN
+    LINKEDIN,
+    SPOTIFY
 }
