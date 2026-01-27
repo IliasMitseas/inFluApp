@@ -1,12 +1,11 @@
 package org.ilias.influapp.controllers;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.ilias.influapp.dtos.ProfilePlatformsForm;
 import org.ilias.influapp.entities.*;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.InfluencerRepository;
-import org.ilias.influapp.repository.PostRepository;
-import org.ilias.influapp.repository.UserRepository;
+import org.ilias.influapp.services.InfluencerService;
 import org.ilias.influapp.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -15,25 +14,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.EnumSet;
 
 @Controller
 @RequiredArgsConstructor
 public class InfluencerController {
 
-    private final UserRepository userRepository;
     private final InfluencerRepository influencerRepository;
-    private final PostRepository postRepository;
+    private final InfluencerService influencerService;
     private final UserService userService;
 
     @GetMapping("/influencer/home")
     public String influencerHome(Authentication authentication, Model model) {
         User user = userService.currentUser(authentication);
-        Influencer influencer = influencerRepository.findById(user.getId())
-                .orElseThrow(NotFoundException::new);
+        Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
         model.addAttribute("influencer", influencer);
         return "influencer-home";
     }
@@ -42,18 +35,9 @@ public class InfluencerController {
     public String influencerProfile(Authentication authentication, Model model) {
         User user = userService.currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
-        model.addAttribute("influencer", influencer);
 
-        // Backing object for platform checkbox selection
-        ProfilePlatformsForm platformsForm = new ProfilePlatformsForm();
-        if (influencer.getSocialMediaAccounts() != null) {
-            for (SocialMedia sm : influencer.getSocialMediaAccounts()) {
-                if (sm != null && sm.getPlatform() != null) {
-                    platformsForm.getSelectedPlatforms().add(sm.getPlatform());
-                }
-            }
-        }
-        model.addAttribute("platformsForm", platformsForm);
+        model.addAttribute("influencer", influencer);
+        model.addAttribute("platformsForm", influencerService.getProfilePlatformsForm(user.getId()));
         model.addAttribute("allPlatforms", Platform.values());
         return "influencer-profile";
     }
@@ -61,85 +45,33 @@ public class InfluencerController {
     @PostMapping("/influencer/profile")
     public String updateInfluencerProfile(Authentication authentication, @ModelAttribute("influencer") Influencer updateInfluencer) {
         User user = userService.currentUser(authentication);
-        Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
-        influencer.setName(updateInfluencer.getName());
-        influencer.setUsername(updateInfluencer.getUsername());
-        influencer.setAge(updateInfluencer.getAge());
-        influencer.setLocation(updateInfluencer.getLocation());
-        influencer.setBio(updateInfluencer.getBio());
-        influencer.setIsAvailable(updateInfluencer.getIsAvailable());
-        influencer.setMinCollaborationBudget(updateInfluencer.getMinCollaborationBudget());
-        influencer.setCategory(updateInfluencer.getCategory());
-        influencer.setInfluencerType(updateInfluencer.getInfluencerType());
-        influencer.setTotalFollowers(updateInfluencer.getTotalFollowers());
-        influencer.setEngagementRate(updateInfluencer.getEngagementRate());
+        Influencer influencer = influencerService.updateInfluencer(updateInfluencer, user);
         influencerRepository.save(influencer);
         return "redirect:/influencer/home";
     }
 
     @PostMapping("/influencer/profile/platforms")
-    public String updateInfluencerPlatforms(Authentication authentication, @ModelAttribute("platformsForm") InfluencerController.ProfilePlatformsForm platformsForm) {
+    public String updateInfluencerPlatforms(Authentication authentication,
+                                           @ModelAttribute("platformsForm") ProfilePlatformsForm platformsForm) {
         User user = userService.currentUser(authentication);
-        Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
-
-        EnumSet<Platform> selected = platformsForm == null || platformsForm.getSelectedPlatforms() == null
-                ? EnumSet.noneOf(Platform.class) : EnumSet.copyOf(platformsForm.getSelectedPlatforms());
-
-        // Remove unchecked
-        influencer.getSocialMediaAccounts().removeIf(sm -> sm != null && sm.getPlatform() != null && !selected.contains(sm.getPlatform()));
-
-        // Add missing
-        for (Platform p : selected) {
-            boolean exists = influencer.getSocialMediaAccounts().stream().anyMatch(sm -> sm != null && p.equals(sm.getPlatform()));
-            if (!exists) {
-                SocialMedia sm = new SocialMedia();
-                sm.setInfluencer(influencer);
-                sm.setPlatform(p);
-                sm.setAccountUrl("pending://" + p.name().toLowerCase());
-                sm.setFollowers(0);
-                influencer.getSocialMediaAccounts().add(sm);
-            }
-        }
-        influencerRepository.save(influencer);
+        influencerService.updateInfluencerPlatforms(user.getId(), platformsForm);
         return "redirect:/influencer/profile";
     }
-
 
     @PostMapping("/influencer/profile/image")
     public String uploadProfileImage(Authentication authentication, @RequestParam("file") MultipartFile file) {
         User user = userService.currentUser(authentication);
-        Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
 
-        if (file == null || file.isEmpty()) {
-            return "redirect:/influencer/profile";
-        }
-        if (file.getContentType() == null || !file.getContentType().startsWith("image/")) {
-            return "redirect:/influencer/profile";
-        }
-
-        String original = file.getOriginalFilename() == null ? "image" : file.getOriginalFilename();
-        String safe = original.replaceAll("[^a-zA-Z0-9.\\-_/]", "_");
-        String filename = "influencer-" + influencer.getId() + "-" + System.currentTimeMillis() + "-" + safe;
-
-        Path uploadDir = Paths.get("uploads").toAbsolutePath().normalize();
         try {
-            Files.createDirectories(uploadDir);
-            Path target = uploadDir.resolve(filename).normalize();
-            if(!target.startsWith(uploadDir)) {
-                return "redirect:/influencer/profile";
-            }
-            file.transferTo(target.toFile());
+            influencerService.uploadProfileImage(user.getId(), file);
+        } catch (IllegalArgumentException | SecurityException e) {
+            // Handle validation errors (empty file, wrong type, security issues)
+            return "redirect:/influencer/profile?error=" + e.getMessage();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            // Handle file system errors
+            return "redirect:/influencer/profile?error=upload_failed";
         }
 
-        influencer.setImageUrl("/uploads/" + filename);
-        influencerRepository.save(influencer);
         return "redirect:/influencer/profile";
-    }
-
-    @Data
-    public static class ProfilePlatformsForm {
-        private EnumSet<Platform> selectedPlatforms = EnumSet.noneOf(Platform.class);
     }
 }
