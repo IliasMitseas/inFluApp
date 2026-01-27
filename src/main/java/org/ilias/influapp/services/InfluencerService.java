@@ -9,13 +9,16 @@ import org.ilias.influapp.entities.User;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.InfluencerRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -54,29 +57,40 @@ public class InfluencerService {
     }
 
 
+    @Transactional
     public void updateInfluencerPlatforms(Long influencerId, ProfilePlatformsForm platformsForm) {
-        Influencer influencer = influencerRepository.findById(influencerId).orElseThrow(NotFoundException::new);
+        Influencer influencer = influencerRepository.findById(influencerId)
+                .orElseThrow(NotFoundException::new);
+
+        if (influencer.getSocialMediaAccounts() == null) {
+            influencer.setSocialMediaAccounts(new ArrayList<>());
+        }
 
         EnumSet<Platform> selected = platformsForm == null || platformsForm.getSelectedPlatforms() == null
                 ? EnumSet.noneOf(Platform.class) : EnumSet.copyOf(platformsForm.getSelectedPlatforms());
 
-        // Remove unchecked platforms
+        // Remove unselected platforms
         influencer.getSocialMediaAccounts().removeIf(sm ->
             sm != null && sm.getPlatform() != null && !selected.contains(sm.getPlatform()));
 
-        // Add missing platforms
+        // Get current platforms after removal
+        List<Platform> currentPlatforms = influencer.getSocialMediaAccounts().stream()
+                .filter(sm -> sm != null && sm.getPlatform() != null)
+                .map(SocialMedia::getPlatform)
+                .toList();
+
+        // Add new platforms
         for (Platform platform : selected) {
-            boolean exists = influencer.getSocialMediaAccounts().stream()
-                    .anyMatch(sm -> sm != null && platform.equals(sm.getPlatform()));
-            if (!exists) {
+            if (!currentPlatforms.contains(platform)) {
                 SocialMedia sm = new SocialMedia();
                 sm.setInfluencer(influencer);
                 sm.setPlatform(platform);
-                sm.setAccountUrl("pending://" + platform.name().toLowerCase());
+                sm.setAccountUrl("https://pending-setup.example.com/" + platform.name().toLowerCase());
                 sm.setFollowers(0);
                 influencer.getSocialMediaAccounts().add(sm);
             }
         }
+
         influencerRepository.save(influencer);
     }
 
