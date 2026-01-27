@@ -4,9 +4,10 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.*;
 import org.ilias.influapp.exceptions.NotFoundException;
-import org.ilias.influapp.exceptions.UnauthorizedException;
 import org.ilias.influapp.repository.InfluencerRepository;
+import org.ilias.influapp.repository.PostRepository;
 import org.ilias.influapp.repository.UserRepository;
+import org.ilias.influapp.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,10 +26,12 @@ public class InfluencerController {
 
     private final UserRepository userRepository;
     private final InfluencerRepository influencerRepository;
+    private final PostRepository postRepository;
+    private final UserService userService;
 
     @GetMapping("/influencer/home")
     public String influencerHome(Authentication authentication, Model model) {
-        User user = currentUser(authentication);
+        User user = userService.currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId())
                 .orElseThrow(NotFoundException::new);
         model.addAttribute("influencer", influencer);
@@ -37,7 +40,7 @@ public class InfluencerController {
 
     @GetMapping("/influencer/profile")
     public String influencerProfile(Authentication authentication, Model model) {
-        User user = currentUser(authentication);
+        User user = userService.currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
         model.addAttribute("influencer", influencer);
 
@@ -55,9 +58,28 @@ public class InfluencerController {
         return "influencer-profile";
     }
 
+    @PostMapping("/influencer/profile")
+    public String updateInfluencerProfile(Authentication authentication, @ModelAttribute("influencer") Influencer updateInfluencer) {
+        User user = userService.currentUser(authentication);
+        Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
+        influencer.setName(updateInfluencer.getName());
+        influencer.setUsername(updateInfluencer.getUsername());
+        influencer.setAge(updateInfluencer.getAge());
+        influencer.setLocation(updateInfluencer.getLocation());
+        influencer.setBio(updateInfluencer.getBio());
+        influencer.setIsAvailable(updateInfluencer.getIsAvailable());
+        influencer.setMinCollaborationBudget(updateInfluencer.getMinCollaborationBudget());
+        influencer.setCategory(updateInfluencer.getCategory());
+        influencer.setInfluencerType(updateInfluencer.getInfluencerType());
+        influencer.setTotalFollowers(updateInfluencer.getTotalFollowers());
+        influencer.setEngagementRate(updateInfluencer.getEngagementRate());
+        influencerRepository.save(influencer);
+        return "redirect:/influencer/home";
+    }
+
     @PostMapping("/influencer/profile/platforms")
-    public String updateInfluencerPlatforms(Authentication authentication, @ModelAttribute("platformsForm") ProfilePlatformsForm platformsForm) {
-        User user = currentUser(authentication);
+    public String updateInfluencerPlatforms(Authentication authentication, @ModelAttribute("platformsForm") InfluencerController.ProfilePlatformsForm platformsForm) {
+        User user = userService.currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
 
         EnumSet<Platform> selected = platformsForm == null || platformsForm.getSelectedPlatforms() == null
@@ -82,28 +104,10 @@ public class InfluencerController {
         return "redirect:/influencer/profile";
     }
 
-    @PostMapping("/influencer/profile")
-    public String updateInfluencerProfile(Authentication authentication, @ModelAttribute("influencer") Influencer updateInfluencer) {
-        User user = currentUser(authentication);
-        Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
-        influencer.setName(updateInfluencer.getName());
-        influencer.setUsername(updateInfluencer.getUsername());
-        influencer.setAge(updateInfluencer.getAge());
-        influencer.setLocation(updateInfluencer.getLocation());
-        influencer.setBio(updateInfluencer.getBio());
-        influencer.setIsAvailable(updateInfluencer.getIsAvailable());
-        influencer.setMinCollaborationBudget(updateInfluencer.getMinCollaborationBudget());
-        influencer.setCategory(updateInfluencer.getCategory());
-        influencer.setInfluencerType(updateInfluencer.getInfluencerType());
-        influencer.setTotalFollowers(updateInfluencer.getTotalFollowers());
-        influencer.setEngagementRate(updateInfluencer.getEngagementRate());
-        influencerRepository.save(influencer);
-        return "redirect:/influencer/home";
-    }
 
     @PostMapping("/influencer/profile/image")
     public String uploadProfileImage(Authentication authentication, @RequestParam("file") MultipartFile file) {
-        User user = currentUser(authentication);
+        User user = userService.currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
 
         if (file == null || file.isEmpty()) {
@@ -132,59 +136,6 @@ public class InfluencerController {
         influencer.setImageUrl("/uploads/" + filename);
         influencerRepository.save(influencer);
         return "redirect:/influencer/profile";
-    }
-
-    @GetMapping("/influencer/social/{platform}")
-    public String influencerSocialPlatform(Authentication authentication, @PathVariable Platform platform, Model model) {
-        User user = currentUser(authentication);
-        Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
-
-        SocialMedia socialMedia = null;
-        if (influencer.getSocialMediaAccounts() != null) {
-            socialMedia = influencer.getSocialMediaAccounts().stream()
-                    .filter(sm -> sm != null && platform.equals(sm.getPlatform()))
-                    .findFirst()
-                    .orElse(null);
-        }
-
-        model.addAttribute("influencer", influencer);
-        model.addAttribute("platform", platform);
-        model.addAttribute("socialMedia", socialMedia);
-        return "influencer-platform";
-    }
-
-    @PostMapping("/influencer/social/{platform}/edit")
-    public String editInfluencerSocialPlatform(Authentication authentication,
-                                               @PathVariable Platform platform,
-                                               @ModelAttribute SocialMedia socialMediaUpdate) {
-        User user = currentUser(authentication);
-        Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
-        SocialMedia socialMedia = null;
-        if (influencer.getSocialMediaAccounts() != null) {
-            socialMedia = influencer.getSocialMediaAccounts().stream()
-                    .filter(sm -> sm != null && platform.equals(sm.getPlatform()))
-                    .findFirst()
-                    .orElse(null);
-        }
-        if (socialMedia != null) {
-            socialMedia.setAccountUrl(socialMediaUpdate.getAccountUrl());
-            socialMedia.setFollowers(socialMediaUpdate.getFollowers());
-            socialMedia.setUsername(socialMediaUpdate.getUsername());
-            socialMedia.setAverageComments(socialMediaUpdate.getAverageComments());
-            socialMedia.setProfileViews(socialMediaUpdate.getProfileViews());
-            socialMedia.setAverageLikes(socialMediaUpdate.getAverageLikes());
-            influencerRepository.save(influencer);
-        }
-        return "redirect:/influencer/home";
-    }
-
-
-    private User currentUser(Authentication authentication) {
-        if (authentication == null || authentication.getName() == null) {
-            throw new UnauthorizedException();
-        }
-        String login = authentication.getName();
-        return userRepository.findByEmailOrUsername(login, login).orElseThrow(UnauthorizedException::new);
     }
 
     @Data

@@ -39,9 +39,15 @@ public class Post {
     @JoinColumn(name = "collaboration_id")
     private Collaboration collaboration;
 
-    // TODO
-    public Double calculateEngagementRate() {
-        return engagementRate;
+    public void calculateAndSetEngagementRate() {
+        if (impressions != null && impressions > 0) {
+            double engagementRate = ((likes != null ? likes : 0) +
+                    (comments != null ? comments.size() : 0) +
+                    (shares != null ? shares : 0))
+                    / (double) impressions;
+            setEngagementRate(engagementRate * 100); // as percentage
+        } else {
+            setEngagementRate(0.0);
+        }
     }
-
 }

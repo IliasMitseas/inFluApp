@@ -2,7 +2,9 @@ package org.ilias.influapp.services;
 
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.*;
+import org.ilias.influapp.exceptions.UnauthorizedException;
 import org.ilias.influapp.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,14 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(role);
         return userRepository.save(user);
+    }
+
+    public User currentUser(Authentication authentication) {
+        if (authentication == null || authentication.getName() == null) {
+            throw new UnauthorizedException();
+        }
+        String login = authentication.getName();
+        return userRepository.findByEmailOrUsername(login, login).orElseThrow(UnauthorizedException::new);
     }
 
 }
