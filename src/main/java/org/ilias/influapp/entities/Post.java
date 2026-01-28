@@ -27,7 +27,10 @@ public class Post {
 
     private Integer shares;
     private Integer reach;
-    private Integer impressions;
+    private Integer impressionCount;
+
+    @Enumerated(EnumType.STRING)
+    private PostSentiment postSentiment;
 
     private Double engagementRate;
 
@@ -40,12 +43,30 @@ public class Post {
     private Collaboration collaboration;
 
     public void calculateAndSetEngagementRate() {
-        if (impressions != null && impressions > 0) {
-            double engagementRate = ((likes != null ? likes : 0) +
-                    (comments != null ? comments.size() : 0) +
-                    (shares != null ? shares : 0))
-                    / (double) impressions;
-            setEngagementRate(engagementRate * 100); // as percentage
+        if (impressionCount != null && impressionCount > 0) {
+            // Calculate total interactions (simple count - no weights)
+            double totalInteractions = 0.0;
+
+            totalInteractions += (likes != null ? likes : 0);
+            totalInteractions += (comments != null ? comments.size() : 0);
+            totalInteractions += (shares != null ? shares : 0);
+            totalInteractions += (reach != null ? reach*0.2 : 0);
+
+            // Standard engagement rate formula: (interactions / impressions) × 100
+            double rate = (totalInteractions / impressionCount) * 100.0;
+
+            // Apply sentiment multiplier (more subtle adjustments)
+            if (postSentiment != null) {
+                switch (postSentiment) {
+                    case LOVE -> rate *= 1.2;      // Boost by 20% for LOVE
+                    case LIKE -> rate *= 1.1;      // Boost by 10% for LIKE
+                    case NEUTRAL -> rate *= 1.0;   // No change
+                    case DISLIKE -> rate *= 0.9;   // Reduce by 10% for DISLIKE
+                    case TERRIBLE -> rate *= 0.8;  // Reduce by 20% for TERRIBLE
+                }
+            }
+
+            setEngagementRate(rate);
         } else {
             setEngagementRate(0.0);
         }

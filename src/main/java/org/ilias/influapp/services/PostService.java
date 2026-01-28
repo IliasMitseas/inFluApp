@@ -15,7 +15,8 @@ public class PostService {
                 .comments(postDto.getComments())
                 .shares(postDto.getShares())
                 .reach(postDto.getReach())
-                .impressions(postDto.getImpressions())
+                .impressionCount(postDto.getImpressionCount())
+                .postSentiment(postDto.getPostSentiment())
                 .socialMedia(socialMedia)
                 .build();
     }

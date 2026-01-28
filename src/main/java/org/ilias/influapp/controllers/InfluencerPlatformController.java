@@ -64,6 +64,7 @@ public class InfluencerPlatformController {
             socialMedia.setAverageComments(socialMediaUpdate.getAverageComments());
             socialMedia.setProfileViews(socialMediaUpdate.getProfileViews());
             socialMedia.setAverageLikes(socialMediaUpdate.getAverageLikes());
+            influencer.updateTotalFollowers();
             influencerRepository.save(influencer);
         }
         return "redirect:/influencer/home";

@@ -11,11 +11,9 @@ import org.ilias.influapp.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -51,7 +49,8 @@ public class PlatformPostsController {
     @PostMapping("/influencer/social/{platform}/posts/add")
     public String addInfluencerPost(Authentication authentication,
                                     @PathVariable Platform platform,
-                                    @ModelAttribute PostDto postDto) {
+                                    @ModelAttribute PostDto postDto,
+                                    @RequestParam(required = false) String commentsText) {
         User user = userService.currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
 
@@ -60,11 +59,23 @@ public class PlatformPostsController {
                 .findFirst()
                 .orElseThrow(NotFoundException::new);
 
+        // Parse comments from textarea (one per line)
+        if (commentsText != null && !commentsText.trim().isEmpty()) {
+            String[] commentLines = commentsText.split("\\r?\\n");
+            List<String> commentsList = new ArrayList<>();
+            for (String line : commentLines) {
+                String trimmed = line.trim();
+                if (!trimmed.isEmpty()) {
+                    commentsList.add(trimmed);
+                }
+            }
+            postDto.setComments(commentsList);
+        }
+
         Post post = postService.createPostFromDto(postDto, socialMedia);
-
         post.calculateAndSetEngagementRate();
-
         postRepository.save(post);
+
         return "redirect:/influencer/social/" + platform + "/posts";
     }
 }

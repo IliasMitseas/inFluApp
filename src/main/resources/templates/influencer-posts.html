@@ -55,7 +55,7 @@
         }
         .form-grid { display: grid; gap: 12px; }
         label { display: block; color: var(--muted); margin-bottom: 4px; font-size: 0.9rem; }
-        input, textarea {
+        input, textarea, select {
             width: 100%;
             padding: 10px;
             border-radius: 10px;
@@ -89,6 +89,27 @@
                     <label for="content">Content/Description</label>
                     <textarea id="content" th:field="*{content}" required></textarea>
                 </div>
+                <div>
+                    <label for="commentsText">Comments (one per line)</label>
+                    <textarea id="commentsText" name="commentsText" placeholder="Great post!&#10;Nice work&#10;Love it&#10;Amazing" style="min-height: 100px;"></textarea>
+                    <small style="color: var(--muted); font-size: 0.85rem;">
+                        Enter each comment on a new line
+                    </small>
+                </div>
+                <div>
+                    <label for="postSentiment">Overall Post Sentiment</label>
+                    <select id="postSentiment" th:field="*{postSentiment}">
+                        <option value="">-- Select Sentiment --</option>
+                        <option value="LOVE">❤️ LOVE - Εξαιρετικό</option>
+                        <option value="LIKE">👍 LIKE - Θετικό</option>
+                        <option value="NEUTRAL">😐 NEUTRAL - Ουδέτερο</option>
+                        <option value="DISLIKE">👎 DISLIKE - Αρνητικό</option>
+                        <option value="TERRIBLE">💩 TERRIBLE - Πολύ Αρνητικό</option>
+                    </select>
+                    <small style="color: var(--muted); font-size: 0.85rem;">
+                        How was the overall reception of this post?
+                    </small>
+                </div>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                     <div>
                         <label for="likes">Likes</label>
@@ -103,8 +124,8 @@
                         <input id="reach" type="number" th:field="*{reach}" min="0" required/>
                     </div>
                     <div>
-                        <label for="impressions">Impressions</label>
-                        <input id="impressions" type="number" th:field="*{impressions}" min="0" required/>
+                        <label for="impressionCount">Total Impressions</label>
+                        <input id="impressionCount" type="number" th:field="*{impressionCount}" min="0" required/>
                     </div>
                 </div>
                 <button class="btn btn-primary" type="submit">Add Post</button>
@@ -115,14 +136,33 @@
     <h2>Existing Posts</h2>
     <div class="post-list" th:if="${posts != null and !posts.isEmpty()}">
         <div class="post-item" th:each="post : ${posts}">
-            <div th:text="${post.content}">Post content here</div>
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                <div th:text="${post.content}" style="flex: 1;">Post content here</div>
+                <div th:if="${post.postSentiment != null}" style="font-size: 1.5rem; margin-left: 12px;">
+                    <span th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).LOVE}">❤️</span>
+                    <span th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).LIKE}">👍</span>
+                    <span th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).NEUTRAL}">😐</span>
+                    <span th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).DISLIKE}">👎</span>
+                    <span th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).TERRIBLE}">💩</span>
+                </div>
+            </div>
+
+            <!-- Display comments (simple text strings) -->
+            <div th:if="${post.comments != null and !post.comments.isEmpty()}" style="margin-top: 12px; padding: 12px; background: rgba(15, 23, 42, 0.02); border-radius: 8px;">
+                <strong style="font-size: 0.9rem; color: var(--muted);">Comments:</strong>
+                <div th:each="comment : ${post.comments}" style="margin-top: 6px; font-size: 0.9rem;">
+                    💬 <span th:text="${comment}">Comment text</span>
+                </div>
+            </div>
+
             <div class="post-stats">
                 <div class="stat">👍 <span th:text="${post.likes}">0</span> likes</div>
                 <div class="stat">💬 <span th:text="${post.comments != null ? post.comments.size() : 0}">0</span> comments</div>
                 <div class="stat">📤 <span th:text="${post.shares}">0</span> shares</div>
-                <div class="stat">👁️ <span th:text="${post.impressions}">0</span> impressions</div>
+                <div class="stat">📡 <span th:text="${post.reach}">0</span> reach</div>
+                <div class="stat">👁️ <span th:text="${post.impressionCount}">0</span> impressions</div>
                 <div class="stat" th:if="${post.engagementRate != null}">
-                    📊 <span th:text="${#numbers.formatDecimal(post.engagementRate, 1, 2)}">0.00</span>% engagement
+                    📈 <span th:text="${#numbers.formatDecimal(post.engagementRate, 1, 2)}">0.00</span>% engagement
                 </div>
             </div>
         </div>

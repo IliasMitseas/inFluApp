@@ -55,7 +55,7 @@ public class InfluencerController {
                                            @ModelAttribute("platformsForm") ProfilePlatformsForm platformsForm) {
         User user = userService.currentUser(authentication);
         influencerService.updateInfluencerPlatforms(user.getId(), platformsForm);
-        return "redirect:/influencer/profile";
+        return "redirect:/influencer/home";
     }
 
     @PostMapping("/influencer/profile/image")

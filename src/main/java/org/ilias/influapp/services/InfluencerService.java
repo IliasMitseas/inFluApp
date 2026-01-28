@@ -51,8 +51,7 @@ public class InfluencerService {
         influencer.setMinCollaborationBudget(updateInfluencer.getMinCollaborationBudget());
         influencer.setCategory(updateInfluencer.getCategory());
         influencer.setInfluencerType(updateInfluencer.getInfluencerType());
-        influencer.setTotalFollowers(updateInfluencer.getTotalFollowers());
-        influencer.setEngagementRate(updateInfluencer.getEngagementRate());
+        influencer.updateTotalFollowers();
         return influencer;
     }
 
@@ -90,6 +89,9 @@ public class InfluencerService {
                 influencer.getSocialMediaAccounts().add(sm);
             }
         }
+
+        // Recalculate total followers after updating platforms
+        influencer.updateTotalFollowers();
 
         influencerRepository.save(influencer);
     }

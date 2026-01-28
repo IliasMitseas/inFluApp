@@ -58,6 +58,16 @@ public class Influencer extends User {
     public void updateEngagementRate() {
     }
 
-    public void updateTotalFollowers() {
+    public int updateTotalFollowers() {
+        int total = 0;
+        if (socialMediaAccounts != null && !socialMediaAccounts.isEmpty()) {
+            for (SocialMedia sm : socialMediaAccounts) {
+                if (sm != null && sm.getFollowers() != null) {
+                    total += sm.getFollowers();
+                }
+            }
+        }
+        this.totalFollowers = total;
+        return total;
     }
 }
