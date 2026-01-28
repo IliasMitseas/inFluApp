@@ -3,9 +3,7 @@ package org.ilias.influapp.controllers;
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.*;
 import org.ilias.influapp.exceptions.NotFoundException;
-import org.ilias.influapp.exceptions.UnauthorizedException;
 import org.ilias.influapp.repository.BusinessRepository;
-import org.ilias.influapp.repository.UserRepository;
 import org.ilias.influapp.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class BusinessController {
 
-    private final UserRepository userRepository;
     private final BusinessRepository businessRepository;
     private final UserService userService;
 

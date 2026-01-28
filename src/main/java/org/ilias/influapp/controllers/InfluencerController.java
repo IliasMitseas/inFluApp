@@ -5,7 +5,7 @@ import org.ilias.influapp.dtos.ProfilePlatformsForm;
 import org.ilias.influapp.entities.*;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.InfluencerRepository;
-import org.ilias.influapp.services.InfluencerService;
+import org.ilias.influapp.services.InfluencerServiceImpl;
 import org.ilias.influapp.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ import java.io.IOException;
 public class InfluencerController {
 
     private final InfluencerRepository influencerRepository;
-    private final InfluencerService influencerService;
+    private final InfluencerServiceImpl influencerService;
     private final UserService userService;
 
     @GetMapping("/influencer/home")
@@ -71,7 +71,6 @@ public class InfluencerController {
             // Handle file system errors
             return "redirect:/influencer/profile?error=upload_failed";
         }
-
         return "redirect:/influencer/profile";
     }
 }
