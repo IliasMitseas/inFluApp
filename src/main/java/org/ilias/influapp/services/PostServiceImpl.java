@@ -1,5 +1,6 @@
 package org.ilias.influapp.services;
 
+import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.dtos.PostDto;
 import org.ilias.influapp.entities.*;
 import org.springframework.stereotype.Service;
@@ -8,7 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
+
+    private final SentimentAnalyzer sentimentAnalyzer;
 
     @Override
     public Post createPostFromDto(PostDto postDto, SocialMedia socialMedia) {
@@ -19,7 +23,6 @@ public class PostServiceImpl implements PostService {
                 .shares(postDto.getShares())
                 .reach(postDto.getReach())
                 .impressionCount(postDto.getImpressionCount())
-                .postSentiment(postDto.getPostSentiment())
                 .socialMedia(socialMedia)
                 .build();
     }
@@ -73,5 +76,10 @@ public class PostServiceImpl implements PostService {
         reaction.setType(type);
         reaction.setCount(count);
         return reaction;
+    }
+
+    @Override
+    public PostSentiment calculateAutoSentiment(List<Reaction> reactions, List<String> comments) {
+        return sentimentAnalyzer.analyzeSentiment(reactions, comments);
     }
 }

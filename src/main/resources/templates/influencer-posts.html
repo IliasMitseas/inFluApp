@@ -83,6 +83,17 @@
 
     <div class="form-box">
         <h2 style="margin-top:0;">Add New Post</h2>
+        <div style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(99, 102, 241, 0.1)); border-left: 4px solid var(--primary); padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 1.5rem;">🤖</span>
+                <div>
+                    <strong style="color: var(--primary);">AI-Powered Sentiment Analysis</strong>
+                    <div style="font-size: 0.85rem; color: var(--muted); margin-top: 2px;">
+                        Post sentiment is automatically calculated from reactions & comments
+                    </div>
+                </div>
+            </div>
+        </div>
         <form th:action="@{|/influencer/social/${platform}/posts/add|}" method="post" th:object="${postDto}">
             <div class="form-grid">
                 <div>
@@ -93,21 +104,7 @@
                     <label for="commentsText">Comments (one per line)</label>
                     <textarea id="commentsText" name="commentsText" placeholder="Great post!&#10;Nice work&#10;Love it&#10;Amazing" style="min-height: 100px;"></textarea>
                     <small style="color: var(--muted); font-size: 0.85rem;">
-                        Enter each comment on a new line
-                    </small>
-                </div>
-                <div>
-                    <label for="postSentiment">Overall Post Sentiment</label>
-                    <select id="postSentiment" th:field="*{postSentiment}">
-                        <option value="">-- Select Sentiment --</option>
-                        <option value="LOVE">❤️ LOVE - Εξαιρετικό</option>
-                        <option value="LIKE">👍 LIKE - Θετικό</option>
-                        <option value="NEUTRAL">😐 NEUTRAL - Ουδέτερο</option>
-                        <option value="DISLIKE">👎 DISLIKE - Αρνητικό</option>
-                        <option value="TERRIBLE">💩 TERRIBLE - Πολύ Αρνητικό</option>
-                    </select>
-                    <small style="color: var(--muted); font-size: 0.85rem;">
-                        How was the overall reception of this post?
+                        Enter each comment on a new line. Sentiment is auto-calculated! 🤖
                     </small>
                 </div>
                 <!-- Reactions Section -->

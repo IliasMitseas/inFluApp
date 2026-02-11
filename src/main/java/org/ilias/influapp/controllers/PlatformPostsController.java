@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -60,8 +61,9 @@ public class PlatformPostsController {
                 .orElseThrow(NotFoundException::new);
 
         // Delegate comment parsing to service
+        List<String> comments = new ArrayList<>();
         if (commentsText != null && !commentsText.trim().isEmpty()) {
-            List<String> comments = postService.parseCommentsFromText(commentsText);
+            comments = postService.parseCommentsFromText(commentsText);
             postDto.setComments(comments);
         }
 
@@ -71,6 +73,10 @@ public class PlatformPostsController {
         // Create reactions
         List<Reaction> reactions = postService.createReactionsFromCounts(post, countsRequest);
         post.setReactions(reactions);
+
+        // 🤖 AUTO SENTIMENT CALCULATION (ALWAYS)
+        PostSentiment autoSentiment = postService.calculateAutoSentiment(reactions, comments);
+        post.setPostSentiment(autoSentiment);
 
         post.calculateAndSetEngagementRate();
         postRepository.save(post);

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.ilias.influapp.entities.PostSentiment;
 import org.ilias.influapp.entities.Reaction;
 
 import java.util.List;
@@ -20,5 +19,5 @@ public class PostDto {
     private Integer shares;
     private Integer reach;
     private Integer impressionCount;
-    private PostSentiment postSentiment;
+    // postSentiment removed - always auto-calculated! 🤖
 }
