@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.ilias.influapp.entities.PostSentiment;
+import org.ilias.influapp.entities.Reaction;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PostDto {
     private String content;
-    private Integer likes;
+    private List<Reaction> reactions;
     private List<String> comments;
     private Integer shares;
     private Integer reach;

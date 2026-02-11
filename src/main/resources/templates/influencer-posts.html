@@ -110,11 +110,39 @@
                         How was the overall reception of this post?
                     </small>
                 </div>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                    <div>
-                        <label for="likes">Likes</label>
-                        <input id="likes" type="number" th:field="*{likes}" min="0" required/>
+                <!-- Reactions Section -->
+                <div>
+                    <label style="font-weight: 600; font-size: 1rem; margin-bottom: 8px;">Reactions</label>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                        <div>
+                            <label for="likeCount">👍 Like</label>
+                            <input id="likeCount" name="likeCount" type="number" min="0" value="0"/>
+                        </div>
+                        <div>
+                            <label for="loveCount">❤️ Love</label>
+                            <input id="loveCount" name="loveCount" type="number" min="0" value="0"/>
+                        </div>
+                        <div>
+                            <label for="hahaCount">😂 Haha</label>
+                            <input id="hahaCount" name="hahaCount" type="number" min="0" value="0"/>
+                        </div>
+                        <div>
+                            <label for="wowCount">😮 Wow</label>
+                            <input id="wowCount" name="wowCount" type="number" min="0" value="0"/>
+                        </div>
+                        <div>
+                            <label for="sadCount">😢 Sad</label>
+                            <input id="sadCount" name="sadCount" type="number" min="0" value="0"/>
+                        </div>
+                        <div>
+                            <label for="angryCount">😡 Angry</label>
+                            <input id="angryCount" name="angryCount" type="number" min="0" value="0"/>
+                        </div>
                     </div>
+                </div>
+
+                <!-- Other Stats -->
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                     <div>
                         <label for="shares">Shares</label>
                         <input id="shares" type="number" th:field="*{shares}" min="0" required/>
@@ -147,6 +175,20 @@
                 </div>
             </div>
 
+            <!-- Display reactions -->
+            <div th:if="${post.reactions != null and !post.reactions.isEmpty()}" style="margin-top: 12px; padding: 12px; background: rgba(15, 23, 42, 0.02); border-radius: 8px;">
+                <strong style="font-size: 0.9rem; color: var(--muted);">Reactions:</strong>
+                <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px;">
+                    <div th:each="reaction : ${post.reactions}" style="font-size: 0.95rem;">
+                        <span th:text="${reaction.type.emoji}">👍</span>
+                        <span th:text="${reaction.count}">0</span>
+                    </div>
+                    <div style="font-weight: 600; color: var(--primary);">
+                        Total: <span th:text="${post.totalReactions}">0</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Display comments (simple text strings) -->
             <div th:if="${post.comments != null and !post.comments.isEmpty()}" style="margin-top: 12px; padding: 12px; background: rgba(15, 23, 42, 0.02); border-radius: 8px;">
                 <strong style="font-size: 0.9rem; color: var(--muted);">Comments:</strong>
@@ -156,7 +198,6 @@
             </div>
 
             <div class="post-stats">
-                <div class="stat">👍 <span th:text="${post.likes}">0</span> likes</div>
                 <div class="stat">💬 <span th:text="${post.comments != null ? post.comments.size() : 0}">0</span> comments</div>
                 <div class="stat">📤 <span th:text="${post.shares}">0</span> shares</div>
                 <div class="stat">📡 <span th:text="${post.reach}">0</span> reach</div>
