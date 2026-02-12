@@ -47,7 +47,7 @@ public class InfluencerController {
         User user = userService.currentUser(authentication);
         Influencer influencer = influencerService.updateInfluencer(updateInfluencer, user);
         influencerRepository.save(influencer);
-        return "redirect:/influencer/home";
+        return "redirect:/influencer/profile";
     }
 
     @PostMapping("/influencer/profile/platforms")

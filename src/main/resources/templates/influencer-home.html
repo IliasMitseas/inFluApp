@@ -104,15 +104,11 @@
 <div class="card">
     <div class="top">
         <div class="brand">
-            <div class="logo" aria-hidden="true">
+            <div class="logo" aria-hidden="true" style="width: 64px; height: 64px;">
                 <img th:src="@{/brand-logo.svg}" alt="inFluApp" />
             </div>
             <div>
-                <div class="muted">
-                    <span th:text="${influencer.email}">email</span>
-                    &nbsp;·&nbsp;
-                    <span th:text="${influencer.username}">username</span>
-                </div>
+                <h1>inFluApp</h1>
             </div>
         </div>
         <div class="actions">
@@ -130,14 +126,36 @@
         </div>
     </div>
 
-    <div class="logo" aria-hidden="true" style="overflow:hidden;">
-        <img th:if="${influencer.imageUrl != null and !#strings.isEmpty(influencer.imageUrl)}"
-             th:src="${influencer.imageUrl}"
-             alt="Profile image"
-             style="width:42px;height:42px;object-fit:cover;" />
-        <img th:if="${influencer.imageUrl == null or #strings.isEmpty(influencer.imageUrl)}"
-             th:src="@{/brand-logo.svg}"
-             alt="inFluApp" />
+    <!-- Profile Section -->
+    <div style="margin-top: 20px;">
+        <div class="brand">
+            <div class="logo" aria-hidden="true" style="width: 64px; height: 64px;">
+                <img th:if="${influencer.imageUrl != null and !#strings.isEmpty(influencer.imageUrl)}"
+                     th:src="${influencer.imageUrl}"
+                     alt="Profile image"
+                     style="width:64px;height:64px;object-fit:cover;" />
+                <img th:if="${influencer.imageUrl == null or #strings.isEmpty(influencer.imageUrl)}"
+                     th:src="@{/brand-logo.svg}"
+                     alt="Profile placeholder"
+                     style="width:48px;height:48px;" />
+            </div>
+            <div>
+                <div style="font-size: 1.2rem; font-weight: 700; margin-top: 4px;">
+                    <span th:text="${influencer.email}">email</span>
+                </div>
+                <div style="font-size: 1.2rem; font-weight: 700; margin-top: 4px;">
+                    <span th:text="${influencer.username}">username</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notice" th:if="${influencer.category == null or influencer.influencerType == null}">
+        <strong>Complete your profile</strong>
+        <div class="muted">Add category and influencer type so businesses can find you.</div>
+        <div style="margin-top: 10px;">
+            <a class="btn btn-primary" th:href="@{/influencer/profile}">Complete profile</a>
+        </div>
     </div>
 
     <!-- Keep only a minimal grid with essentials (no duplicates) -->

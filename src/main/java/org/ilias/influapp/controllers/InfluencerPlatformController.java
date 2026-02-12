@@ -67,6 +67,6 @@ public class InfluencerPlatformController {
             influencer.updateTotalFollowers();
             influencerRepository.save(influencer);
         }
-        return "redirect:/influencer/home";
+        return "redirect:/influencer/social/{platform}";
     }
 }
