@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class Influencer extends User {
 
     private Integer totalFollowers;
 
-    private Double engagementRate;
+    private BigDecimal engagementRate;
 
     private Double influencerScore;
 
@@ -57,7 +58,7 @@ public class Influencer extends User {
 
     public void updateEngagementRate() {
         if (socialMediaAccounts == null || socialMediaAccounts.isEmpty()) {
-            this.engagementRate = 0.0;
+            this.engagementRate = null;
             return;
         }
 
@@ -78,9 +79,9 @@ public class Influencer extends User {
 
         // Υπολογίζουμε μέσο όρο
         if (totalPosts > 0) {
-            this.engagementRate = totalEngagementRate / totalPosts;
+            this.engagementRate = BigDecimal.valueOf(totalEngagementRate / totalPosts);
         } else {
-            this.engagementRate = 0.0;
+            this.engagementRate = null;
         }
     }
 
