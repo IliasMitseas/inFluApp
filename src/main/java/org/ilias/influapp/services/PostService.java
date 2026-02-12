@@ -11,7 +11,9 @@ import java.util.List;
 
 public interface PostService {
     Post createPostFromDto(PostDto postDto, SocialMedia socialMedia);
+
     List<String> parseCommentsFromText(String commentsText);
+
     List<Reaction> createReactionsFromCounts(Post post, CountsRequest countsRequest);
 
     PostSentiment calculateAutoSentiment(List<Reaction> reactions, List<String> comments);

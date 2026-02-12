@@ -51,8 +51,7 @@ public class InfluencerController {
     }
 
     @PostMapping("/influencer/profile/platforms")
-    public String updateInfluencerPlatforms(Authentication authentication,
-                                           @ModelAttribute("platformsForm") ProfilePlatformsForm platformsForm) {
+    public String updateInfluencerPlatforms(Authentication authentication, @ModelAttribute("platformsForm") ProfilePlatformsForm platformsForm) {
         User user = userService.currentUser(authentication);
         influencerService.updateInfluencerPlatforms(user.getId(), platformsForm);
         return "redirect:/influencer/home";
@@ -65,10 +64,8 @@ public class InfluencerController {
         try {
             influencerService.uploadProfileImage(user.getId(), file);
         } catch (IllegalArgumentException | SecurityException e) {
-            // Handle validation errors (empty file, wrong type, security issues)
             return "redirect:/influencer/profile?error=" + e.getMessage();
         } catch (IOException e) {
-            // Handle file system errors
             return "redirect:/influencer/profile?error=upload_failed";
         }
         return "redirect:/influencer/profile";

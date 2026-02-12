@@ -74,12 +74,16 @@ public class PlatformPostsController {
         List<Reaction> reactions = postService.createReactionsFromCounts(post, countsRequest);
         post.setReactions(reactions);
 
-        // 🤖 AUTO SENTIMENT CALCULATION (ALWAYS)
         PostSentiment autoSentiment = postService.calculateAutoSentiment(reactions, comments);
         post.setPostSentiment(autoSentiment);
 
         post.calculateAndSetEngagementRate();
         postRepository.save(post);
+
+        // 🎯 Update influencer's overall engagement rate
+        influencer.updateEngagementRate();
+        influencerRepository.save(influencer);
+
         return "redirect:/influencer/social/" + platform + "/posts";
     }
 }

@@ -85,9 +85,7 @@
         <h2 style="margin-top:0;">Add New Post</h2>
         <div style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(99, 102, 241, 0.1)); border-left: 4px solid var(--primary); padding: 12px; border-radius: 8px; margin-bottom: 16px;">
             <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 1.5rem;">🤖</span>
                 <div>
-                    <strong style="color: var(--primary);">AI-Powered Sentiment Analysis</strong>
                     <div style="font-size: 0.85rem; color: var(--muted); margin-top: 2px;">
                         Post sentiment is automatically calculated from reactions & comments
                     </div>
@@ -104,7 +102,7 @@
                     <label for="commentsText">Comments (one per line)</label>
                     <textarea id="commentsText" name="commentsText" placeholder="Great post!&#10;Nice work&#10;Love it&#10;Amazing" style="min-height: 100px;"></textarea>
                     <small style="color: var(--muted); font-size: 0.85rem;">
-                        Enter each comment on a new line. Sentiment is auto-calculated! 🤖
+                        Enter each comment on a new line. Sentiment is auto-calculated!
                     </small>
                 </div>
                 <!-- Reactions Section -->
@@ -161,26 +159,54 @@
     <h2>Existing Posts</h2>
     <div class="post-list" th:if="${posts != null and !posts.isEmpty()}">
         <div class="post-item" th:each="post : ${posts}">
-            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
-                <div th:text="${post.content}" style="flex: 1;">Post content here</div>
-                <div th:if="${post.postSentiment != null}" style="font-size: 1.5rem; margin-left: 12px;">
-                    <span th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).LOVE}">❤️</span>
-                    <span th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).LIKE}">👍</span>
-                    <span th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).NEUTRAL}">😐</span>
-                    <span th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).DISLIKE}">👎</span>
-                    <span th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).TERRIBLE}">💩</span>
-                </div>
+            <div th:text="${post.content}" style="font-weight: 500; margin-bottom: 12px;">Post content here</div>
+
+            <!-- Post Sentiment Badge - LOVE -->
+            <div th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).LOVE}"
+                 style="display: inline-block; padding: 8px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; background: rgba(244, 63, 94, 0.1); color: #be123c;">
+                <span style="margin-right: 4px;">📊 Post's overall sentiment:</span>
+                <span>LOVE ❤️</span>
+            </div>
+
+            <!-- Post Sentiment Badge - LIKE -->
+            <div th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).LIKE}"
+                 style="display: inline-block; padding: 8px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; background: rgba(34, 197, 94, 0.1); color: #15803d;">
+                <span style="margin-right: 4px;">📊 Post's overall sentiment:</span>
+                <span>LIKE 👍</span>
+            </div>
+
+            <!-- Post Sentiment Badge - NEUTRAL -->
+            <div th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).NEUTRAL}"
+                 style="display: inline-block; padding: 8px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; background: rgba(148, 163, 184, 0.1); color: #475569;">
+                <span style="margin-right: 4px;">📊 Post's overall sentiment:</span>
+                <span>NEUTRAL 😐</span>
+            </div>
+
+            <!-- Post Sentiment Badge - DISLIKE -->
+            <div th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).DISLIKE}"
+                 style="display: inline-block; padding: 8px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; background: rgba(249, 115, 22, 0.1); color: #c2410c;">
+                <span style="margin-right: 4px;">📊 Post's overall sentiment:</span>
+                <span>DISLIKE 👎</span>
+            </div>
+
+            <!-- Post Sentiment Badge - TERRIBLE -->
+            <div th:if="${post.postSentiment == T(org.ilias.influapp.entities.PostSentiment).TERRIBLE}"
+                 style="display: inline-block; padding: 8px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; background: rgba(239, 68, 68, 0.1); color: #b91c1c;">
+                <span style="margin-right: 4px;">📊 Post's overall sentiment:</span>
+                <span>TERRIBLE 💩</span>
             </div>
 
             <!-- Display reactions -->
             <div th:if="${post.reactions != null and !post.reactions.isEmpty()}" style="margin-top: 12px; padding: 12px; background: rgba(15, 23, 42, 0.02); border-radius: 8px;">
                 <strong style="font-size: 0.9rem; color: var(--muted);">Reactions:</strong>
                 <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px;">
-                    <div th:each="reaction : ${post.reactions}" style="font-size: 0.95rem;">
-                        <span th:text="${reaction.type.emoji}">👍</span>
-                        <span th:text="${reaction.count}">0</span>
-                    </div>
-                    <div style="font-weight: 600; color: var(--primary);">
+                    <th:block th:each="reaction : ${post.reactions}">
+                        <div th:if="${reaction.count > 0}" style="font-size: 0.95rem;">
+                            <span th:text="${reaction.type.emoji}">👍</span>
+                            <span th:text="${reaction.count}">0</span>
+                        </div>
+                    </th:block>
+                    <div th:if="${post.totalReactions > 0}" style="font-weight: 600; color: var(--primary);">
                         Total: <span th:text="${post.totalReactions}">0</span>
                     </div>
                 </div>

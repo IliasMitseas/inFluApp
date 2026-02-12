@@ -53,7 +53,6 @@ public class SentimentAnalyzerImpl implements SentimentAnalyzer {
             "😡", "😠", "👎", "💩", "🤮", "😤", "😒", "😞", "😢", "😭", "💔", "🙄", "😑", "🤬", "👹"
     );
 
-    // Negation words
     private static final Set<String> NEGATION_WORDS = Set.of(
             "not", "no", "never", "neither", "nobody", "nothing", "none", "nowhere", "don't", "doesn't", "didn't",
             "won't", "wouldn't", "can't", "cannot", "shouldn't",
@@ -79,14 +78,14 @@ public class SentimentAnalyzerImpl implements SentimentAnalyzer {
         double reactionScore = calculateReactionScore(reactions);
         double commentScore = calculateCommentScore(comments);
 
-        // Dynamic weighting based on data volume
+        // Dynamic weighting
         double reactionWeight = calculateDynamicReactionWeight(reactions, comments);
         double commentWeight = 1.0 - reactionWeight;
 
         // Weighted average
         double finalScore = (reactionScore * reactionWeight) + (commentScore * commentWeight);
 
-        // Μετατροπή score σε PostSentiment με βελτιωμένα thresholds
+        // score σε PostSentiment
         return scoreToSentiment(finalScore);
     }
 
@@ -118,7 +117,7 @@ public class SentimentAnalyzerImpl implements SentimentAnalyzer {
             return 0.0;
         }
 
-        // Normalize στο [-1, 1]
+        // [-1, 1]
         double normalized = weightedSum/totalReactions;
 
         return applySmoothingCurve(normalized);
@@ -162,7 +161,7 @@ public class SentimentAnalyzerImpl implements SentimentAnalyzer {
             keywordScore = -keywordScore * 0.8;  // Flip but reduce intensity
         }
 
-        // Apply intensifier
+        //intensifier
         keywordScore *= intensifierMultiplier;
 
         score += keywordScore;
@@ -231,7 +230,7 @@ public class SentimentAnalyzerImpl implements SentimentAnalyzer {
             }
         }
 
-        return 0.0;  // No keyword found
+        return 0.0;  // No keyword
     }
 
 
@@ -248,7 +247,6 @@ public class SentimentAnalyzerImpl implements SentimentAnalyzer {
         if (comment.matches(".*[A-Z]{3,}.*")) {
             enthusiasmBonus += 0.15;
         }
-
         return baseScore > 0 ? enthusiasmBonus : -enthusiasmBonus;
     }
 
@@ -294,7 +292,7 @@ public class SentimentAnalyzerImpl implements SentimentAnalyzer {
 
 
     private double applySmoothingCurve(double value) {
-        return Math.tanh(value * 1.2);  // Tanh maps to [-1, 1]
+        return Math.tanh(value * 1.2);  // [-1, 1]
     }
 
     private PostSentiment scoreToSentiment(double score) {

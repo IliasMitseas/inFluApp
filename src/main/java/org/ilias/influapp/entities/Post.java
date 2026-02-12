@@ -42,25 +42,34 @@ public class Post {
     }
 
     public void calculateAndSetEngagementRate() {
-        if (impressionCount == null || impressionCount == 0) {
+        // Συνολικές αλληλεπιδράσεις
+        int totalReactions = getTotalReactions();
+        int totalComments = (comments != null) ? comments.size() : 0;
+        int totalShares = (shares != null) ? shares : 0;
+        double totalInteractions = totalReactions + totalComments + totalShares;
+
+        if (totalInteractions == 0) {
             engagementRate = 0.0;
             return;
         }
 
-        double weightedReactions = reactions.stream()
-                .mapToDouble(reaction -> {
-                    int count = reaction.getCount();
-                    return switch (reaction.getType()) {
-                        case LIKE -> count * 1.2;
-                        case HAHA, WOW -> count * 1.1;
-                        case LOVE -> count * 1.5;
-                        case SAD, ANGRY -> count * -0.8;
-                    };
-                })
-                .sum();
+        int reachValue = (reach != null) ? reach : 0;
+        int impressionsValue = (impressionCount != null) ? impressionCount : 0;
 
-        double totalInteractions = reactions.size() + comments.size() + shares + reach * 0.2 + weightedReactions * 0.5;
+        // Το base πρέπει να είναι τουλάχιστον όσο τα totalInteractions
+        int base = Math.max(Math.max(reachValue, impressionsValue), (int) totalInteractions);
 
-        engagementRate = (totalInteractions / impressionCount) * 100;
+        if (base == 0) {
+            engagementRate = 0.0;
+            return;
+        }
+
+        // Engagement Rate: πάντα <= 100%
+        engagementRate = (totalInteractions / base) * 100;
+
+        // safety net για λάθος δεδομένα
+        if (engagementRate > 100.0) {
+            engagementRate = 100.0;
+        }
     }
 }

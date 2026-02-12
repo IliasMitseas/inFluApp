@@ -51,11 +51,37 @@ public class Influencer extends User {
     public void addSocialMediaAccount(SocialMedia account) {
     }
 
+    //TODO: Να υλοποιηθεί σωστά ώστε να ενημερώνει και το collaboration
     public void addCollaboration(Collaboration collaboration) {
     }
 
-    // TODO
     public void updateEngagementRate() {
+        if (socialMediaAccounts == null || socialMediaAccounts.isEmpty()) {
+            this.engagementRate = 0.0;
+            return;
+        }
+
+        double totalEngagementRate = 0.0;
+        int totalPosts = 0;
+
+        // Συλλέγουμε όλα τα posts από όλες τις πλατφόρμες
+        for (SocialMedia sm : socialMediaAccounts) {
+            if (sm != null && sm.getPosts() != null && !sm.getPosts().isEmpty()) {
+                for (Post post : sm.getPosts()) {
+                    if (post.getEngagementRate() != null) {
+                        totalEngagementRate += post.getEngagementRate();
+                        totalPosts++;
+                    }
+                }
+            }
+        }
+
+        // Υπολογίζουμε μέσο όρο
+        if (totalPosts > 0) {
+            this.engagementRate = totalEngagementRate / totalPosts;
+        } else {
+            this.engagementRate = 0.0;
+        }
     }
 
     public int updateTotalFollowers() {

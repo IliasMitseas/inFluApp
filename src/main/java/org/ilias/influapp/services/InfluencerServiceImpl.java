@@ -52,14 +52,14 @@ public class InfluencerServiceImpl implements InfluencerService {
         influencer.setCategory(updateInfluencer.getCategory());
         influencer.setInfluencerType(updateInfluencer.getInfluencerType());
         influencer.updateTotalFollowers();
+        influencer.updateEngagementRate();
         return influencer;
     }
 
 
     @Transactional
     public void updateInfluencerPlatforms(Long influencerId, ProfilePlatformsForm platformsForm) {
-        Influencer influencer = influencerRepository.findById(influencerId)
-                .orElseThrow(NotFoundException::new);
+        Influencer influencer = influencerRepository.findById(influencerId).orElseThrow(NotFoundException::new);
 
         if (influencer.getSocialMediaAccounts() == null) {
             influencer.setSocialMediaAccounts(new ArrayList<>());
@@ -92,7 +92,6 @@ public class InfluencerServiceImpl implements InfluencerService {
 
         // Recalculate total followers after updating platforms
         influencer.updateTotalFollowers();
-
         influencerRepository.save(influencer);
     }
 
