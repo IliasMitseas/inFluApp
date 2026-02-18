@@ -2,13 +2,18 @@ package org.ilias.influapp.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.*;
+import org.ilias.influapp.entities.Enums.Category;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.BusinessRepository;
+import org.ilias.influapp.services.BusinessService;
 import org.ilias.influapp.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -16,6 +21,7 @@ public class BusinessController {
 
     private final BusinessRepository businessRepository;
     private final UserService userService;
+    private final BusinessService businessService;
 
     @GetMapping("/business/home")
     public String businessHome(Authentication authentication, Model model) {
@@ -30,6 +36,50 @@ public class BusinessController {
         User user = userService.currentUser(authentication);
         Business business = businessRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
         model.addAttribute("business", business);
+        model.addAttribute("categories", Category.values());
         return "business-profile";
+    }
+
+    @PostMapping("/business/profile")
+    public String updateBusinessProfile(Authentication authentication,
+                                        @RequestParam String companyName,
+                                        @RequestParam(required = false) String phone,
+                                        @RequestParam(required = false) String address,
+                                        @RequestParam(required = false) String description,
+                                        @RequestParam(required = false) String webSite,
+                                        @RequestParam(required = false) Category category,
+                                        Model model) {
+        User user = userService.currentUser(authentication);
+        Business business = businessRepository.findById(user.getId())
+                .orElseThrow(NotFoundException::new);
+
+        // Update only the form fields, campaigns remain untouched
+        business.setCompanyName(companyName);
+        business.setPhone(phone);
+        business.setAddress(address);
+        business.setDescription(description);
+        business.setWebSite(webSite);
+        business.setCategory(category);
+
+        businessRepository.save(business);
+
+        model.addAttribute("business", business);
+        model.addAttribute("categories", Category.values());
+        model.addAttribute("success", true);
+        return "business-profile";
+    }
+
+    @PostMapping("/business/profile/image")
+    public String uploadProfileImage(Authentication authentication, @RequestParam("file") MultipartFile file) {
+        User user = userService.currentUser(authentication);
+
+        try {
+            businessService.uploadProfileImage(user.getId(), file);
+        } catch (IllegalArgumentException | SecurityException e) {
+            return "redirect:/business/profile?error=" + e.getMessage();
+        } catch (IOException e) {
+            return "redirect:/business/profile?error=upload_failed";
+        }
+        return "redirect:/business/profile?success=image_uploaded";
     }
 }

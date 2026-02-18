@@ -32,6 +32,8 @@ public class Business extends User {
 
     private String phone;
 
+    private String imageUrl;
+
     @Builder.Default
     @OneToMany(mappedBy = "business", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Campaign> campaigns = new ArrayList<>();

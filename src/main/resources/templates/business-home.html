@@ -105,18 +105,40 @@
                 <img th:src="@{/brand-logo.svg}" alt="inFluApp" />
             </div>
             <div>
-                <h1 th:text="${business.companyName}">Business</h1>
-                <div class="muted">
-                    <span th:text="${business.email}">email</span>
-                    &nbsp;·&nbsp;
-                    <span th:text="${business.username}">username</span>
-                </div>
+                <h1>inFluApp</h1>
+                <div class="muted">Business Portal</div>
             </div>
         </div>
         <div class="actions">
             <a class="btn" th:href="@{/business/profile}">Edit profile</a>
             <a class="btn" th:href="@{'/api/business/' + ${business.id}}">API</a>
             <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div style="margin-top: 20px;">
+        <div class="brand">
+            <div class="logo" aria-hidden="true" style="width: 64px; height: 64px;">
+                <img th:if="${business.imageUrl != null and !#strings.isEmpty(business.imageUrl)}"
+                     th:src="${business.imageUrl}"
+                     alt="Business logo"
+                     style="width:64px;height:64px;object-fit:cover;border-radius:12px;" />
+                <img th:if="${business.imageUrl == null or #strings.isEmpty(business.imageUrl)}"
+                     th:src="@{/brand-logo.svg}"
+                     alt="Logo placeholder"
+                     style="width:48px;height:48px;" />
+            </div>
+            <div>
+                <div style="font-size: 1.2rem; font-weight: 700; margin-top: 4px;">
+                    <span th:text="${business.companyName}">Company Name</span>
+                </div>
+                <div class="muted" style="margin-top: 4px;">
+                    <span th:text="${business.email}">email</span>
+                    &nbsp;·&nbsp;
+                    <span th:text="${business.username}">username</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -130,12 +152,24 @@
 
     <div class="grid">
         <div class="box">
+            <strong>Company Name</strong>
+            <div class="muted" th:text="${business.companyName != null ? business.companyName : '-'}">-</div>
+        </div>
+        <div class="box">
             <strong>Category</strong>
             <div class="muted" th:text="${business.category != null ? business.category : 'Not set'}">Not set</div>
         </div>
         <div class="box">
             <strong>Website</strong>
             <div class="muted" th:text="${business.webSite != null ? business.webSite : '-'}">-</div>
+        </div>
+        <div class="box">
+            <strong>Phone</strong>
+            <div class="muted" th:text="${business.phone != null ? business.phone : '-'}">-</div>
+        </div>
+        <div class="box" style="grid-column: 1 / -1;">
+            <strong>Address</strong>
+            <div class="muted" th:text="${business.address != null ? business.address : '-'}">-</div>
         </div>
         <div class="box" style="grid-column: 1 / -1;">
             <strong>Description</strong>

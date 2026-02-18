@@ -13,9 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -25,6 +22,7 @@ import java.util.List;
 public class InfluencerServiceImpl implements InfluencerService {
 
     private final InfluencerRepository influencerRepository;
+    private final ImageUploadService imageUploadService;
 
     public ProfilePlatformsForm getProfilePlatformsForm(Long influencerId) {
         Influencer influencer = influencerRepository.findById(influencerId).orElseThrow(NotFoundException::new);
@@ -61,9 +59,6 @@ public class InfluencerServiceImpl implements InfluencerService {
     public void updateInfluencerPlatforms(Long influencerId, ProfilePlatformsForm platformsForm) {
         Influencer influencer = influencerRepository.findById(influencerId).orElseThrow(NotFoundException::new);
 
-        if (influencer.getSocialMediaAccounts() == null) {
-            influencer.setSocialMediaAccounts(new ArrayList<>());
-        }
 
         EnumSet<Platform> selected = platformsForm == null || platformsForm.getSelectedPlatforms() == null
                 ? EnumSet.noneOf(Platform.class) : EnumSet.copyOf(platformsForm.getSelectedPlatforms());
@@ -98,33 +93,16 @@ public class InfluencerServiceImpl implements InfluencerService {
     public void uploadProfileImage(Long influencerId, MultipartFile file) throws IOException {
         Influencer influencer = influencerRepository.findById(influencerId).orElseThrow(NotFoundException::new);
 
-        if (file == null || file.isEmpty()) {
-            throw new IllegalArgumentException("File is empty");
-        }
-        if (file.getContentType() == null || !file.getContentType().startsWith("image/")) {
-            throw new IllegalArgumentException("File must be an image");
-        }
+        // Use ImageUploadService for upload logic
+        String imageUrl = imageUploadService.uploadImage(file, "influencer", influencerId);
 
-        // Generate safe filename
-        String original = file.getOriginalFilename() == null ? "image" : file.getOriginalFilename();
-        String safe = original.replaceAll("[^a-zA-Z0-9.\\-_/]", "_");
-        String filename = "influencer-" + influencer.getId() + "-" + System.currentTimeMillis() + "-" + safe;
-
-        // Save file
-        Path uploadDir = Paths.get("uploads").toAbsolutePath().normalize();
-        Files.createDirectories(uploadDir);
-        Path target = uploadDir.resolve(filename).normalize();
-
-        // Security check: prevent directory traversal
-        if (!target.startsWith(uploadDir)) {
-            throw new SecurityException("Invalid file path");
-        }
-
-        file.transferTo(target.toFile());
-        influencer.setImageUrl("/uploads/" + filename);
+        influencer.setImageUrl(imageUrl);
         influencerRepository.save(influencer);
     }
 
+    /**
+     * Helper method to find a SocialMedia account by platform for a given influencer
+     */
     public SocialMedia findSocialMediaByPlatform(Influencer influencer, Platform platform) {
         if (influencer == null || platform == null) {
             throw new IllegalArgumentException("Influencer and platform cannot be null");
