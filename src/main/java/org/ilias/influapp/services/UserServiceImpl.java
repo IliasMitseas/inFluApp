@@ -2,6 +2,7 @@ package org.ilias.influapp.services;
 
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.*;
+import org.ilias.influapp.entities.Enums.UserRole;
 import org.ilias.influapp.exceptions.UnauthorizedException;
 import org.ilias.influapp.repository.UserRepository;
 import org.springframework.security.core.Authentication;

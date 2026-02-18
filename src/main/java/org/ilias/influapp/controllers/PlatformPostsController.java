@@ -3,6 +3,8 @@ package org.ilias.influapp.controllers;
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.dtos.PostDto;
 import org.ilias.influapp.entities.*;
+import org.ilias.influapp.entities.Enums.Platform;
+import org.ilias.influapp.entities.Enums.PostSentiment;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.InfluencerRepository;
 import org.ilias.influapp.repository.PostRepository;

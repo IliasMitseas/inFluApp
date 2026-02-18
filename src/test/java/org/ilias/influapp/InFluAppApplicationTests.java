@@ -1,6 +1,9 @@
 package org.ilias.influapp;
 
 import org.ilias.influapp.entities.*;
+import org.ilias.influapp.entities.Enums.Category;
+import org.ilias.influapp.entities.Enums.InfluencerType;
+import org.ilias.influapp.entities.Enums.UserRole;
 import org.ilias.influapp.repository.InfluencerRepository;
 import org.ilias.influapp.services.UserService;
 import org.junit.jupiter.api.Test;

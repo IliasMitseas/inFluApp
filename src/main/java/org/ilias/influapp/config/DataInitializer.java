@@ -2,6 +2,8 @@ package org.ilias.influapp.config;
 
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.*;
+import org.ilias.influapp.entities.Enums.Category;
+import org.ilias.influapp.entities.Enums.UserRole;
 import org.ilias.influapp.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;

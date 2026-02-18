@@ -2,7 +2,7 @@ package org.ilias.influapp.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.Influencer;
-import org.ilias.influapp.entities.Platform;
+import org.ilias.influapp.entities.Enums.Platform;
 import org.ilias.influapp.entities.SocialMedia;
 import org.ilias.influapp.entities.User;
 import org.ilias.influapp.exceptions.NotFoundException;

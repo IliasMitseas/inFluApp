@@ -1,4 +1,4 @@
-package org.ilias.influapp.entities;
+package org.ilias.influapp.entities.Enums;
 
 public enum InfluencerType {
     NANO,           // 1K - 10K followers

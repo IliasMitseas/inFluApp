@@ -3,6 +3,8 @@ package org.ilias.influapp.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.ilias.influapp.entities.Enums.Category;
+import org.ilias.influapp.entities.Enums.InfluencerType;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

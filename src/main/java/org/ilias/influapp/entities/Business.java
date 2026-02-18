@@ -3,6 +3,7 @@ package org.ilias.influapp.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.ilias.influapp.entities.Enums.Category;
 
 import java.util.ArrayList;
 import java.util.List;

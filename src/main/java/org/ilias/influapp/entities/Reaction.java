@@ -2,6 +2,7 @@ package org.ilias.influapp.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.ilias.influapp.entities.Enums.ReactionType;
 
 @Getter
 @Setter

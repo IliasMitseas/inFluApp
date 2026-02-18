@@ -1,6 +1,6 @@
 package org.ilias.influapp.repository;
 
-import org.ilias.influapp.entities.Platform;
+import org.ilias.influapp.entities.Enums.Platform;
 import org.ilias.influapp.entities.SocialMedia;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

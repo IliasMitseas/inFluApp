@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.ilias.influapp.entities.Enums.Platform;
 
 import java.util.ArrayList;
 import java.util.List;

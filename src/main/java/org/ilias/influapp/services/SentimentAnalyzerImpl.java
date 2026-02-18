@@ -1,6 +1,6 @@
 package org.ilias.influapp.services;
 
-import org.ilias.influapp.entities.PostSentiment;
+import org.ilias.influapp.entities.Enums.PostSentiment;
 import org.ilias.influapp.entities.Reaction;
 import org.springframework.stereotype.Service;
 

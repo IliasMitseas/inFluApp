@@ -3,6 +3,8 @@ package org.ilias.influapp.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.ilias.influapp.entities.Enums.CampaignStatus;
+import org.ilias.influapp.entities.Enums.Category;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

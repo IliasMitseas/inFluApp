@@ -1,8 +1,8 @@
 package org.ilias.influapp.repository;
 
-import org.ilias.influapp.entities.Category;
+import org.ilias.influapp.entities.Enums.Category;
 import org.ilias.influapp.entities.Influencer;
-import org.ilias.influapp.entities.InfluencerType;
+import org.ilias.influapp.entities.Enums.InfluencerType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

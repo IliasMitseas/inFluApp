@@ -3,6 +3,8 @@ package org.ilias.influapp.services;
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.dtos.PostDto;
 import org.ilias.influapp.entities.*;
+import org.ilias.influapp.entities.Enums.PostSentiment;
+import org.ilias.influapp.entities.Enums.ReactionType;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
