@@ -49,13 +49,18 @@ public class SocialMedia {
     private List<Post> posts = new ArrayList<>();
 
     public void addPost(Post post) {
+        if (post == null) {
+            return;
+        }
+        posts.add(post);
+        post.setSocialMedia(this);
     }
 
     public void removePost(Post post) {
-    }
-
-    // TODO
-    public Double calculateEngagementRate() {
-        return this.engagementRate;
+        if (post == null) {
+            return;
+        }
+        posts.remove(post);
+        post.setSocialMedia(null);
     }
 }

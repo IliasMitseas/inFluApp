@@ -1,10 +1,7 @@
 package org.ilias.influapp.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
@@ -34,17 +31,37 @@ public class Business extends User {
 
     private String phone;
 
+    @Builder.Default
     @OneToMany(mappedBy = "business", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Campaign> campaigns = new ArrayList<>();
 
     public void addCampaign(Campaign campaign) {
+        if (campaign == null) {
+            return;
+        }
+        campaigns.add(campaign);
+        campaign.setBusiness(this);
     }
 
     public void removeCampaign(Campaign campaign) {
+        if (campaign == null) {
+            return;
+        }
+        campaigns.remove(campaign);
+        campaign.setBusiness(null);
     }
 
-    public void getCampaignsSize() {
+    public int getCampaignsSize() {
+        return campaigns != null ? campaigns.size() : 0;
     }
 
-    public void getTotalBudget() {}
+    public double getTotalBudget() {
+        if (campaigns == null || campaigns.isEmpty()) {
+            return 0.0;
+        }
+        return campaigns.stream()
+                .filter(campaign -> campaign != null && campaign.getBudget() != null)
+                .mapToDouble(Campaign::getBudget)
+                .sum();
+    }
 }

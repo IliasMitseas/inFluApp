@@ -68,7 +68,7 @@ public class InfluencerServiceImpl implements InfluencerService {
         EnumSet<Platform> selected = platformsForm == null || platformsForm.getSelectedPlatforms() == null
                 ? EnumSet.noneOf(Platform.class) : EnumSet.copyOf(platformsForm.getSelectedPlatforms());
 
-        // Remove unselected platforms
+        // Remove unselected platforms (use removeIf for efficiency with JPA cascade)
         influencer.getSocialMediaAccounts().removeIf(sm ->
             sm != null && sm.getPlatform() != null && !selected.contains(sm.getPlatform()));
 
@@ -78,15 +78,14 @@ public class InfluencerServiceImpl implements InfluencerService {
                 .map(SocialMedia::getPlatform)
                 .toList();
 
-        // Add new platforms
+        // Add new platforms using the proper helper method
         for (Platform platform : selected) {
             if (!currentPlatforms.contains(platform)) {
                 SocialMedia sm = new SocialMedia();
-                sm.setInfluencer(influencer);
                 sm.setPlatform(platform);
                 sm.setAccountUrl("https://pending-setup.example.com/" + platform.name().toLowerCase());
                 sm.setFollowers(0);
-                influencer.getSocialMediaAccounts().add(sm);
+                influencer.addSocialMediaAccount(sm);
             }
         }
 
@@ -124,5 +123,16 @@ public class InfluencerServiceImpl implements InfluencerService {
         file.transferTo(target.toFile());
         influencer.setImageUrl("/uploads/" + filename);
         influencerRepository.save(influencer);
+    }
+
+    public SocialMedia findSocialMediaByPlatform(Influencer influencer, Platform platform) {
+        if (influencer == null || platform == null) {
+            throw new IllegalArgumentException("Influencer and platform cannot be null");
+        }
+
+        return influencer.getSocialMediaAccounts().stream()
+                .filter(sm -> sm != null && platform.equals(sm.getPlatform()))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Social media account not found for platform: " + platform));
     }
 }

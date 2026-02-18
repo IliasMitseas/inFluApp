@@ -7,6 +7,7 @@ import org.ilias.influapp.entities.SocialMedia;
 import org.ilias.influapp.entities.User;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.InfluencerRepository;
+import org.ilias.influapp.services.InfluencerService;
 import org.ilias.influapp.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class InfluencerPlatformController {
 
     private final InfluencerRepository influencerRepository;
+    private final InfluencerService influencerService;
     private final UserService userService;
 
     @GetMapping("/influencer/social/{platform}")
@@ -29,11 +31,10 @@ public class InfluencerPlatformController {
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
 
         SocialMedia socialMedia = null;
-        if (influencer.getSocialMediaAccounts() != null) {
-            socialMedia = influencer.getSocialMediaAccounts().stream()
-                    .filter(sm -> sm != null && platform.equals(sm.getPlatform()))
-                    .findFirst()
-                    .orElse(null);
+        try {
+            socialMedia = influencerService.findSocialMediaByPlatform(influencer, platform);
+        } catch (NotFoundException e) {
+            // Platform not configured yet
         }
 
         model.addAttribute("influencer", influencer);
@@ -42,31 +43,27 @@ public class InfluencerPlatformController {
         return "influencer-platform";
     }
 
-
-
     @PostMapping("/influencer/social/{platform}/edit")
     public String editInfluencerSocialPlatform(Authentication authentication,
                                                @PathVariable Platform platform,
                                                @ModelAttribute SocialMedia socialMediaUpdate) {
         User user = userService.currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
-        SocialMedia socialMedia = null;
-        if (influencer.getSocialMediaAccounts() != null) {
-            socialMedia = influencer.getSocialMediaAccounts().stream()
-                    .filter(sm -> sm != null && platform.equals(sm.getPlatform()))
-                    .findFirst()
-                    .orElse(null);
-        }
-        if (socialMedia != null) {
-            socialMedia.setAccountUrl(socialMediaUpdate.getAccountUrl());
-            socialMedia.setFollowers(socialMediaUpdate.getFollowers());
-            socialMedia.setUsername(socialMediaUpdate.getUsername());
-            socialMedia.setAverageComments(socialMediaUpdate.getAverageComments());
-            socialMedia.setProfileViews(socialMediaUpdate.getProfileViews());
-            socialMedia.setAverageLikes(socialMediaUpdate.getAverageLikes());
-            influencer.updateTotalFollowers();
-            influencerRepository.save(influencer);
-        }
+
+        SocialMedia socialMedia = influencerService.findSocialMediaByPlatform(influencer, platform);
+
+        // Update social media details
+        socialMedia.setAccountUrl(socialMediaUpdate.getAccountUrl());
+        socialMedia.setFollowers(socialMediaUpdate.getFollowers());
+        socialMedia.setUsername(socialMediaUpdate.getUsername());
+        socialMedia.setAverageComments(socialMediaUpdate.getAverageComments());
+        socialMedia.setProfileViews(socialMediaUpdate.getProfileViews());
+        socialMedia.setAverageLikes(socialMediaUpdate.getAverageLikes());
+
+        // Update influencer's total followers
+        influencer.updateTotalFollowers();
+        influencerRepository.save(influencer);
+
         return "redirect:/influencer/social/{platform}";
     }
 }

@@ -36,6 +36,9 @@ public class Post {
     private Collaboration collaboration;
 
     public Integer getTotalReactions() {
+        if (reactions == null || reactions.isEmpty()) {
+            return 0;
+        }
         return reactions.stream()
                 .mapToInt(Reaction::getCount)
                 .sum();

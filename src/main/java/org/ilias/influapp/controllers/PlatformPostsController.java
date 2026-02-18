@@ -6,6 +6,7 @@ import org.ilias.influapp.entities.*;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.InfluencerRepository;
 import org.ilias.influapp.repository.PostRepository;
+import org.ilias.influapp.services.InfluencerService;
 import org.ilias.influapp.services.PostService;
 import org.ilias.influapp.services.UserService;
 import org.springframework.security.core.Authentication;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -22,6 +22,7 @@ public class PlatformPostsController {
 
     private final UserService userService;
     private final InfluencerRepository influencerRepository;
+    private final InfluencerService influencerService;
     private final PostRepository postRepository;
     private final PostService postService;
 
@@ -30,11 +31,7 @@ public class PlatformPostsController {
         User user = userService.currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
 
-        SocialMedia socialMedia = influencer.getSocialMediaAccounts().stream()
-                .filter(sm -> sm != null && platform.equals(sm.getPlatform()))
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
-
+        SocialMedia socialMedia = influencerService.findSocialMediaByPlatform(influencer, platform);
         List<Post> posts = postRepository.findBySocialMediaId(socialMedia.getId());
 
         model.addAttribute("influencer", influencer);
@@ -45,7 +42,6 @@ public class PlatformPostsController {
         return "influencer-posts";
     }
 
-
     @PostMapping("/influencer/social/{platform}/posts/add")
     public String addInfluencerPost(Authentication authentication,
                                     @PathVariable Platform platform,
@@ -55,32 +51,29 @@ public class PlatformPostsController {
         User user = userService.currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
 
-        SocialMedia socialMedia = influencer.getSocialMediaAccounts().stream()
-                .filter(sm -> sm != null && platform.equals(sm.getPlatform()))
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
+        SocialMedia socialMedia = influencerService.findSocialMediaByPlatform(influencer, platform);
 
-        // Delegate comment parsing to service
-        List<String> comments = new ArrayList<>();
-        if (commentsText != null && !commentsText.trim().isEmpty()) {
-            comments = postService.parseCommentsFromText(commentsText);
-            postDto.setComments(comments);
-        }
+        // Parse comments
+        List<String> comments = postService.parseCommentsFromText(commentsText);
+        postDto.setComments(comments);
 
         // Create post
         Post post = postService.createPostFromDto(postDto, socialMedia);
 
-        // Create reactions
+        // Create and set reactions
         List<Reaction> reactions = postService.createReactionsFromCounts(post, countsRequest);
         post.setReactions(reactions);
 
+        // Calculate sentiment and engagement rate
         PostSentiment autoSentiment = postService.calculateAutoSentiment(reactions, comments);
         post.setPostSentiment(autoSentiment);
-
         post.calculateAndSetEngagementRate();
+
+        // Add post to social media using proper helper method
+        socialMedia.addPost(post);
         postRepository.save(post);
 
-        // 🎯 Update influencer's overall engagement rate
+        // Update influencer's overall engagement rate
         influencer.updateEngagementRate();
         influencerRepository.save(influencer);
 

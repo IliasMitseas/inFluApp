@@ -45,9 +45,27 @@ public class Collaboration {
     @Column(length = 2000)
     private String notes;
 
-    public void isActive() {
+    public boolean isActive() {
+        return status == CollaborationStatus.IN_PROGRESS;
     }
 
-    public void isCompleted() {
+    public boolean isCompleted() {
+        return status == CollaborationStatus.COMPLETED;
+    }
+
+    public void addPost(Post post) {
+        if (post == null) {
+            return;
+        }
+        posts.add(post);
+        post.setCollaboration(this);
+    }
+
+    public void removePost(Post post) {
+        if (post == null) {
+            return;
+        }
+        posts.remove(post);
+        post.setCollaboration(null);
     }
 }

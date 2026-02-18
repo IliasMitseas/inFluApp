@@ -43,17 +43,44 @@ public class Influencer extends User {
 
     private Double influencerScore;
 
+    @Builder.Default
     @OneToMany(mappedBy = "influencer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SocialMedia> socialMediaAccounts = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "influencer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Collaboration> collaborations = new ArrayList<>();
 
     public void addSocialMediaAccount(SocialMedia account) {
+        if (account == null) {
+            return;
+        }
+        socialMediaAccounts.add(account);
+        account.setInfluencer(this);
     }
 
-    //TODO: Να υλοποιηθεί σωστά ώστε να ενημερώνει και το collaboration
+    public void removeSocialMediaAccount(SocialMedia account) {
+        if (account == null) {
+            return;
+        }
+        socialMediaAccounts.remove(account);
+        account.setInfluencer(null);
+    }
+
     public void addCollaboration(Collaboration collaboration) {
+        if (collaboration == null) {
+            return;
+        }
+        collaborations.add(collaboration);
+        collaboration.setInfluencer(this);
+    }
+
+    public void removeCollaboration(Collaboration collaboration) {
+        if (collaboration == null) {
+            return;
+        }
+        collaborations.remove(collaboration);
+        collaboration.setInfluencer(null);
     }
 
     public void updateEngagementRate() {
