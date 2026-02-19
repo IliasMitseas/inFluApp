@@ -23,8 +23,15 @@ public class BusinessServiceImpl implements BusinessService {
         business.setDescription(updatedBusiness.getDescription());
         business.setWebSite(updatedBusiness.getWebSite());
         business.setCategory(updatedBusiness.getCategory());
+        business.setCompanySize(updatedBusiness.getCompanySize());
+        business.setEstablishedYear(updatedBusiness.getEstablishedYear());
         business.setAddress(updatedBusiness.getAddress());
         business.setPhone(updatedBusiness.getPhone());
+        business.setContactEmail(updatedBusiness.getContactEmail());
+        business.setLinkedinUrl(updatedBusiness.getLinkedinUrl());
+        business.setFacebookUrl(updatedBusiness.getFacebookUrl());
+        business.setInstagramUrl(updatedBusiness.getInstagramUrl());
+        business.setTwitterUrl(updatedBusiness.getTwitterUrl());
         businessRepository.save(business);
         return business;
     }

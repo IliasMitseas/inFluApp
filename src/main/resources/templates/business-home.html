@@ -111,7 +111,6 @@
         </div>
         <div class="actions">
             <a class="btn" th:href="@{/business/profile}">Edit profile</a>
-            <a class="btn" th:href="@{'/api/business/' + ${business.id}}">API</a>
             <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
         </div>
     </div>
@@ -160,20 +159,77 @@
             <div class="muted" th:text="${business.category != null ? business.category : 'Not set'}">Not set</div>
         </div>
         <div class="box">
+            <strong>Company Size</strong>
+            <div class="muted" th:text="${business.companySize != null ? business.companySize.displayName : 'Not set'}">Not set</div>
+        </div>
+        <div class="box">
+            <strong>Established Year</strong>
+            <div class="muted" th:text="${business.establishedYear != null ? business.establishedYear : '-'}">-</div>
+        </div>
+        <div class="box">
             <strong>Website</strong>
-            <div class="muted" th:text="${business.webSite != null ? business.webSite : '-'}">-</div>
+            <div class="muted">
+                <a th:if="${business.webSite != null and !#strings.isEmpty(business.webSite)}"
+                   th:href="${business.webSite}"
+                   th:text="${business.webSite}"
+                   target="_blank">-</a>
+                <span th:if="${business.webSite == null or #strings.isEmpty(business.webSite)}">-</span>
+            </div>
         </div>
         <div class="box">
             <strong>Phone</strong>
             <div class="muted" th:text="${business.phone != null ? business.phone : '-'}">-</div>
         </div>
-        <div class="box" style="grid-column: 1 / -1;">
+        <div class="box">
+            <strong>Contact Email</strong>
+            <div class="muted">
+                <a th:if="${business.contactEmail != null and !#strings.isEmpty(business.contactEmail)}"
+                   th:href="'mailto:' + ${business.contactEmail}"
+                   th:text="${business.contactEmail}">-</a>
+                <span th:if="${business.contactEmail == null or #strings.isEmpty(business.contactEmail)}">-</span>
+            </div>
+        </div>
+        <div class="box">
             <strong>Address</strong>
             <div class="muted" th:text="${business.address != null ? business.address : '-'}">-</div>
         </div>
         <div class="box" style="grid-column: 1 / -1;">
             <strong>Description</strong>
             <div class="muted" th:text="${business.description != null ? business.description : '-'}">-</div>
+        </div>
+        <div class="box" style="grid-column: 1 / -1;">
+            <strong>Social Media</strong>
+            <div style="margin-top: 8px; display: flex; gap: 12px; flex-wrap: wrap;">
+                <a th:if="${business.linkedinUrl != null and !#strings.isEmpty(business.linkedinUrl)}"
+                   th:href="${business.linkedinUrl}"
+                   target="_blank"
+                   style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; background: rgba(37, 99, 235, 0.08); border-radius: 8px; font-size: 0.9rem;">
+                    <span>🔗</span> LinkedIn
+                </a>
+                <a th:if="${business.facebookUrl != null and !#strings.isEmpty(business.facebookUrl)}"
+                   th:href="${business.facebookUrl}"
+                   target="_blank"
+                   style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; background: rgba(37, 99, 235, 0.08); border-radius: 8px; font-size: 0.9rem;">
+                    <span>📘</span> Facebook
+                </a>
+                <a th:if="${business.instagramUrl != null and !#strings.isEmpty(business.instagramUrl)}"
+                   th:href="${business.instagramUrl}"
+                   target="_blank"
+                   style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; background: rgba(37, 99, 235, 0.08); border-radius: 8px; font-size: 0.9rem;">
+                    <span>📸</span> Instagram
+                </a>
+                <a th:if="${business.twitterUrl != null and !#strings.isEmpty(business.twitterUrl)}"
+                   th:href="${business.twitterUrl}"
+                   target="_blank"
+                   style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; background: rgba(37, 99, 235, 0.08); border-radius: 8px; font-size: 0.9rem;">
+                    <span>🐦</span> Twitter/X
+                </a>
+                <span th:if="${(business.linkedinUrl == null or #strings.isEmpty(business.linkedinUrl)) and
+                               (business.facebookUrl == null or #strings.isEmpty(business.facebookUrl)) and
+                               (business.instagramUrl == null or #strings.isEmpty(business.instagramUrl)) and
+                               (business.twitterUrl == null or #strings.isEmpty(business.twitterUrl))}"
+                      class="muted">No social media links added</span>
+            </div>
         </div>
     </div>
 </div>

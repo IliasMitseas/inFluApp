@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.ilias.influapp.entities.Enums.Category;
+import org.ilias.influapp.entities.Enums.CompanySize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +28,25 @@ public class Business extends User {
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    @Enumerated(EnumType.STRING)
+    private CompanySize companySize;
+
+    private String establishedYear;
+
     @Column(length = 1000)
     private String address;
 
     private String phone;
 
+    private String contactEmail;
+
     private String imageUrl;
+
+    // Social Media Links
+    private String linkedinUrl;
+    private String facebookUrl;
+    private String instagramUrl;
+    private String twitterUrl;
 
     @Builder.Default
     @OneToMany(mappedBy = "business", cascade = CascadeType.ALL, orphanRemoval = true)

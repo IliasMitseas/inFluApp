@@ -3,6 +3,7 @@ package org.ilias.influapp.controllers;
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.*;
 import org.ilias.influapp.entities.Enums.Category;
+import org.ilias.influapp.entities.Enums.CompanySize;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.BusinessRepository;
 import org.ilias.influapp.services.BusinessService;
@@ -37,34 +38,18 @@ public class BusinessController {
         Business business = businessRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
         model.addAttribute("business", business);
         model.addAttribute("categories", Category.values());
+        model.addAttribute("companySizes", CompanySize.values());
         return "business-profile";
     }
 
     @PostMapping("/business/profile")
-    public String updateBusinessProfile(Authentication authentication,
-                                        @RequestParam String companyName,
-                                        @RequestParam(required = false) String phone,
-                                        @RequestParam(required = false) String address,
-                                        @RequestParam(required = false) String description,
-                                        @RequestParam(required = false) String webSite,
-                                        @RequestParam(required = false) Category category,
-                                        Model model) {
+    public String updateBusinessProfile(Authentication authentication, @ModelAttribute("business") Business updateBusiness, Model model) {
         User user = userService.currentUser(authentication);
-        Business business = businessRepository.findById(user.getId())
-                .orElseThrow(NotFoundException::new);
-
-        // Update only the form fields, campaigns remain untouched
-        business.setCompanyName(companyName);
-        business.setPhone(phone);
-        business.setAddress(address);
-        business.setDescription(description);
-        business.setWebSite(webSite);
-        business.setCategory(category);
-
-        businessRepository.save(business);
+        Business business = businessService.updateBusinessProfile(user, updateBusiness);
 
         model.addAttribute("business", business);
         model.addAttribute("categories", Category.values());
+        model.addAttribute("companySizes", CompanySize.values());
         model.addAttribute("success", true);
         return "business-profile";
     }

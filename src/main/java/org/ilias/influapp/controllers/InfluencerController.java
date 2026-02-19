@@ -46,8 +46,7 @@ public class InfluencerController {
     @PostMapping("/influencer/profile")
     public String updateInfluencerProfile(Authentication authentication, @ModelAttribute("influencer") Influencer updateInfluencer) {
         User user = userService.currentUser(authentication);
-        Influencer influencer = influencerService.updateInfluencer(updateInfluencer, user);
-        influencerRepository.save(influencer);
+        influencerService.updateInfluencer(updateInfluencer, user);
         return "redirect:/influencer/profile";
     }
 

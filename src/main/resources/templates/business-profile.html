@@ -185,7 +185,7 @@
     <form method="post" th:action="@{/business/profile}">
         <div class="grid">
             <div>
-                <label for="companyName">Company name</label>
+                <label for="companyName">Company name *</label>
                 <input id="companyName" name="companyName" type="text" th:value="${business.companyName}" placeholder="Company" required />
             </div>
 
@@ -202,25 +202,73 @@
                     </select>
                 </div>
                 <div>
+                    <label for="companySize">Company size</label>
+                    <select id="companySize" name="companySize">
+                        <option value="" th:selected="${business.companySize == null}">-- Select size --</option>
+                        <option value="STARTUP" th:selected="${business.companySize?.name() == 'STARTUP'}">Startup (1-10 employees)</option>
+                        <option value="SMALL" th:selected="${business.companySize?.name() == 'SMALL'}">Small Business (11-50)</option>
+                        <option value="MEDIUM" th:selected="${business.companySize?.name() == 'MEDIUM'}">Medium Business (51-250)</option>
+                        <option value="LARGE" th:selected="${business.companySize?.name() == 'LARGE'}">Large Enterprise (251-1000)</option>
+                        <option value="ENTERPRISE" th:selected="${business.companySize?.name() == 'ENTERPRISE'}">Enterprise (1000+)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid two">
+                <div>
+                    <label for="establishedYear">Established year</label>
+                    <input id="establishedYear" name="establishedYear" type="text" th:value="${business.establishedYear}" placeholder="2020" />
+                </div>
+                <div>
                     <label for="webSite">Website</label>
-                    <input id="webSite" name="webSite" type="text" th:value="${business.webSite}" placeholder="www."/>
+                    <input id="webSite" name="webSite" type="text" th:value="${business.webSite}" placeholder="www.example.com"/>
                 </div>
             </div>
 
             <div class="grid two">
                 <div>
                     <label for="phone">Phone</label>
-                    <input id="phone" name="phone" type="text" th:value="${business.phone}" placeholder="+30 ..." />
+                    <input id="phone" name="phone" type="text" th:value="${business.phone}" placeholder="+30 210 1234567" />
                 </div>
                 <div>
-                    <label for="address">Address</label>
-                    <input id="address" name="address" type="text" th:value="${business.address}" placeholder="Street, City" />
+                    <label for="contactEmail">Contact email</label>
+                    <input id="contactEmail" name="contactEmail" type="email" th:value="${business.contactEmail}" placeholder="contact@company.com" />
                 </div>
+            </div>
+
+            <div>
+                <label for="address">Address</label>
+                <input id="address" name="address" type="text" th:value="${business.address}" placeholder="Street, City, Country" />
             </div>
 
             <div>
                 <label for="description">Description</label>
                 <textarea id="description" name="description" th:text="${business.description}" placeholder="Tell us about your business..."></textarea>
+            </div>
+
+            <!-- Social Media Section -->
+            <div style="margin-top: 8px;">
+                <label style="font-size: 1rem; color: var(--text); font-weight: 600;">Social Media Links</label>
+                <div class="grid two" style="margin-top: 8px;">
+                    <div>
+                        <label for="linkedinUrl">LinkedIn</label>
+                        <input id="linkedinUrl" name="linkedinUrl" type="text" th:value="${business.linkedinUrl}" placeholder="https://linkedin.com/company/..." />
+                    </div>
+                    <div>
+                        <label for="facebookUrl">Facebook</label>
+                        <input id="facebookUrl" name="facebookUrl" type="text" th:value="${business.facebookUrl}" placeholder="https://facebook.com/..." />
+                    </div>
+                </div>
+                <div class="grid two" style="margin-top: 12px;">
+                    <div>
+                        <label for="instagramUrl">Instagram</label>
+                        <input id="instagramUrl" name="instagramUrl" type="text" th:value="${business.instagramUrl}" placeholder="https://instagram.com/..." />
+                    </div>
+                    <div>
+                        <label for="twitterUrl">Twitter/X</label>
+                        <input id="twitterUrl" name="twitterUrl" type="text" th:value="${business.twitterUrl}" placeholder="https://twitter.com/..." />
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -263,8 +311,7 @@
                 fileInput.value = '';
                 return;
             }
-            const url = URL.createObjectURL(file);
-            preview.src = url;
+            preview.src = URL.createObjectURL(file);
         }
 
         dropzone.addEventListener('click', () => fileInput.click());

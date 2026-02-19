@@ -51,6 +51,7 @@ public class InfluencerServiceImpl implements InfluencerService {
         influencer.setInfluencerType(updateInfluencer.getInfluencerType());
         influencer.updateTotalFollowers();
         influencer.updateEngagementRate();
+        influencerRepository.save(influencer);
         return influencer;
     }
 

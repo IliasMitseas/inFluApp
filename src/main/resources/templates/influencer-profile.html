@@ -186,8 +186,7 @@
                     fileInput.value = '';
                     return;
                 }
-                const url = URL.createObjectURL(file);
-                preview.src = url;
+                preview.src = URL.createObjectURL(file);
             }
 
             dropzone.addEventListener('click', () => fileInput.click());
