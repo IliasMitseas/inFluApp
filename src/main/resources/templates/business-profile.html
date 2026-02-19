@@ -250,10 +250,19 @@
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
         const preview = document.getElementById('preview');
+        const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
 
         function setPreview(file) {
             if (!file) return;
-            if (!file.type || !file.type.startsWith('image/')) return;
+            if (!file.type || !file.type.startsWith('image/')) {
+                alert('Please select a valid image file (PNG, JPG, etc.)');
+                return;
+            }
+            if (file.size > MAX_FILE_SIZE) {
+                alert('File is too large! Maximum size is 5MB. Your file is ' + (file.size / 1024 / 1024).toFixed(2) + 'MB');
+                fileInput.value = '';
+                return;
+            }
             const url = URL.createObjectURL(file);
             preview.src = url;
         }
