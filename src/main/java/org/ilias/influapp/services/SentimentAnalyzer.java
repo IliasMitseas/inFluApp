@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface SentimentAnalyzer {
 
-
     PostSentiment analyzeSentiment(List<Reaction> reactions, List<String> comments);
 
     double calculateReactionScore(List<Reaction> reactions);

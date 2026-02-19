@@ -19,5 +19,4 @@ public class PostDto {
     private Integer shares;
     private Integer reach;
     private Integer impressionCount;
-    // postSentiment removed - always auto-calculated! 🤖
 }

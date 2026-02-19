@@ -42,7 +42,6 @@ public class Business extends User {
 
     private String imageUrl;
 
-    // Social Media Links
     private String linkedinUrl;
     private String facebookUrl;
     private String instagramUrl;

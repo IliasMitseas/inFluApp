@@ -101,9 +101,7 @@ public class InfluencerServiceImpl implements InfluencerService {
         influencerRepository.save(influencer);
     }
 
-    /**
-     * Helper method to find a SocialMedia account by platform for a given influencer
-     */
+
     public SocialMedia findSocialMediaByPlatform(Influencer influencer, Platform platform) {
         if (influencer == null || platform == null) {
             throw new IllegalArgumentException("Influencer and platform cannot be null");
