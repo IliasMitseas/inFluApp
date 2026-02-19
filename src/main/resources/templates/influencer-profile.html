@@ -108,6 +108,21 @@
         .btn-primary { background: var(--primary); border-color: transparent; color: #fff; }
         .btn-primary:hover { background: var(--primaryHover); }
 
+        .dropzone {
+            margin-top: 8px;
+            border: 2px dashed rgba(15, 23, 42, 0.25);
+            border-radius: 12px;
+            padding: 14px;
+            background: rgba(15, 23, 42, 0.03);
+            cursor: pointer;
+        }
+        .dropzone.dragover {
+            border-color: rgba(37, 99, 235, 0.65);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        }
+        .dropzone .row { display:flex; gap:12px; align-items:center; }
+        .dropzone img { width: 56px; height: 56px; border-radius: 12px; object-fit: cover; border: 1px solid rgba(15, 23, 42, 0.12); }
+
         @media (max-width: 380px) {
             body { padding: 16px; }
             .card { padding: 16px; }
@@ -131,21 +146,6 @@
         </div>
     </div>
 
-    <style>
-        .dropzone {
-            border: 2px dashed rgba(15, 23, 42, 0.25);
-            border-radius: 12px;
-            padding: 14px;
-            background: rgba(15, 23, 42, 0.03);
-            cursor: pointer;
-        }
-        .dropzone.dragover {
-            border-color: rgba(37, 99, 235, 0.65);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
-        }
-        .dropzone .row { display:flex; gap:12px; align-items:center; }
-        .dropzone img { width: 56px; height: 56px; border-radius: 12px; object-fit: cover; border: 1px solid rgba(15, 23, 42, 0.12); }
-    </style>
 
     <form th:action="@{/influencer/profile/image}" method="post" enctype="multipart/form-data">
         <label>Profile image (drag \& drop)</label>
@@ -153,7 +153,7 @@
         <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Upload profile image">
             <div class="row">
                 <img id="preview"
-                     th:src="${influencer.imageUrl != null and !#strings.isEmpty(influencer.imageUrl)} ? ${influencer.imageUrl} : @{/brand-logo.svg}"
+                     th:src="${(influencer.imageUrl != null and !#strings.isEmpty(influencer.imageUrl)) ? influencer.imageUrl : '/brand-logo.svg'}"
                      alt="Preview" />
                 <div>
                     <div><strong>Drop an image here</strong> or click to select</div>
@@ -216,7 +216,7 @@
 
     <!-- Profile form (POST /influencer/profile) -->
     <form th:action="@{/influencer/profile}" method="post" th:object="${influencer}">
-        <div class="grid">
+        <div class="grid two">
             <div>
                 <label for="name">Name</label>
                 <input id="name" type="text" th:field="*{name}" placeholder="Your name" />
@@ -225,18 +225,50 @@
                 <label for="display name">Display name</label>
                 <input id="display name" type="text" th:field="*{username}" placeholder="Your user name" />
             </div>
+        </div>
+
+        <div class="grid two">
             <div>
                 <label for="age">Age</label>
-                <input id="age" type="text" th:field="*{age}" placeholder="Your age" />
+                <input id="age" type="number" th:field="*{age}" placeholder="Your age" />
             </div>
             <div>
                 <label for="location">Location</label>
                 <input id="location" type="text" th:field="*{location}" placeholder="Your location" />
             </div>
+        </div>
+
+        <div class="grid">
             <div>
                 <label for="bio">About me</label>
                 <input id="bio" type="text" th:field="*{bio}" placeholder="Information about you" />
             </div>
+        </div>
+
+        <div class="grid two">
+            <div>
+                <label for="category">Category</label>
+                <select id="category" th:field="*{category}">
+                    <option value="">-- Select category --</option>
+                    <option th:each="category : ${T(org.ilias.influapp.entities.Enums.Category).values()}"
+                            th:value="${category}"
+                            th:text="${category}">
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label for="influencerType">Influencer type</label>
+                <select id="influencerType" th:field="*{influencerType}">
+                    <option value="">-- Select type --</option>
+                    <option th:each="type : ${T(org.ilias.influapp.entities.Enums.InfluencerType).values()}"
+                            th:value="${type}"
+                            th:text="${type}">
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid two">
             <div>
                 <label for="available">Availability</label>
                 <select id="available" th:field="*{isAvailable}">
@@ -246,29 +278,7 @@
             </div>
             <div>
                 <label for="minBudget">Minimum collaboration budget</label>
-                <input id="minBudget" type="number" th:field="*{minCollaborationBudget}" placeholder="Your minimum dudget" />
-            </div>
-            <div class="grid two">
-                <div>
-                    <label for="category">Category</label>
-                    <select id="category" th:field="*{category}">
-                        <option value="">-- Select category --</option>
-                        <option th:each="category : ${T(org.ilias.influapp.entities.Category).values()}"
-                                th:value="${category}"
-                                th:text="${category}">
-                        </option>
-                    </select>
-                </div>
-                <div>
-                    <label for="influencerType">Influencer type</label>
-                    <select id="influencerType" th:field="*{influencerType}">
-                        <option value="">-- Select type --</option>
-                        <option th:each="type : ${T(org.ilias.influapp.entities.InfluencerType).values()}"
-                                th:value="${type}"
-                                th:text="${type}">
-                        </option>
-                    </select>
-                </div>
+                <input id="minBudget" type="number" th:field="*{minCollaborationBudget}" placeholder="Your minimum budget" />
             </div>
         </div>
 
