@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search Influencers</title>
+    <!-- πρόσθεσε css links όπως χρειάζεται -->
+</head>
+<body>
+<h1>Search Influencers</h1>
+
+<form th:action="@{/influencers/search}" method="get" th:object="${searchDto}">
+    <input type="text" th:field="*{keyword}" placeholder="Keyword"/>
+    <select th:field="*{category}">
+        <option th:each="c : ${allCategories}" th:value="${c}" th:text="${c}">Category</option>
+        <option th:if="${allCategories == null}" value="">--</option>
+    </select>
+
+    <select th:field="*{type}">
+        <option th:each="t : ${allTypes}" th:value="${t}" th:text="${t}">Type</option>
+    </select>
+
+    <input type="number" th:field="*{minFollowers}" placeholder="Min followers"/>
+    <input type="number" th:field="*{maxBudget}" placeholder="Max budget"/>
+    <input type="text" th:field="*{location}" placeholder="Location"/>
+    <label>
+        <input type="checkbox" th:field="*{isAvailable}"/> Available
+    </label>
+
+    <!-- pagination/sort hidden fields so links preserve state -->
+    <input type="hidden" name="page" th:value="${currentPage}"/>
+    <input type="hidden" name="size" th:value="${size}"/>
+    <input type="hidden" name="sort" th:value="${sortField}"/>
+    <input type="hidden" name="dir" th:value="${sortDir}"/>
+
+    <button type="submit">Search</button>
+</form>
+
+<hr/>
+
+<div th:if="${results == null or results.content.size() == 0}">
+    <p>No results</p>
+</div>
+
+<div th:if="${results != null}">
+    <p th:text="'Showing page ' + ${results.number} + ' of ' + ${results.totalPages}"></p>
+
+    <ul>
+        <li th:each="inf : ${results.content}">
+            <div>
+                <!-- δείξε εικόνα αν έχεις πεδίο, π.χ. inf.imageUrl -->
+                <img th:if="${inf.imageUrl != null}" th:src="@{${inf.imageUrl}}" alt="avatar" width="80"/>
+                <strong th:text="${inf.name}">Name</strong>
+                <div>Followers: <span th:text="${inf.totalFollowers}">0</span></div>
+                <div>Type: <span th:text="${inf.influencerType}">TYPE</span></div>
+                <a th:href="@{/influencer/profile(id=${inf.id})}">View profile</a>
+            </div>
+        </li>
+    </ul>
+
+    <!-- pagination controls -->
+    <div>
+        <a th:if="${results.hasPrevious()}"
+           th:href="@{/influencers/search(page=${results.number - 1}, size=${size}, sort=${sortField}, dir=${sortDir}, keyword=${searchDto.keyword}, category=${searchDto.category}, type=${searchDto.type}, minFollowers=${searchDto.minFollowers}, maxBudget=${searchDto.maxBudget}, isAvailable=${searchDto.isAvailable}, location=${searchDto.location})}">Prev</a>
+
+        <span th:each="i : ${#numbers.sequence(0, totalPages > 0 ? totalPages - 1 : 0)}">
+        <a th:href="@{/influencers/search(page=${i}, size=${size}, sort=${sortField}, dir=${sortDir}, keyword=${searchDto.keyword}, category=${searchDto.category}, type=${searchDto.type}, minFollowers=${searchDto.minFollowers}, maxBudget=${searchDto.maxBudget}, isAvailable=${searchDto.isAvailable}, location=${searchDto.location})}"
+           th:text="${i + 1}"
+           th:classappend="${i == results.number} ? 'active' : ''">1</a>
+      </span>
+
+        <a th:if="${results.hasNext()}"
+           th:href="@{/influencers/search(page=${results.number + 1}, size=${size}, sort=${sortField}, dir=${sortDir}, keyword=${searchDto.keyword}, category=${searchDto.category}, type=${searchDto.type}, minFollowers=${searchDto.minFollowers}, maxBudget=${searchDto.maxBudget}, isAvailable=${searchDto.isAvailable}, location=${searchDto.location})}">Next</a>
+    </div>
+</div>
+</body>
+</html>

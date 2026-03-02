@@ -2,15 +2,22 @@ package org.ilias.influapp.services;
 
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.dtos.ProfilePlatformsForm;
+import org.ilias.influapp.dtos.SearchDto;
 import org.ilias.influapp.entities.Influencer;
 import org.ilias.influapp.entities.Enums.Platform;
 import org.ilias.influapp.entities.SocialMedia;
 import org.ilias.influapp.entities.User;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.InfluencerRepository;
+import org.ilias.influapp.specifications.InfluencerSpecification;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import java.io.IOException;
 
@@ -111,5 +118,16 @@ public class InfluencerServiceImpl implements InfluencerService {
                 .filter(sm -> sm != null && platform.equals(sm.getPlatform()))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Social media account not found for platform: " + platform));
+    }
+
+    public Page<Influencer> search(SearchDto searchDto) {
+        int page = searchDto.getPage() != null && searchDto.getPage() >= 0 ? searchDto.getPage() : 0;
+        int size = searchDto.getSize() != null && searchDto.getSize() > 0 ? searchDto.getSize() : 10;
+
+        String sortField = (searchDto.getSort() != null && !searchDto.getSort().isEmpty()) ? searchDto.getSort() : "totalFollowers";
+        Sort sort = Sort.by(Sort.Direction.DESC, sortField);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return influencerRepository.findAll(InfluencerSpecification.from(searchDto), pageable);
     }
 }
