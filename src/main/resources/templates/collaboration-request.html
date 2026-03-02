@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Request collaboration</title>
+    <style>
+        :root{--card:#fff;--text:#0f172a;--muted:#64748b;--border:rgba(15,23,42,0.12);--primary:#2563eb}
+        body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f6fafc;padding:24px}
+        .card{max-width:800px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px}
+        label{display:block;margin-top:8px;color:var(--muted)}
+        input,select,textarea{width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);}
+        .actions{margin-top:12px;display:flex;gap:8px}
+        .btn{padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:#fff;text-decoration:none;color:var(--text)}
+        .btn-primary{background:var(--primary);color:#fff;border-color:transparent}
+        .error{color:#b91c1c;margin-top:8px}
+        .muted-inline{color:var(--muted);font-size:0.9rem}
+        .hidden{display:none}
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>Request collaboration with <span th:text="${influencer.name}">Influencer</span></h2>
+
+    <div th:if="${error != null}" class="error">
+        <span th:switch="${error}">
+            <span th:case="'no_campaign_selected'">Please select a campaign.</span>
+            <span th:case="'invalid_campaign'">Selected campaign is invalid.</span>
+            <span th:case="*">An error occurred.</span>
+        </span>
+    </div>
+
+    <form th:action="@{/collaborations/request}" method="post">
+        <input type="hidden" name="influencerId" th:value="${influencer.id}"/>
+
+        <label>Choose existing campaign (or create new)</label>
+        <select id="existingCampaign" name="campaignId" th:disabled="${#lists.isEmpty(campaigns)}">
+            <option value="">-- choose --</option>
+            <option th:each="c : ${campaigns}" th:value="${c.id}" th:text="${c.title}"></option>
+        </select>
+        <div class="muted-inline">or</div>
+        <label><input type="checkbox" id="createNewToggle" onchange="toggleNewCampaign()"/> Create a new campaign</label>
+
+        <div id="newCampaignFields" class="hidden">
+            <label>New campaign title</label>
+            <input type="text" name="newCampaignTitle" />
+
+            <label>New campaign budget</label>
+            <input type="number" name="newCampaignBudget" step="0.01" />
+
+            <label>New campaign category</label>
+            <select name="newCampaignCategory">
+                <option value="OTHER">Other</option>
+                <option th:each="cat : ${T(org.ilias.influapp.entities.Enums.Category).values()}" th:value="${cat}" th:text="${cat}"></option>
+            </select>
+        </div>
+
+        <label>Payment amount</label>
+        <input type="number" name="paymentAmount" step="0.01" required/>
+
+        <label>Deliverables</label>
+        <textarea name="deliverables" rows="4"></textarea>
+
+        <div class="actions">
+            <button class="btn btn-primary" type="submit">Send Request</button>
+            <a th:href="@{/influencers/{id}(id=${influencer.id})}" class="btn">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    function toggleNewCampaign(){
+        const chk = document.getElementById('createNewToggle');
+        const box = document.getElementById('newCampaignFields');
+        const select = document.getElementById('existingCampaign');
+        if(chk.checked){
+            box.classList.remove('hidden');
+            select.disabled = true;
+        } else {
+            box.classList.add('hidden');
+            select.disabled = false;
+        }
+    }
+</script>
+</body>
+</html>

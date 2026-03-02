@@ -192,7 +192,8 @@
                     <div class="muted" th:text="${inf.bio}"></div>
                 </div>
                 <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
-                    <a th:href="@{/influencer/profile(id=${inf.id})}" class="btn">View</a>
+                    <a th:href="@{/influencers/{id}(id=${inf.id})}" class="btn">View</a>
+                    <a th:href="@{/collaborations/request(influencerId=${inf.id})}" class="btn btn-primary">Request</a>
                 </div>
             </div>
 
