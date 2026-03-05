@@ -15,13 +15,10 @@ public class ImageUploadService {
     private static final String UPLOAD_DIR = "uploads";
 
     public String uploadImage(MultipartFile file, String prefix, Long entityId) throws IOException {
-        // Validation
         validateFile(file);
 
-        // Generate safe filename
         String filename = generateSafeFilename(file, prefix, entityId);
 
-        // Save file
         Path uploadDir = Paths.get(UPLOAD_DIR).toAbsolutePath().normalize();
         Files.createDirectories(uploadDir);
         Path target = uploadDir.resolve(filename).normalize();

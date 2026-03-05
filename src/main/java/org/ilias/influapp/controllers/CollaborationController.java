@@ -5,7 +5,6 @@ import org.ilias.influapp.dtos.PostDto;
 import org.ilias.influapp.entities.*;
 import org.ilias.influapp.entities.Enums.CollaborationStatus;
 import org.ilias.influapp.entities.Enums.PostSentiment;
-import org.ilias.influapp.entities.Enums.ReactionType;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.CollaborationRepository;
 import org.ilias.influapp.repository.InfluencerRepository;
@@ -37,7 +36,6 @@ public class CollaborationController {
     public String viewCollaboration(@PathVariable Long id, Authentication authentication, Model model) {
         Collaboration collab = collaborationRepository.findById(id).orElseThrow(NotFoundException::new);
 
-        // Ensure the current user is either the influencer or the business that owns the campaign
         User current = userService.currentUser(authentication);
         boolean allowed = false;
         if (current != null) {
@@ -57,19 +55,24 @@ public class CollaborationController {
         }
 
         model.addAttribute("collaboration", collab);
-        return "collaboration-view"; // create view template or reuse existing if present
+        return "collaboration-view";
     }
+
+
 
     @GetMapping("/influencer/collaborations/active")
     public String influencerActiveCollaborations(Authentication authentication, Model model) {
         User current = userService.currentUser(authentication);
+
         if (current == null) {
             return "redirect:/login";
         }
-        // Only influencers need this page
+
         List<CollaborationStatus> activeStatuses = Arrays.asList(CollaborationStatus.ACCEPTED, CollaborationStatus.IN_PROGRESS);
         List<Collaboration> active = collaborationRepository.findByInfluencerIdAndStatusIn(current.getId(), activeStatuses);
+
         model.addAttribute("collaborations", active);
+
         return "influencer-collaborations";
     }
 
@@ -79,13 +82,13 @@ public class CollaborationController {
         User current = userService.currentUser(authentication);
         Collaboration collab = collaborationRepository.findById(id).orElseThrow(NotFoundException::new);
 
-        // Only the influencer who received the request should accept
         if (!collab.getInfluencer().getId().equals(current.getId())) {
             return "redirect:/influencer/home?error=forbidden";
         }
 
         collab.setStatus(org.ilias.influapp.entities.Enums.CollaborationStatus.ACCEPTED);
         collaborationRepository.save(collab);
+
         return "redirect:/influencer/home?success=collab_accepted";
     }
 
@@ -95,13 +98,13 @@ public class CollaborationController {
         User current = userService.currentUser(authentication);
         Collaboration collab = collaborationRepository.findById(id).orElseThrow(NotFoundException::new);
 
-        // Only the influencer who received the request should reject
         if (!collab.getInfluencer().getId().equals(current.getId())) {
             return "redirect:/influencer/home?error=forbidden";
         }
 
         collab.setStatus(org.ilias.influapp.entities.Enums.CollaborationStatus.REJECTED);
         collaborationRepository.save(collab);
+
         return "redirect:/influencer/home?success=collab_rejected";
     }
 

@@ -38,9 +38,11 @@ public class UserServiceImpl implements UserService {
         } else {
             user = new Business();
         }
+
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(role);
+
         return userRepository.save(user);
     }
 
@@ -48,7 +50,9 @@ public class UserServiceImpl implements UserService {
         if (authentication == null || authentication.getName() == null) {
             throw new UnauthorizedException();
         }
+
         String login = authentication.getName();
+
         return userRepository.findByEmailOrUsername(login, login).orElseThrow(UnauthorizedException::new);
     }
 

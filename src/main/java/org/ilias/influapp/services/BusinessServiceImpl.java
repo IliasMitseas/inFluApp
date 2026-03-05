@@ -18,6 +18,7 @@ public class BusinessServiceImpl implements BusinessService {
     private final ImageUploadService imageUploadService;
 
     public Business updateBusinessProfile(User user, Business updatedBusiness) {
+
         Business business = businessRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
         business.setCompanyName(updatedBusiness.getCompanyName());
         business.setDescription(updatedBusiness.getDescription());
@@ -32,7 +33,9 @@ public class BusinessServiceImpl implements BusinessService {
         business.setFacebookUrl(updatedBusiness.getFacebookUrl());
         business.setInstagramUrl(updatedBusiness.getInstagramUrl());
         business.setTwitterUrl(updatedBusiness.getTwitterUrl());
+
         businessRepository.save(business);
+
         return business;
     }
 

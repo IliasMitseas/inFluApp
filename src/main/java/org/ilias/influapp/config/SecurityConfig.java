@@ -29,7 +29,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/business/**").hasRole("BUSINESS")
                         .anyRequest().authenticated()
                 )
-                // Enable session-based login for the Thymeleaf login page
                 .formLogin(form -> form
                         .loginPage("/login")
                         .successHandler((request, response, authentication) -> {

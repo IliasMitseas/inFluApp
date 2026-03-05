@@ -48,6 +48,7 @@ public class InfluencerController {
         model.addAttribute("influencer", influencer);
         model.addAttribute("platformsForm", influencerService.getProfilePlatformsForm(user.getId()));
         model.addAttribute("allPlatforms", Platform.values());
+
         return "influencer-profile";
     }
 
@@ -55,6 +56,7 @@ public class InfluencerController {
     public String updateInfluencerProfile(Authentication authentication, @ModelAttribute("influencer") Influencer updateInfluencer) {
         User user = userService.currentUser(authentication);
         influencerService.updateInfluencer(updateInfluencer, user);
+
         return "redirect:/influencer/profile";
     }
 
@@ -62,6 +64,7 @@ public class InfluencerController {
     public String updateInfluencerPlatforms(Authentication authentication, @ModelAttribute("platformsForm") ProfilePlatformsForm platformsForm) {
         User user = userService.currentUser(authentication);
         influencerService.updateInfluencerPlatforms(user.getId(), platformsForm);
+
         return "redirect:/influencer/home";
     }
 
@@ -76,6 +79,7 @@ public class InfluencerController {
         } catch (IOException e) {
             return "redirect:/influencer/profile?error=upload_failed";
         }
+
         return "redirect:/influencer/profile";
     }
 }

@@ -3,27 +3,145 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>My collaborations</title>
+    <title>Active Collaborations</title>
+    <style>
+        :root {
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: rgba(15, 23, 42, 0.12);
+            --shadow: 0 18px 40px rgba(2, 6, 23, 0.18);
+            --primary: #2563eb;
+            --primaryHover: #1d4ed8;
+            --success: #22c55e;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            color: var(--text);
+            background:
+                    linear-gradient(135deg, rgba(14,165,233,0.30), rgba(99,102,241,0.30)),
+                    url('/auth-bg.svg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 24px;
+        }
+        .card {
+            max-width: 980px;
+            margin: 0 auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        h1 { margin: 0 0 6px; font-size: 1.45rem; letter-spacing: -0.01em; }
+        .muted { color: var(--muted); }
+
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .top { display:flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+        .brand { display:flex; align-items:center; gap: 12px; }
+        .logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(37, 99, 235, 0.06);
+            border: 1px solid rgba(15, 23, 42, 0.10);
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+        }
+        .logo img { width: 30px; height: 30px; display:block; object-fit: contain; }
+        .actions { display:flex; align-items:center; gap: 10px; }
+        .btn {
+            display: inline-block;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(15, 23, 42, 0.12);
+            background: #fff;
+            color: var(--text);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .btn:hover { background: rgba(37, 99, 235, 0.06); text-decoration: none; }
+        .btn-primary { background: var(--primary); border-color: transparent; color: #fff; }
+        .btn-primary:hover { background: var(--primaryHover); }
+
+        .collab-item {
+            background: rgba(15, 23, 42, 0.03);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-accepted { background: rgba(34, 197, 94, 0.12); color: #15803d; }
+        .status-in_progress { background: rgba(37, 99, 235, 0.12); color: #1d4ed8; }
+
+        @media (max-width: 380px) {
+            body { padding: 16px; }
+            .card { padding: 16px; }
+            .collab-item { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
 </head>
 <body>
-<div style="max-width:900px;margin:24px auto;padding:18px;border:1px solid #eee;border-radius:12px;">
-    <h1>Active collaborations</h1>
-    <div th:if="${collaborations == null or #lists.isEmpty(collaborations)}">No active collaborations</div>
-    <ul th:if="${collaborations != null and !#lists.isEmpty(collaborations)}" style="list-style:none;padding:0;margin:0;">
-        <li th:each="c : ${collaborations}" style="padding:12px;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;justify-content:space-between;align-items:center;">
+<div class="card">
+    <div class="top">
+        <div class="brand">
+            <div class="logo" aria-hidden="true" style="width: 64px; height: 64px;">
+                <img th:src="@{/brand-logo.svg}" alt="inFluApp" />
+            </div>
             <div>
-                <div style="font-weight:700;" th:text="${c.campaign.title}">Campaign title</div>
-                <div class="muted" th:text="'Status: ' + ${c.status}">Status</div>
-                <div class="muted" th:text="'Payment: ' + ${c.paymentAmount} + ' €'">Payment</div>
+                <h1>Active Collaborations</h1>
+            </div>
+        </div>
+        <div class="actions">
+            <a class="btn" th:href="@{/influencer/home}">Home</a>
+        </div>
+    </div>
+
+    <div th:if="${collaborations == null or #lists.isEmpty(collaborations)}" style="text-align:center;padding:40px;">
+        <div class="muted">No active collaborations yet.</div>
+    </div>
+
+    <div th:if="${collaborations != null and !#lists.isEmpty(collaborations)}">
+        <div th:each="c : ${collaborations}" class="collab-item">
+            <div>
+                <div style="font-weight:700; font-size:1.05rem;" th:text="${c.campaign.title}">Campaign title</div>
+                <div style="margin-top:4px;">
+                    <span class="status-badge"
+                          th:classappend="${c.status.name() == 'ACCEPTED'} ? 'status-accepted' : 'status-in_progress'"
+                          th:text="${c.status}">ACCEPTED</span>
+                </div>
+                <div class="muted" style="margin-top:4px;" th:text="'Payment: ' + ${c.paymentAmount} + ' €'">Payment: 0 €</div>
+                <div class="muted" th:if="${c.campaign.business != null}" th:text="'Business: ' + ${c.campaign.business.companyName}">Business</div>
             </div>
             <div style="display:flex;gap:8px;">
                 <a th:href="@{'/collaborations/' + ${c.id}}" class="btn">View</a>
                 <a th:href="@{'/collaborations/' + ${c.id} + '/posts/new'}" class="btn btn-primary">Add Post</a>
             </div>
-        </li>
-    </ul>
-    <div style="margin-top:16px;"><a th:href="@{/influencer/home}">Back to home</a></div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
-

@@ -34,12 +34,13 @@ public class InfluencerPlatformController {
         try {
             socialMedia = influencerService.findSocialMediaByPlatform(influencer, platform);
         } catch (NotFoundException e) {
-            // Platform not configured yet
+            System.out.println("Social media platform not found for influencer: " + platform);
         }
 
         model.addAttribute("influencer", influencer);
         model.addAttribute("platform", platform);
         model.addAttribute("socialMedia", socialMedia);
+
         return "influencer-platform";
     }
 

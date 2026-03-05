@@ -3,6 +3,8 @@ package org.ilias.influapp.controllers;
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.*;
 import org.ilias.influapp.entities.Enums.CampaignStatus;
+import org.ilias.influapp.entities.Enums.Category;
+import org.ilias.influapp.entities.Enums.CollaborationStatus;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.CampaignRepository;
 import org.ilias.influapp.repository.CollaborationRepository;
@@ -103,10 +105,10 @@ public class BusinessInfluencerController {
                     .status(CampaignStatus.DRAFT)
                     .build();
             try {
-                org.ilias.influapp.entities.Enums.Category cat = newCampaignCategory != null ? org.ilias.influapp.entities.Enums.Category.valueOf(newCampaignCategory) : org.ilias.influapp.entities.Enums.Category.OTHER;
+                Category cat = newCampaignCategory != null ? Category.valueOf(newCampaignCategory) : Category.OTHER;
                 newCampaign.setTargetCategory(cat);
             } catch (IllegalArgumentException e) {
-                newCampaign.setTargetCategory(org.ilias.influapp.entities.Enums.Category.OTHER);
+                newCampaign.setTargetCategory(Category.OTHER);
             }
 
             newCampaign.setBudget(newCampaignBudget != null ? newCampaignBudget : (paymentAmount != null ? paymentAmount : 0.0));
@@ -134,7 +136,7 @@ public class BusinessInfluencerController {
         collab.setPaymentAmount(paymentAmount != null ? paymentAmount : 0.0);
         collab.setDeliverables(deliverables);
         collab.setStartDate(LocalDate.now());
-        collab.setStatus(org.ilias.influapp.entities.Enums.CollaborationStatus.PENDING);
+        collab.setStatus(CollaborationStatus.PENDING);
 
         collaborationRepository.save(collab);
 
