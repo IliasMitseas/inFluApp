@@ -140,15 +140,15 @@
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                     <div>
                         <label for="shares">Shares</label>
-                        <input id="shares" type="number" th:field="*{shares}" min="0" required/>
+                        <input id="shares" type="number" th:field="*{shares}" min="0" value="0" required/>
                     </div>
                     <div>
                         <label for="reach">Reach</label>
-                        <input id="reach" type="number" th:field="*{reach}" min="0" required/>
+                        <input id="reach" type="number" th:field="*{reach}" min="0" value="0" required/>
                     </div>
                     <div>
                         <label for="impressionCount">Total Impressions</label>
-                        <input id="impressionCount" type="number" th:field="*{impressionCount}" min="0" required/>
+                        <input id="impressionCount" type="number" th:field="*{impressionCount}" min="0" value="0" required/>
                     </div>
                 </div>
                 <button class="btn btn-primary" type="submit">Add Post</button>

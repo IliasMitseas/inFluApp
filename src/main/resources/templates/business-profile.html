@@ -217,11 +217,11 @@
             <div class="grid two">
                 <div>
                     <label for="establishedYear">Established year</label>
-                    <input id="establishedYear" name="establishedYear" type="text" th:value="${business.establishedYear}" placeholder="2020" />
+                    <input id="establishedYear" name="establishedYear" type="number" th:value="${business.establishedYear}" placeholder="2020" min="1800" max="2026" />
                 </div>
                 <div>
                     <label for="webSite">Website</label>
-                    <input id="webSite" name="webSite" type="text" th:value="${business.webSite}" placeholder="www.example.com"/>
+                    <input id="webSite" name="webSite" type="url" th:value="${business.webSite}" placeholder="https://www.example.com"/>
                 </div>
             </div>
 

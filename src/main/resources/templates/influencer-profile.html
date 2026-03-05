@@ -238,7 +238,7 @@
         <div class="grid two">
             <div>
                 <label for="age">Age</label>
-                <input id="age" type="number" th:field="*{age}" placeholder="Your age" />
+                <input id="age" type="number" th:field="*{age}" placeholder="Your age" min="1" max="120" />
             </div>
             <div>
                 <label for="location">Location</label>
@@ -286,7 +286,7 @@
             </div>
             <div>
                 <label for="minBudget">Minimum collaboration budget</label>
-                <input id="minBudget" type="number" th:field="*{minCollaborationBudget}" placeholder="Your minimum budget" />
+                <input id="minBudget" type="number" th:field="*{minCollaborationBudget}" placeholder="Your minimum budget" min="0" />
             </div>
         </div>
 

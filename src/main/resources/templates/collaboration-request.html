@@ -56,10 +56,10 @@
         </div>
 
         <label>Payment amount</label>
-        <input type="number" name="paymentAmount" step="0.01" required/>
+        <input type="number" name="paymentAmount" step="0.01" min="0" required/>
 
         <label>Deliverables</label>
-        <textarea name="deliverables" rows="4"></textarea>
+        <textarea name="deliverables" rows="4" required placeholder="Describe what the influencer needs to deliver..."></textarea>
 
         <div class="actions">
             <button class="btn btn-primary" type="submit">Send Request</button>
