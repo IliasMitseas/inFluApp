@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="${campaign.title}">Campaign</title>
+    <style>
+        :root { --card:#fff; --text:#0f172a; --muted:#64748b; --border:rgba(15,23,42,0.12); --shadow:0 18px 40px rgba(2,6,23,0.18); --primary:#2563eb; --primaryHover:#1d4ed8; }
+        * { box-sizing:border-box; }
+        body { margin:0; min-height:100vh; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--text);
+            background:linear-gradient(135deg,rgba(14,165,233,0.30),rgba(99,102,241,0.30)),url('/auth-bg.svg'); background-size:cover; background-position:center; background-attachment:fixed; padding:24px; }
+        .card { max-width:800px; margin:0 auto; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:24px; box-shadow:var(--shadow); }
+        h1 { margin:0 0 4px; font-size:1.35rem; }
+        h2 { margin:18px 0 8px; font-size:1.15rem; }
+        .muted { color:var(--muted); }
+        a { color:var(--primary); text-decoration:none; }
+        .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+        .info-box { background:rgba(15,23,42,0.03); border:1px solid rgba(15,23,42,0.08); border-radius:10px; padding:10px; }
+        .info-box strong { display:block; margin-bottom:2px; }
+        .btn { display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid var(--border); background:#fff; color:var(--text); font-weight:600; text-decoration:none; cursor:pointer; }
+        .btn:hover { background:rgba(37,99,235,0.06); }
+        .btn-primary { background:var(--primary); border-color:transparent; color:#fff; }
+        .btn-primary:hover { background:var(--primaryHover); }
+        .status-badge { display:inline-block; padding:4px 10px; border-radius:20px; font-size:0.8rem; font-weight:600; }
+        .status-draft { background:rgba(148,163,184,0.15); color:#475569; }
+        .status-active { background:rgba(34,197,94,0.12); color:#15803d; }
+        .status-completed { background:rgba(37,99,235,0.12); color:#1d4ed8; }
+        .status-cancelled { background:rgba(239,68,68,0.12); color:#b91c1c; }
+        .collab-item { background:rgba(15,23,42,0.03); border:1px solid rgba(15,23,42,0.08); border-radius:10px; padding:10px; margin-top:8px; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1 th:text="${campaign.title}">Campaign</h1>
+    <div style="margin-top:4px;">
+        <span class="status-badge"
+              th:classappend="'status-' + ${campaign.status.name().toLowerCase()}"
+              th:text="${campaign.status}">DRAFT</span>
+    </div>
+
+    <div class="info-grid">
+        <div class="info-box">
+            <strong>Category</strong>
+            <span th:text="${campaign.targetCategory}">OTHER</span>
+        </div>
+        <div class="info-box">
+            <strong>Budget</strong>
+            <span th:text="${campaign.budget} + ' €'">0 €</span>
+        </div>
+        <div class="info-box">
+            <strong>Remaining budget</strong>
+            <span th:text="${campaign.remainingBudget} + ' €'">0 €</span>
+        </div>
+        <div class="info-box">
+            <strong>Start date</strong>
+            <span th:text="${campaign.startDate != null ? campaign.startDate : '-'}">-</span>
+        </div>
+        <div class="info-box">
+            <strong>End date</strong>
+            <span th:text="${campaign.endDate != null ? campaign.endDate : '-'}">-</span>
+        </div>
+        <div class="info-box">
+            <strong>Active</strong>
+            <span th:text="${campaign.active} ? 'Yes' : 'No'">No</span>
+        </div>
+    </div>
+
+    <div class="info-box" style="margin-top:10px;" th:if="${campaign.description != null and !campaign.description.isBlank()}">
+        <strong>Description</strong>
+        <span th:text="${campaign.description}">-</span>
+    </div>
+
+    <div class="info-box" style="margin-top:10px;" th:if="${campaign.goals != null and !campaign.goals.isBlank()}">
+        <strong>Goals</strong>
+        <span th:text="${campaign.goals}">-</span>
+    </div>
+
+    <!-- Collaborations -->
+    <h2>Collaborations</h2>
+    <div th:if="${campaign.collaborations == null or campaign.collaborations.isEmpty()}" class="muted">No collaborations yet</div>
+
+    <div th:if="${campaign.collaborations != null and !campaign.collaborations.isEmpty()}">
+        <div th:each="c : ${campaign.collaborations}" class="collab-item">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                    <div style="font-weight:600;" th:text="${c.influencer.name != null ? c.influencer.name : c.influencer.username}">Influencer</div>
+                    <div class="muted" th:text="'Status: ' + ${c.status}">PENDING</div>
+                    <div class="muted" th:text="'Payment: ' + ${c.paymentAmount} + ' €'">0 €</div>
+                    <div class="muted" th:text="'Posts: ' + ${c.posts != null ? c.posts.size() : 0}">0</div>
+                </div>
+                <a th:href="@{'/collaborations/' + ${c.id}}" class="btn">View</a>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:10px;align-items:center;">
+        <a th:href="@{'/business/campaigns/' + ${campaign.id} + '/edit'}" class="btn btn-primary">Edit</a>
+        <a th:href="@{/business/campaigns}" class="btn">Back</a>
+        <a th:href="@{/business/home}" class="btn">Home</a>
+        <form th:action="@{'/business/campaigns/' + ${campaign.id} + '/delete'}" method="post" style="display:inline;margin-left:auto;">
+            <button type="submit" class="btn" style="color:#b91c1c;border-color:rgba(239,68,68,0.3);"
+                    onclick="return confirm('Delete this campaign and all its collaborations?')">🗑 Delete</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+

@@ -165,7 +165,12 @@
         <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Upload profile image">
             <div class="row">
                 <img id="preview"
-                     th:src="${business.imageUrl != null and !#strings.isEmpty(business.imageUrl)} ? ${business.imageUrl} : @{/brand-logo.svg}"
+                     th:if="${business.imageUrl != null and !#strings.isEmpty(business.imageUrl)}"
+                     th:src="${business.imageUrl}"
+                     alt="Preview" />
+                <img id="preview"
+                     th:if="${business.imageUrl == null or #strings.isEmpty(business.imageUrl)}"
+                     th:src="@{/brand-logo.svg}"
                      alt="Preview" />
                 <div>
                     <div><strong>Drop an image here</strong> or click to select</div>

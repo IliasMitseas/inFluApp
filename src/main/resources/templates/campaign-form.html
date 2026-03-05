@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="${isNew} ? 'New Campaign' : 'Edit Campaign'">Campaign</title>
+    <style>
+        :root { --card:#fff; --text:#0f172a; --muted:#64748b; --border:rgba(15,23,42,0.12); --shadow:0 18px 40px rgba(2,6,23,0.18); --primary:#2563eb; --primaryHover:#1d4ed8; }
+        * { box-sizing:border-box; }
+        body { margin:0; min-height:100vh; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--text);
+            background:linear-gradient(135deg,rgba(14,165,233,0.30),rgba(99,102,241,0.30)),url('/auth-bg.svg'); background-size:cover; background-position:center; background-attachment:fixed; padding:24px; }
+        .card { max-width:720px; margin:0 auto; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:24px; box-shadow:var(--shadow); }
+        h1 { margin:0 0 4px; font-size:1.35rem; }
+        .muted { color:var(--muted); }
+        label { display:block; font-weight:600; margin-top:14px; margin-bottom:4px; }
+        input[type=text], input[type=number], input[type=date], select, textarea {
+            width:100%; padding:10px; border:1px solid var(--border); border-radius:10px; font-size:.95rem; }
+        textarea { resize:vertical; min-height:80px; }
+        .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .btn { display:inline-block; padding:10px 16px; border-radius:10px; border:1px solid var(--border); background:#fff; color:var(--text); font-weight:600; cursor:pointer; text-decoration:none; }
+        .btn:hover { background:rgba(37,99,235,0.06); }
+        .btn-primary { background:var(--primary); border-color:transparent; color:#fff; }
+        .btn-primary:hover { background:var(--primaryHover); }
+        .actions { margin-top:20px; display:flex; gap:10px; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1 th:text="${isNew} ? 'New Campaign' : 'Edit Campaign'">Campaign</h1>
+    <div class="muted" th:if="${!isNew}" th:text="'Editing: ' + ${campaign.title}">title</div>
+
+    <form th:if="${isNew}" th:action="@{/business/campaigns/new}" method="post">
+
+        <label for="title">Title *</label>
+        <input type="text" name="title" id="title" th:value="${campaign.title}" placeholder="Campaign title" required />
+
+        <label for="description">Description</label>
+        <textarea name="description" id="description" th:text="${campaign.description}" placeholder="What is this campaign about?"></textarea>
+
+        <div class="row">
+            <div>
+                <label for="targetCategory">Target category *</label>
+                <select name="targetCategory" id="targetCategory" required>
+                    <option value="">-- Select --</option>
+                    <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}"
+                            th:selected="${campaign.targetCategory == cat}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label for="budget">Budget (€) *</label>
+                <input type="number" name="budget" id="budget" step="0.01" min="0" th:value="${campaign.budget}" placeholder="0.00" required />
+            </div>
+            <div>
+                <label for="goals">Goals</label>
+                <input type="text" name="goals" id="goals" th:value="${campaign.goals}" placeholder="Brand awareness, sales..." />
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label for="startDate">Start date</label>
+                <input type="date" name="startDate" id="startDate" th:value="${campaign.startDate}" />
+            </div>
+            <div>
+                <label for="endDate">End date</label>
+                <input type="date" name="endDate" id="endDate" th:value="${campaign.endDate}" />
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">Create campaign</button>
+            <a class="btn" th:href="@{/business/campaigns}">Cancel</a>
+        </div>
+    </form>
+
+    <form th:if="${!isNew}" th:action="@{'/business/campaigns/' + ${campaign.id} + '/edit'}" method="post">
+
+        <label for="title2">Title *</label>
+        <input type="text" name="title" id="title2" th:value="${campaign.title}" placeholder="Campaign title" required />
+
+        <label for="description2">Description</label>
+        <textarea name="description" id="description2" th:text="${campaign.description}" placeholder="What is this campaign about?"></textarea>
+
+        <div class="row">
+            <div>
+                <label for="targetCategory2">Target category *</label>
+                <select name="targetCategory" id="targetCategory2" required>
+                    <option value="">-- Select --</option>
+                    <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}"
+                            th:selected="${campaign.targetCategory == cat}"></option>
+                </select>
+            </div>
+            <div>
+                <label for="status">Status</label>
+                <select name="status" id="status">
+                    <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}"
+                            th:selected="${campaign.status == s}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label for="budget2">Budget (€) *</label>
+                <input type="number" name="budget" id="budget2" step="0.01" min="0" th:value="${campaign.budget}" placeholder="0.00" required />
+            </div>
+            <div>
+                <label for="goals2">Goals</label>
+                <input type="text" name="goals" id="goals2" th:value="${campaign.goals}" placeholder="Brand awareness, sales..." />
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label for="startDate2">Start date</label>
+                <input type="date" name="startDate" id="startDate2" th:value="${campaign.startDate}" />
+            </div>
+            <div>
+                <label for="endDate2">End date</label>
+                <input type="date" name="endDate" id="endDate2" th:value="${campaign.endDate}" />
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            <a class="btn" th:href="@{/business/campaigns}">Cancel</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+
