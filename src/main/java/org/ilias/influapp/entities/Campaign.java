@@ -53,14 +53,33 @@ public class Campaign {
     private List<Collaboration> collaborations = new ArrayList<>();
 
     public void addCollaboration(Collaboration collaboration) {
+        if (collaboration == null) {
+            return;
+        }
+        collaborations.add(collaboration);
+        collaboration.setCampaign(this);
     }
 
-    public  void removeCollaboration(Collaboration collaboration) {
+    public void removeCollaboration(Collaboration collaboration) {
+        if (collaboration == null) {
+            return;
+        }
+        collaborations.remove(collaboration);
+        collaboration.setCampaign(null);
     }
 
-    public void isActive() {
+    public boolean isActive() {
+        return status == CampaignStatus.ACTIVE;
     }
 
-    public void getRemainingBudget() {
+    public double getRemainingBudget() {
+        if (budget == null) {
+            return 0.0;
+        }
+        double spent = collaborations.stream()
+                .filter(c -> c.getPaymentAmount() != null)
+                .mapToDouble(Collaboration::getPaymentAmount)
+                .sum();
+        return budget - spent;
     }
 }

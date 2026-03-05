@@ -199,8 +199,12 @@
             </div>
             <div class="muted" th:text="'Payment: ' + ${c.paymentAmount} + ' €'">0 €</div>
         </div>
-        <div style="display:flex;gap:8px;">
+        <div style="display:flex;gap:8px;align-items:center;">
             <a th:href="@{'/collaborations/' + ${c.id}}" class="btn">View</a>
+            <form th:action="@{'/collaborations/' + ${c.id} + '/delete'}" method="post" style="display:inline;">
+                <button type="submit" class="btn" style="font-size:0.85rem;padding:8px 10px;color:#b91c1c;border-color:rgba(239,68,68,0.3);"
+                        onclick="return confirm('Delete this collaboration?')">🗑</button>
+            </form>
         </div>
     </div>
 
@@ -224,8 +228,12 @@
             <div class="muted" th:text="'Payment: ' + ${c.paymentAmount} + ' €'">0 €</div>
             <div class="muted" th:text="'Posts: ' + ${c.posts != null ? c.posts.size() : 0}">Posts: 0</div>
         </div>
-        <div style="display:flex;gap:8px;">
+        <div style="display:flex;gap:8px;align-items:center;">
             <a th:href="@{'/collaborations/' + ${c.id}}" class="btn">View</a>
+            <form th:action="@{'/collaborations/' + ${c.id} + '/delete'}" method="post" style="display:inline;">
+                <button type="submit" class="btn" style="font-size:0.85rem;padding:8px 10px;color:#b91c1c;border-color:rgba(239,68,68,0.3);"
+                        onclick="return confirm('Delete this collaboration and all its posts?')">🗑</button>
+            </form>
         </div>
     </div>
 
@@ -246,8 +254,12 @@
             </div>
             <div class="muted" th:text="'Posts: ' + ${c.posts != null ? c.posts.size() : 0}">Posts: 0</div>
         </div>
-        <div style="display:flex;gap:8px;">
+        <div style="display:flex;gap:8px;align-items:center;">
             <a th:href="@{'/collaborations/' + ${c.id}}" class="btn">View</a>
+            <form th:action="@{'/collaborations/' + ${c.id} + '/delete'}" method="post" style="display:inline;">
+                <button type="submit" class="btn" style="font-size:0.85rem;padding:8px 10px;color:#b91c1c;border-color:rgba(239,68,68,0.3);"
+                        onclick="return confirm('Delete this collaboration?')">🗑</button>
+            </form>
         </div>
     </div>
 
@@ -269,8 +281,12 @@
                 Influencer: <span th:text="${c.influencer.name != null ? c.influencer.name : c.influencer.username}">name</span>
             </div>
         </div>
-        <div style="display:flex;gap:8px;">
+        <div style="display:flex;gap:8px;align-items:center;">
             <a th:href="@{'/collaborations/' + ${c.id}}" class="btn">View</a>
+            <form th:action="@{'/collaborations/' + ${c.id} + '/delete'}" method="post" style="display:inline;">
+                <button type="submit" class="btn" style="font-size:0.85rem;padding:8px 10px;color:#b91c1c;border-color:rgba(239,68,68,0.3);"
+                        onclick="return confirm('Delete this collaboration?')">🗑</button>
+            </form>
         </div>
     </div>
 </div>

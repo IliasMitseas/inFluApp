@@ -193,4 +193,65 @@ public class CollaborationController {
 
         return "redirect:/collaborations/" + collab.getId();
     }
+
+    @PostMapping("/collaborations/{id}/delete")
+    @Transactional
+    public String deleteCollaboration(@PathVariable Long id, Authentication authentication) {
+        User current = userService.currentUser(authentication);
+        Collaboration collab = collaborationRepository.findById(id).orElseThrow(NotFoundException::new);
+
+        // Allow delete by the influencer or the owning business
+        boolean allowed = false;
+        if (collab.getInfluencer() != null && collab.getInfluencer().getId().equals(current.getId())) {
+            allowed = true;
+        }
+        if (!allowed && collab.getCampaign() != null && collab.getCampaign().getBusiness() != null
+                && collab.getCampaign().getBusiness().getId().equals(current.getId())) {
+            allowed = true;
+        }
+        if (!allowed) {
+            return "redirect:/influencer/home?error=forbidden";
+        }
+
+        // Remove from parent collections to avoid orphan conflicts
+        if (collab.getCampaign() != null) {
+            collab.getCampaign().getCollaborations().remove(collab);
+        }
+        if (collab.getInfluencer() != null) {
+            collab.getInfluencer().getCollaborations().remove(collab);
+        }
+
+        collaborationRepository.delete(collab);
+
+        if (current instanceof Influencer) {
+            return "redirect:/influencer/collaborations/active";
+        }
+        return "redirect:/business/collaborations";
+    }
+
+    @PostMapping("/collaborations/{collabId}/posts/{postId}/delete")
+    @Transactional
+    public String deletePost(@PathVariable Long collabId, @PathVariable Long postId, Authentication authentication) {
+        User current = userService.currentUser(authentication);
+        Collaboration collab = collaborationRepository.findById(collabId).orElseThrow(NotFoundException::new);
+        Post post = postRepository.findById(postId).orElseThrow(NotFoundException::new);
+
+        // Only the influencer who owns the collaboration can delete posts
+        if (!collab.getInfluencer().getId().equals(current.getId())) {
+            return "redirect:/collaborations/" + collabId + "?error=forbidden";
+        }
+
+        // Remove from both parent collections — orphanRemoval handles the actual delete
+        collab.getPosts().remove(post);
+        if (post.getSocialMedia() != null) {
+            post.getSocialMedia().getPosts().remove(post);
+        }
+
+        // Update influencer engagement rate
+        Influencer influencer = influencerRepository.findById(current.getId()).orElseThrow(NotFoundException::new);
+        influencer.updateEngagementRate();
+        influencerRepository.save(influencer);
+
+        return "redirect:/collaborations/" + collabId;
+    }
 }

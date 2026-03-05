@@ -136,9 +136,13 @@
                 <div class="muted" style="margin-top:4px;" th:text="'Payment: ' + ${c.paymentAmount} + ' €'">Payment: 0 €</div>
                 <div class="muted" th:if="${c.campaign.business != null}" th:text="'Business: ' + ${c.campaign.business.companyName}">Business</div>
             </div>
-            <div style="display:flex;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:center;">
                 <a th:href="@{'/collaborations/' + ${c.id}}" class="btn">View</a>
                 <a th:href="@{'/collaborations/' + ${c.id} + '/posts/new'}" class="btn btn-primary">Add Post</a>
+                <form th:action="@{'/collaborations/' + ${c.id} + '/delete'}" method="post" style="display:inline;">
+                    <button type="submit" class="btn" style="font-size:0.85rem;padding:8px 10px;color:#b91c1c;border-color:rgba(239,68,68,0.3);"
+                            onclick="return confirm('Delete this collaboration and all its posts?')">🗑</button>
+                </form>
             </div>
         </div>
     </div>

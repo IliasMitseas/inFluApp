@@ -235,6 +235,12 @@
                     📈 <span th:text="${#numbers.formatDecimal(post.engagementRate, 1, 2)}">0.00</span>% engagement
                 </div>
             </div>
+            <div style="margin-top:8px;">
+                <form th:action="@{'/influencer/social/' + ${platform} + '/posts/' + ${post.id} + '/delete'}" method="post" style="display:inline;">
+                    <button type="submit" class="btn" style="font-size:0.85rem;padding:6px 10px;color:#b91c1c;border:1px solid rgba(239,68,68,0.3);background:#fff;border-radius:8px;cursor:pointer;"
+                            onclick="return confirm('Delete this post?')">🗑 Delete post</button>
+                </form>
+            </div>
         </div>
     </div>
     <div th:if="${posts == null or posts.isEmpty()}" style="color: var(--muted); text-align: center; padding: 40px;">

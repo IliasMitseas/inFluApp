@@ -81,4 +81,29 @@ public class PlatformPostsController {
 
         return "redirect:/influencer/social/" + platform + "/posts";
     }
+
+    @PostMapping("/influencer/social/{platform}/posts/{postId}/delete")
+    public String deletePost(Authentication authentication,
+                             @PathVariable Platform platform,
+                             @PathVariable Long postId) {
+        User user = userService.currentUser(authentication);
+        Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
+
+        Post post = postRepository.findById(postId).orElseThrow(NotFoundException::new);
+
+        // Remove from collaboration if linked
+        if (post.getCollaboration() != null) {
+            post.getCollaboration().getPosts().remove(post);
+        }
+
+        // Remove from social media (orphanRemoval will delete the post)
+        SocialMedia socialMedia = influencerService.findSocialMediaByPlatform(influencer, platform);
+        socialMedia.getPosts().remove(post);
+
+        // Update influencer engagement rate
+        influencer.updateEngagementRate();
+        influencerRepository.save(influencer);
+
+        return "redirect:/influencer/social/" + platform + "/posts";
+    }
 }
