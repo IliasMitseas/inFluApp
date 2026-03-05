@@ -11,4 +11,6 @@ import java.util.List;
 public interface CollaborationRepository extends JpaRepository<Collaboration, Long> {
 
     List<Collaboration> findByInfluencerIdAndStatus(Long influencerId, CollaborationStatus status);
+
+    List<Collaboration> findByInfluencerIdAndStatusIn(Long influencerId, List<CollaborationStatus> statuses);
 }

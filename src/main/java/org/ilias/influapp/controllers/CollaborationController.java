@@ -3,8 +3,8 @@ package org.ilias.influapp.controllers;
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.Collaboration;
 import org.ilias.influapp.entities.Business;
-import org.ilias.influapp.entities.Enums.CollaborationStatus;
 import org.ilias.influapp.entities.User;
+import org.ilias.influapp.entities.Enums.CollaborationStatus;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.CollaborationRepository;
 import org.ilias.influapp.services.UserService;
@@ -13,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Arrays;
 
 @Controller
 @RequiredArgsConstructor
@@ -48,6 +51,19 @@ public class CollaborationController {
         return "collaboration-view"; // create view template or reuse existing if present
     }
 
+    @GetMapping("/influencer/collaborations/active")
+    public String influencerActiveCollaborations(Authentication authentication, Model model) {
+        User current = userService.currentUser(authentication);
+        if (current == null) {
+            return "redirect:/login";
+        }
+        // Only influencers need this page
+        List<CollaborationStatus> activeStatuses = Arrays.asList(CollaborationStatus.ACCEPTED, CollaborationStatus.IN_PROGRESS);
+        List<Collaboration> active = collaborationRepository.findByInfluencerIdAndStatusIn(current.getId(), activeStatuses);
+        model.addAttribute("collaborations", active);
+        return "influencer-collaborations";
+    }
+
     @PostMapping("/collaborations/{id}/accept")
     @Transactional
     public String acceptCollaboration(@PathVariable Long id, Authentication authentication) {
@@ -59,7 +75,7 @@ public class CollaborationController {
             return "redirect:/influencer/home?error=forbidden";
         }
 
-        collab.setStatus(CollaborationStatus.ACCEPTED);
+        collab.setStatus(org.ilias.influapp.entities.Enums.CollaborationStatus.ACCEPTED);
         collaborationRepository.save(collab);
         return "redirect:/influencer/home?success=collab_accepted";
     }
@@ -75,7 +91,7 @@ public class CollaborationController {
             return "redirect:/influencer/home?error=forbidden";
         }
 
-        collab.setStatus(CollaborationStatus.REJECTED);
+        collab.setStatus(org.ilias.influapp.entities.Enums.CollaborationStatus.REJECTED);
         collaborationRepository.save(collab);
         return "redirect:/influencer/home?success=collab_rejected";
     }

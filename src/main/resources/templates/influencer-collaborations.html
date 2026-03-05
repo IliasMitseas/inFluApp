@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>My collaborations</title>
+</head>
+<body>
+<div style="max-width:900px;margin:24px auto;padding:18px;border:1px solid #eee;border-radius:12px;">
+    <h1>Active collaborations</h1>
+    <div th:if="${collaborations == null or #lists.isEmpty(collaborations)}">No active collaborations</div>
+    <ul th:if="${collaborations != null and !#lists.isEmpty(collaborations)}" style="list-style:none;padding:0;margin:0;">
+        <li th:each="c : ${collaborations}" style="padding:12px;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;justify-content:space-between;align-items:center;">
+            <div>
+                <div style="font-weight:700;" th:text="${c.campaign.title}">Campaign title</div>
+                <div class="muted" th:text="'Status: ' + ${c.status}">Status</div>
+                <div class="muted" th:text="'Payment: ' + ${c.paymentAmount} + ' €'">Payment</div>
+            </div>
+            <div>
+                <a th:href="@{'/collaborations/' + ${c.id}}" class="btn">View</a>
+            </div>
+        </li>
+    </ul>
+    <div style="margin-top:16px;"><a th:href="@{/influencer/home}">Back to home</a></div>
+</div>
+</body>
+</html>
+
