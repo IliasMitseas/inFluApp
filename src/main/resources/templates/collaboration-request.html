@@ -26,6 +26,7 @@
         <span th:switch="${error}">
             <span th:case="'no_campaign_selected'">Please select a campaign.</span>
             <span th:case="'invalid_campaign'">Selected campaign is invalid.</span>
+            <span th:case="'duplicate_collaboration'">A collaboration already exists for this influencer and campaign.</span>
             <span th:case="*">An error occurred.</span>
         </span>
     </div>

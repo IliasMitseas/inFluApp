@@ -31,16 +31,20 @@ public class CampaignController {
         Business business = businessRepository.findById(current.getId()).orElseThrow(NotFoundException::new);
 
         List<Campaign> campaigns = campaignRepository.findByBusinessId(business.getId());
+
         model.addAttribute("campaigns", campaigns);
+
         return "business-campaigns";
     }
 
     @GetMapping("/new")
     public String newCampaignForm(Model model) {
+
         model.addAttribute("campaign", new Campaign());
         model.addAttribute("categories", Category.values());
         model.addAttribute("statuses", CampaignStatus.values());
         model.addAttribute("isNew", true);
+
         return "campaign-form";
     }
 
@@ -54,7 +58,9 @@ public class CampaignController {
                                  @RequestParam(required = false) String startDate,
                                  @RequestParam(required = false) String endDate,
                                  @RequestParam(required = false) String goals) {
+
         User current = userService.currentUser(authentication);
+
         Business business = businessRepository.findById(current.getId()).orElseThrow(NotFoundException::new);
 
         Campaign campaign = Campaign.builder()
@@ -79,7 +85,9 @@ public class CampaignController {
     }
 
     @GetMapping("/{id}")
-    public String viewCampaign(@PathVariable Long id, Authentication authentication, Model model) {
+    public String viewCampaign(@PathVariable Long id,
+                               Authentication authentication,
+                               Model model) {
         User current = userService.currentUser(authentication);
         Campaign campaign = campaignRepository.findById(id).orElseThrow(NotFoundException::new);
 
@@ -88,6 +96,7 @@ public class CampaignController {
         }
 
         model.addAttribute("campaign", campaign);
+
         return "campaign-view";
     }
 
@@ -104,6 +113,7 @@ public class CampaignController {
         model.addAttribute("categories", Category.values());
         model.addAttribute("statuses", CampaignStatus.values());
         model.addAttribute("isNew", false);
+
         return "campaign-form";
     }
 
@@ -119,6 +129,7 @@ public class CampaignController {
                                  @RequestParam(required = false) String startDate,
                                  @RequestParam(required = false) String endDate,
                                  @RequestParam(required = false) String goals) {
+
         User current = userService.currentUser(authentication);
         Campaign campaign = campaignRepository.findById(id).orElseThrow(NotFoundException::new);
 
@@ -145,6 +156,7 @@ public class CampaignController {
         }
 
         campaignRepository.save(campaign);
+
         return "redirect:/business/campaigns/" + id;
     }
 

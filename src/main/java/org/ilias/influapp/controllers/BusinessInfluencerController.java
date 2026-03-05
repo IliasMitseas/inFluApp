@@ -9,6 +9,7 @@ import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.CampaignRepository;
 import org.ilias.influapp.repository.CollaborationRepository;
 import org.ilias.influapp.repository.InfluencerRepository;
+import org.ilias.influapp.repository.BusinessRepository;
 import org.ilias.influapp.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ public class BusinessInfluencerController {
     private final InfluencerRepository influencerRepository;
     private final CollaborationRepository collaborationRepository;
     private final CampaignRepository campaignRepository;
+    private final BusinessRepository businessRepository;
     private final UserService userService;
 
     @GetMapping("/influencers/{id}")
@@ -35,6 +37,7 @@ public class BusinessInfluencerController {
         return "influencer-public-profile";
     }
 
+
     @GetMapping(value = "/influencer/profile", params = "id")
     public String redirectLegacyProfile(@RequestParam(value = "id", required = false) Long id) {
         if (id == null) {
@@ -42,6 +45,8 @@ public class BusinessInfluencerController {
         }
         return "redirect:/influencers/" + id;
     }
+
+
 
     @GetMapping("/collaborations/request")
     public String requestForm(Authentication authentication,
@@ -65,6 +70,8 @@ public class BusinessInfluencerController {
 
         return "collaboration-request";
     }
+
+
 
     @PostMapping("/collaborations/request")
     @Transactional
@@ -96,6 +103,17 @@ public class BusinessInfluencerController {
             if (campaign == null) {
                 return "redirect:/collaborations/request?influencerId=" + influencerId + "&error=invalid_campaign";
             }
+
+            // Prevent duplicate active collaboration for same influencer and campaign
+            if (campaign.getCollaborations() != null) {
+                boolean exists = campaign.getCollaborations().stream()
+                        .filter(c -> c.getInfluencer() != null && c.getInfluencer().getId().equals(influencerId))
+                        .anyMatch(c -> c.getStatus() != CollaborationStatus.REJECTED
+                                && c.getStatus() != CollaborationStatus.CANCELLED);
+                if (exists) {
+                    return "redirect:/collaborations/request?influencerId=" + influencerId + "&error=duplicate_collaboration";
+                }
+            }
         } else if (newCampaignTitle != null && !newCampaignTitle.isEmpty()) {
 
             Campaign newCampaign = Campaign.builder()
@@ -114,6 +132,8 @@ public class BusinessInfluencerController {
             newCampaign.setBudget(newCampaignBudget != null ? newCampaignBudget : (paymentAmount != null ? paymentAmount : 0.0));
             newCampaign.setStartDate(LocalDate.now());
             campaign = campaignRepository.save(newCampaign);
+            business.addCampaign(campaign);
+            businessRepository.save(business);
 
         } else {
 
@@ -128,11 +148,13 @@ public class BusinessInfluencerController {
                     .build();
 
             campaign = campaignRepository.save(lightweight);
+            business.addCampaign(campaign);
+            businessRepository.save(business);
         }
 
         Collaboration collab = new Collaboration();
-        collab.setInfluencer(influencer);
-        collab.setCampaign(campaign);
+        campaign.addCollaboration(collab);
+        influencer.addCollaboration(collab);
         collab.setPaymentAmount(paymentAmount != null ? paymentAmount : 0.0);
         collab.setDeliverables(deliverables);
         collab.setStartDate(LocalDate.now());

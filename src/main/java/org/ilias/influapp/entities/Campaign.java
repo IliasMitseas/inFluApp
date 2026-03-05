@@ -49,12 +49,16 @@ public class Campaign {
     @Column(length = 1000)
     private String goals;
 
+    @Builder.Default
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Collaboration> collaborations = new ArrayList<>();
 
     public void addCollaboration(Collaboration collaboration) {
         if (collaboration == null) {
             return;
+        }
+        if (this.collaborations == null) {
+            this.collaborations = new ArrayList<>();
         }
         collaborations.add(collaboration);
         collaboration.setCampaign(this);
@@ -64,6 +68,7 @@ public class Campaign {
         if (collaboration == null) {
             return;
         }
+        if (this.collaborations == null) return;
         collaborations.remove(collaboration);
         collaboration.setCampaign(null);
     }
@@ -75,6 +80,9 @@ public class Campaign {
     public double getRemainingBudget() {
         if (budget == null) {
             return 0.0;
+        }
+        if (collaborations == null || collaborations.isEmpty()) {
+            return budget;
         }
         double spent = collaborations.stream()
                 .filter(c -> c.getPaymentAmount() != null)

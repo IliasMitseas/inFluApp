@@ -137,10 +137,13 @@ public class CollaborationController {
     public String createPostForCollab(@PathVariable Long id, Authentication authentication, Model model) {
         User current = userService.currentUser(authentication);
 
-        Influencer influencer = influencerRepository.findById(current.getId()).orElseThrow(NotFoundException::new);
-
         Collaboration collab = collaborationRepository.findById(id).orElseThrow(NotFoundException::new);
 
+        if (!(current instanceof Influencer) || collab.getInfluencer() == null || !collab.getInfluencer().getId().equals(current.getId())) {
+            return "redirect:/error?forbidden";
+        }
+
+        Influencer influencer = influencerRepository.findById(current.getId()).orElseThrow(NotFoundException::new);
         List<SocialMedia> socialMediaAccounts = influencer.getSocialMediaAccounts();
 
         model.addAttribute("collaboration", collab);
