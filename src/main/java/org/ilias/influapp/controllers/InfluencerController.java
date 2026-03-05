@@ -6,6 +6,7 @@ import org.ilias.influapp.entities.*;
 import org.ilias.influapp.entities.Enums.Platform;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.InfluencerRepository;
+import org.ilias.influapp.repository.CollaborationRepository;
 import org.ilias.influapp.services.InfluencerServiceImpl;
 import org.ilias.influapp.services.UserService;
 import org.springframework.security.core.Authentication;
@@ -15,12 +16,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class InfluencerController {
 
     private final InfluencerRepository influencerRepository;
+    private final CollaborationRepository collaborationRepository;
     private final InfluencerServiceImpl influencerService;
     private final UserService userService;
 
@@ -29,6 +32,11 @@ public class InfluencerController {
         User user = userService.currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
         model.addAttribute("influencer", influencer);
+
+        // Load collaboration requests for this influencer (only pending by default)
+        List<Collaboration> requests = collaborationRepository.findByInfluencerIdAndStatus(influencer.getId(), org.ilias.influapp.entities.Enums.CollaborationStatus.PENDING);
+        model.addAttribute("collaborationRequests", requests);
+
         return "influencer-home";
     }
 

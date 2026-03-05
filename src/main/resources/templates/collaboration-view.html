@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Collaboration</title>
+</head>
+<body>
+<div>
+    <h2 th:text="${collaboration.campaign.title}">Campaign</h2>
+    <div>From business: <span th:text="${collaboration.campaign.business.companyName}">Business</span></div>
+    <div>Payment: <span th:text="${collaboration.paymentAmount}">0</span> €</div>
+    <div>Deliverables: <span th:text="${collaboration.deliverables}">-</span></div>
+    <div>Status: <span th:text="${collaboration.status}">PENDING</span></div>
+
+    <div style="margin-top:12px;">
+        <a th:href="@{/influencer/home}">Back</a>
+    </div>
+</div>
+</body>
+</html>
+
