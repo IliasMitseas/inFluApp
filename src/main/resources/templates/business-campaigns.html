@@ -64,7 +64,12 @@
                           th:text="${c.status}">DRAFT</span>
                 </div>
                 <div class="muted" style="margin-top:4px;" th:text="'Category: ' + ${c.targetCategory}">Category</div>
-                <div class="muted" th:text="'Budget: ' + ${c.budget} + ' € — Remaining: ' + ${c.remainingBudget} + ' €'">Budget</div>
+                <div style="margin-top:4px;">
+                    <span class="muted" th:text="${'Budget: ' + #numbers.formatDecimal(c.budget,1,2) + ' €'}">Budget</span>
+                    &nbsp;&mdash;&nbsp;
+                    <span th:if="${c.remainingBudget != null and c.remainingBudget >= 0}" class="muted" th:text="${'Remaining: ' + #numbers.formatDecimal(c.remainingBudget,1,2) + ' €'}">Remaining</span>
+                    <span th:if="${c.remainingBudget != null and c.remainingBudget < 0}" style="color:#b91c1c;font-weight:700;" th:text="${'Over budget by ' + #numbers.formatDecimal(-c.remainingBudget,1,2) + ' €'}">Over budget</span>
+                </div>
                 <div class="muted" th:text="'Collaborations: ' + ${c.collaborations != null ? c.collaborations.size() : 0}">0</div>
             </div>
             <div style="display:flex;gap:8px;align-items:center;">

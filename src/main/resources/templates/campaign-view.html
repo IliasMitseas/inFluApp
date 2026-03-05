@@ -49,7 +49,8 @@
         </div>
         <div class="info-box">
             <strong>Remaining budget</strong>
-            <span th:text="${campaign.remainingBudget} + ' €'">0 €</span>
+            <span th:if="${campaign.remainingBudget >= 0}" th:text="${#numbers.formatDecimal(campaign.remainingBudget,1,2)} + ' €'">0 €</span>
+            <span th:if="${campaign.remainingBudget < 0}" style="color:#b91c1c;font-weight:700;" th:text="'Over budget by ' + ${#numbers.formatDecimal(-campaign.remainingBudget,1,2)} + ' €'">Over budget</span>
         </div>
         <div class="info-box">
             <strong>Start date</strong>
