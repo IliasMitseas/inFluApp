@@ -161,6 +161,12 @@
         <div class="post-item" th:each="post : ${posts}">
             <div th:text="${post.content}" style="font-weight: 500; margin-bottom: 12px;">Post content here</div>
 
+            <!-- Collaboration badge -->
+            <div th:if="${post.collaboration != null}"
+                 style="display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-bottom: 12px; background: rgba(37, 99, 235, 0.1); color: #1d4ed8;">
+                🤝 <span th:text="${post.collaboration.campaign.title}">Campaign</span>
+            </div>
+
             <!-- Post Sentiment Badge - LOVE -->
             <div th:if="${post.postSentiment == T(org.ilias.influapp.entities.Enums.PostSentiment).LOVE}"
                  style="display: inline-block; padding: 8px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; background: rgba(244, 63, 94, 0.1); color: #be123c;">

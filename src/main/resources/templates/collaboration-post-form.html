@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Add Post</title>
+    <style>
+        :root { --primary:#2563eb; --primaryHover:#1d4ed8; --text:#0f172a; --muted:#64748b; --border:rgba(15,23,42,0.12); --shadow:0 18px 40px rgba(2,6,23,0.18); }
+        * { box-sizing:border-box; }
+        body { margin:0; min-height:100vh; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--text);
+            background:linear-gradient(135deg,rgba(14,165,233,0.30),rgba(99,102,241,0.30)),url('/auth-bg.svg'); background-size:cover; background-position:center; background-attachment:fixed; padding:24px; }
+        .card { max-width:720px; margin:0 auto; background:#fff; border:1px solid var(--border); border-radius:14px; padding:24px; box-shadow:var(--shadow); }
+        h1 { margin:0 0 4px; font-size:1.35rem; }
+        .muted { color:var(--muted); }
+        label { display:block; font-weight:600; margin-top:14px; margin-bottom:4px; }
+        input[type=text], input[type=number], select, textarea {
+            width:100%; padding:10px; border:1px solid var(--border); border-radius:10px; font-size:.95rem; }
+        textarea { resize:vertical; min-height:80px; }
+        .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .reactions-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:6px; }
+        .reactions-grid label { font-weight:400; margin:0; font-size:.9rem; }
+        .reactions-grid input { width:100%; margin-top:2px; }
+        .btn { display:inline-block; padding:10px 16px; border-radius:10px; border:1px solid var(--border); background:#fff; color:var(--text); font-weight:600; cursor:pointer; text-decoration:none; }
+        .btn:hover { background:rgba(37,99,235,0.06); }
+        .btn-primary { background:var(--primary); border-color:transparent; color:#fff; }
+        .btn-primary:hover { background:var(--primaryHover); }
+        .actions { margin-top:20px; display:flex; gap:10px; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Add Post</h1>
+    <div class="muted" th:text="'Collaboration: ' + ${collaboration.campaign.title}">Campaign</div>
+
+    <form th:action="@{'/collaborations/' + ${collaboration.id} + '/posts'}" method="post">
+
+        <!-- Platform -->
+        <label for="socialMediaId">Platform</label>
+        <select name="socialMediaId" id="socialMediaId" required>
+            <option value="">-- Select platform --</option>
+            <option th:each="sm : ${socialMediaAccounts}"
+                    th:value="${sm.id}"
+                    th:text="${sm.platform} + ' (' + ${sm.username != null ? sm.username : sm.accountUrl} + ')'">
+            </option>
+        </select>
+
+        <!-- Content -->
+        <label for="content">Content / Description</label>
+        <textarea name="content" id="content" placeholder="What is this post about?"></textarea>
+
+        <!-- Metrics row -->
+        <div class="row">
+            <div>
+                <label for="shares">Shares</label>
+                <input type="number" name="shares" id="shares" min="0" value="0"/>
+            </div>
+            <div>
+                <label for="reach">Reach</label>
+                <input type="number" name="reach" id="reach" min="0" value="0"/>
+            </div>
+        </div>
+        <div class="row">
+            <div>
+                <label for="impressionCount">Impressions</label>
+                <input type="number" name="impressionCount" id="impressionCount" min="0" value="0"/>
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(99, 102, 241, 0.1)); border-left: 4px solid #2563eb; padding: 12px; border-radius: 8px; margin-top: 14px;">
+            <div style="font-size: 0.85rem; color: #64748b;">
+                📊 Post sentiment is automatically calculated from reactions &amp; comments
+            </div>
+        </div>
+
+        <!-- Reactions -->
+        <label>Reactions</label>
+        <div class="reactions-grid">
+            <div>
+                <label>👍 LIKE</label>
+                <input type="number" name="likeCount" min="0" value="0"/>
+            </div>
+            <div>
+                <label>❤️ LOVE</label>
+                <input type="number" name="loveCount" min="0" value="0"/>
+            </div>
+            <div>
+                <label>😂 HAHA</label>
+                <input type="number" name="hahaCount" min="0" value="0"/>
+            </div>
+            <div>
+                <label>😮 WOW</label>
+                <input type="number" name="wowCount" min="0" value="0"/>
+            </div>
+            <div>
+                <label>😢 SAD</label>
+                <input type="number" name="sadCount" min="0" value="0"/>
+            </div>
+            <div>
+                <label>😡 ANGRY</label>
+                <input type="number" name="angryCount" min="0" value="0"/>
+            </div>
+        </div>
+
+        <!-- Comments (one per line) -->
+        <label for="commentsText">Comments (one per line)</label>
+        <textarea name="commentsText" id="commentsText" placeholder="Great post!&#10;Love it!&#10;Amazing content"></textarea>
+
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">Save Post</button>
+            <a th:href="@{'/collaborations/' + ${collaboration.id}}" class="btn">Cancel</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+

@@ -16,8 +16,9 @@
                 <div class="muted" th:text="'Status: ' + ${c.status}">Status</div>
                 <div class="muted" th:text="'Payment: ' + ${c.paymentAmount} + ' €'">Payment</div>
             </div>
-            <div>
+            <div style="display:flex;gap:8px;">
                 <a th:href="@{'/collaborations/' + ${c.id}}" class="btn">View</a>
+                <a th:href="@{'/collaborations/' + ${c.id} + '/posts/new'}" class="btn btn-primary">Add Post</a>
             </div>
         </li>
     </ul>
