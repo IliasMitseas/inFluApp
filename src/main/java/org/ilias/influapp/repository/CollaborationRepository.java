@@ -13,4 +13,8 @@ public interface CollaborationRepository extends JpaRepository<Collaboration, Lo
     List<Collaboration> findByInfluencerIdAndStatus(Long influencerId, CollaborationStatus status);
 
     List<Collaboration> findByInfluencerIdAndStatusIn(Long influencerId, List<CollaborationStatus> statuses);
+
+    List<Collaboration> findByCampaignBusinessId(Long businessId);
+
+    List<Collaboration> findByCampaignBusinessIdAndStatus(Long businessId, CollaborationStatus status);
 }

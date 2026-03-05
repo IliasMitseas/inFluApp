@@ -72,9 +72,11 @@
     </div>
 
     <div style="margin-top:16px;display:flex;gap:10px;">
-        <a th:href="@{'/collaborations/' + ${collaboration.id} + '/posts/new'}" class="btn btn-primary">Add Post</a>
-        <a th:href="@{/influencer/collaborations/active}" class="btn">Back</a>
-        <a th:href="@{/influencer/home}" class="btn">Home</a>
+        <a th:if="${isInfluencer}" th:href="@{'/collaborations/' + ${collaboration.id} + '/posts/new'}" class="btn btn-primary">Add Post</a>
+        <a th:if="${isInfluencer}" th:href="@{/influencer/collaborations/active}" class="btn">Back</a>
+        <a th:if="${isInfluencer}" th:href="@{/influencer/home}" class="btn">Home</a>
+        <a th:if="${!isInfluencer}" th:href="@{/business/collaborations}" class="btn">Back</a>
+        <a th:if="${!isInfluencer}" th:href="@{/business/home}" class="btn">Home</a>
     </div>
 </div>
 </body>

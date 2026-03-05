@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>My Collaborations</title>
+    <style>
+        :root {
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: rgba(15, 23, 42, 0.12);
+            --shadow: 0 18px 40px rgba(2, 6, 23, 0.18);
+            --primary: #2563eb;
+            --primaryHover: #1d4ed8;
+            --success: #22c55e;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            color: var(--text);
+            background:
+                    linear-gradient(135deg, rgba(14,165,233,0.30), rgba(99,102,241,0.30)),
+                    url('/auth-bg.svg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 24px;
+        }
+        .card {
+            max-width: 980px;
+            margin: 0 auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        h1 { margin: 0 0 6px; font-size: 1.45rem; letter-spacing: -0.01em; }
+        h2 { margin: 20px 0 10px; font-size: 1.15rem; }
+        .muted { color: var(--muted); }
+
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .top { display:flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+        .brand { display:flex; align-items:center; gap: 12px; }
+        .logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(37, 99, 235, 0.06);
+            border: 1px solid rgba(15, 23, 42, 0.10);
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+        }
+        .logo img { width: 30px; height: 30px; display:block; object-fit: contain; }
+        .actions { display:flex; align-items:center; gap: 10px; }
+        .btn {
+            display: inline-block;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(15, 23, 42, 0.12);
+            background: #fff;
+            color: var(--text);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .btn:hover { background: rgba(37, 99, 235, 0.06); text-decoration: none; }
+        .btn-primary { background: var(--primary); border-color: transparent; color: #fff; }
+        .btn-primary:hover { background: var(--primaryHover); }
+
+        .collab-item {
+            background: rgba(15, 23, 42, 0.03);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-pending { background: rgba(249, 115, 22, 0.12); color: #c2410c; }
+        .status-accepted { background: rgba(34, 197, 94, 0.12); color: #15803d; }
+        .status-in_progress { background: rgba(37, 99, 235, 0.12); color: #1d4ed8; }
+        .status-completed { background: rgba(148, 163, 184, 0.12); color: #475569; }
+        .status-rejected { background: rgba(239, 68, 68, 0.12); color: #b91c1c; }
+        .status-cancelled { background: rgba(239, 68, 68, 0.12); color: #b91c1c; }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            margin-bottom: 4px;
+        }
+        .section-header h2 { margin: 0; }
+        .count-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: rgba(37, 99, 235, 0.1);
+            color: #1d4ed8;
+        }
+
+        .summary {
+            display: flex;
+            gap: 12px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+        .summary-box {
+            background: rgba(15, 23, 42, 0.03);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            border-radius: 10px;
+            padding: 10px 16px;
+            text-align: center;
+            flex: 1;
+            min-width: 100px;
+        }
+        .summary-box .num { font-size: 1.4rem; font-weight: 700; }
+
+        @media (max-width: 380px) {
+            body { padding: 16px; }
+            .card { padding: 16px; }
+            .collab-item { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="top">
+        <div class="brand">
+            <div class="logo" aria-hidden="true" style="width: 64px; height: 64px;">
+                <img th:src="@{/brand-logo.svg}" alt="inFluApp" />
+            </div>
+            <div>
+                <h1>My Collaborations</h1>
+                <div class="muted">Manage your collaboration requests</div>
+            </div>
+        </div>
+        <div class="actions">
+            <a class="btn" th:href="@{/business/home}">Home</a>
+            <a class="btn" th:href="@{/influencers/search}">Find influencers</a>
+        </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary">
+        <div class="summary-box">
+            <div class="num" th:text="${total}">0</div>
+            <div class="muted">Total</div>
+        </div>
+        <div class="summary-box">
+            <div class="num" th:text="${pending.size()}">0</div>
+            <div class="muted">Pending</div>
+        </div>
+        <div class="summary-box">
+            <div class="num" th:text="${accepted.size()}">0</div>
+            <div class="muted">Active</div>
+        </div>
+        <div class="summary-box">
+            <div class="num" th:text="${completed.size()}">0</div>
+            <div class="muted">Completed</div>
+        </div>
+    </div>
+
+    <!-- Pending -->
+    <div class="section-header">
+        <h2>⏳ Pending</h2>
+        <span class="count-badge" th:text="${pending.size()}">0</span>
+    </div>
+    <div th:if="${#lists.isEmpty(pending)}" class="muted" style="margin-top:6px;">No pending requests</div>
+    <div th:each="c : ${pending}" class="collab-item">
+        <div>
+            <div style="font-weight:700; font-size:1.05rem;" th:text="${c.campaign.title}">Campaign</div>
+            <div style="margin-top:4px;">
+                <span class="status-badge status-pending">PENDING</span>
+            </div>
+            <div class="muted" style="margin-top:4px;">
+                Influencer: <span th:text="${c.influencer.name != null ? c.influencer.name : c.influencer.username}">name</span>
+            </div>
+            <div class="muted" th:text="'Payment: ' + ${c.paymentAmount} + ' €'">0 €</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+            <a th:href="@{'/collaborations/' + ${c.id}}" class="btn">View</a>
+        </div>
+    </div>
+
+    <!-- Active (Accepted / In Progress) -->
+    <div class="section-header">
+        <h2>🤝 Active</h2>
+        <span class="count-badge" th:text="${accepted.size()}">0</span>
+    </div>
+    <div th:if="${#lists.isEmpty(accepted)}" class="muted" style="margin-top:6px;">No active collaborations</div>
+    <div th:each="c : ${accepted}" class="collab-item">
+        <div>
+            <div style="font-weight:700; font-size:1.05rem;" th:text="${c.campaign.title}">Campaign</div>
+            <div style="margin-top:4px;">
+                <span class="status-badge"
+                      th:classappend="${c.status.name() == 'ACCEPTED'} ? 'status-accepted' : 'status-in_progress'"
+                      th:text="${c.status}">ACCEPTED</span>
+            </div>
+            <div class="muted" style="margin-top:4px;">
+                Influencer: <span th:text="${c.influencer.name != null ? c.influencer.name : c.influencer.username}">name</span>
+            </div>
+            <div class="muted" th:text="'Payment: ' + ${c.paymentAmount} + ' €'">0 €</div>
+            <div class="muted" th:text="'Posts: ' + ${c.posts != null ? c.posts.size() : 0}">Posts: 0</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+            <a th:href="@{'/collaborations/' + ${c.id}}" class="btn">View</a>
+        </div>
+    </div>
+
+    <!-- Completed -->
+    <div class="section-header">
+        <h2>✅ Completed</h2>
+        <span class="count-badge" th:text="${completed.size()}">0</span>
+    </div>
+    <div th:if="${#lists.isEmpty(completed)}" class="muted" style="margin-top:6px;">No completed collaborations yet</div>
+    <div th:each="c : ${completed}" class="collab-item">
+        <div>
+            <div style="font-weight:700; font-size:1.05rem;" th:text="${c.campaign.title}">Campaign</div>
+            <div style="margin-top:4px;">
+                <span class="status-badge status-completed">COMPLETED</span>
+            </div>
+            <div class="muted" style="margin-top:4px;">
+                Influencer: <span th:text="${c.influencer.name != null ? c.influencer.name : c.influencer.username}">name</span>
+            </div>
+            <div class="muted" th:text="'Posts: ' + ${c.posts != null ? c.posts.size() : 0}">Posts: 0</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+            <a th:href="@{'/collaborations/' + ${c.id}}" class="btn">View</a>
+        </div>
+    </div>
+
+    <!-- Rejected / Cancelled -->
+    <div class="section-header">
+        <h2>❌ Rejected / Cancelled</h2>
+        <span class="count-badge" th:text="${rejected.size()}">0</span>
+    </div>
+    <div th:if="${#lists.isEmpty(rejected)}" class="muted" style="margin-top:6px;">None</div>
+    <div th:each="c : ${rejected}" class="collab-item">
+        <div>
+            <div style="font-weight:700; font-size:1.05rem;" th:text="${c.campaign.title}">Campaign</div>
+            <div style="margin-top:4px;">
+                <span class="status-badge"
+                      th:classappend="${c.status.name() == 'REJECTED'} ? 'status-rejected' : 'status-cancelled'"
+                      th:text="${c.status}">REJECTED</span>
+            </div>
+            <div class="muted" style="margin-top:4px;">
+                Influencer: <span th:text="${c.influencer.name != null ? c.influencer.name : c.influencer.username}">name</span>
+            </div>
+        </div>
+        <div style="display:flex;gap:8px;">
+            <a th:href="@{'/collaborations/' + ${c.id}}" class="btn">View</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

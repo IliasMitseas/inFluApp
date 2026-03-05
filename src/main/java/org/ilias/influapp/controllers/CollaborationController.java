@@ -6,10 +6,7 @@ import org.ilias.influapp.entities.*;
 import org.ilias.influapp.entities.Enums.CollaborationStatus;
 import org.ilias.influapp.entities.Enums.PostSentiment;
 import org.ilias.influapp.exceptions.NotFoundException;
-import org.ilias.influapp.repository.CollaborationRepository;
-import org.ilias.influapp.repository.InfluencerRepository;
-import org.ilias.influapp.repository.PostRepository;
-import org.ilias.influapp.repository.SocialMediaRepository;
+import org.ilias.influapp.repository.*;
 import org.ilias.influapp.services.PostService;
 import org.ilias.influapp.services.UserService;
 import org.springframework.security.core.Authentication;
@@ -55,6 +52,7 @@ public class CollaborationController {
         }
 
         model.addAttribute("collaboration", collab);
+        model.addAttribute("isInfluencer", current instanceof Influencer);
         return "collaboration-view";
     }
 
@@ -74,6 +72,33 @@ public class CollaborationController {
         model.addAttribute("collaborations", active);
 
         return "influencer-collaborations";
+    }
+
+    @GetMapping("/business/collaborations")
+    public String businessCollaborations(Authentication authentication, Model model) {
+        User current = userService.currentUser(authentication);
+        if (current == null) {
+            return "redirect:/login";
+        }
+
+        List<Collaboration> all = collaborationRepository.findByCampaignBusinessId(current.getId());
+
+        List<Collaboration> pending = all.stream()
+                .filter(c -> c.getStatus() == CollaborationStatus.PENDING).toList();
+        List<Collaboration> accepted = all.stream()
+                .filter(c -> c.getStatus() == CollaborationStatus.ACCEPTED || c.getStatus() == CollaborationStatus.IN_PROGRESS).toList();
+        List<Collaboration> completed = all.stream()
+                .filter(c -> c.getStatus() == CollaborationStatus.COMPLETED).toList();
+        List<Collaboration> rejected = all.stream()
+                .filter(c -> c.getStatus() == CollaborationStatus.REJECTED || c.getStatus() == CollaborationStatus.CANCELLED).toList();
+
+        model.addAttribute("pending", pending);
+        model.addAttribute("accepted", accepted);
+        model.addAttribute("completed", completed);
+        model.addAttribute("rejected", rejected);
+        model.addAttribute("total", all.size());
+
+        return "business-collaborations";
     }
 
     @PostMapping("/collaborations/{id}/accept")
