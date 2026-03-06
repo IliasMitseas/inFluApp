@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Business Dashboard</title>
+    <style>
+        :root {
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: rgba(15, 23, 42, 0.12);
+            --shadow: 0 18px 40px rgba(2, 6, 23, 0.12);
+            --primary: #2563eb;
+            --primaryHover: #1d4ed8;
+        }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; color:var(--text); background: linear-gradient(135deg, rgba(14,165,233,0.12), rgba(99,102,241,0.08)), url('/auth-bg.svg'); padding:22px; }
+        .card { max-width:1000px; margin:0 auto; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; box-shadow:var(--shadow); }
+        .top { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+        .brand { display:flex; align-items:center; gap:12px; }
+        .logo { width:56px;height:56px;border-radius:12px; overflow:hidden; display:grid; place-items:center; background:rgba(37,99,235,0.06); }
+        .actions { display:flex; gap:10px; }
+        .btn { padding:9px 12px; border-radius:10px; border:1px solid rgba(15,23,42,0.08); background:#fff; text-decoration:none; color:var(--text); font-weight:600; }
+        .btn-primary { background:var(--primary); color:#fff; border-color:transparent; }
+
+        .metrics { display:grid; grid-template-columns: repeat(1,1fr); gap:12px; margin-top:14px; }
+        @media (min-width:720px) { .metrics { grid-template-columns: repeat(4,1fr); } }
+        .metric-card { padding:14px; border-radius:12px; background:linear-gradient(180deg,#fff,#fafafa); border:1px solid rgba(15,23,42,0.06); }
+        .metric-title { color:var(--muted); font-size:0.85rem; }
+        .metric-value { font-weight:700; font-size:1.4rem; margin-top:6px; }
+
+        .section { margin-top:18px; }
+        .grid-two { display:grid; grid-template-columns: 1fr; gap:12px; }
+        @media (min-width:900px) { .grid-two { grid-template-columns: 2fr 1fr; } }
+
+        .campaign-table { width:100%; border-collapse:collapse; }
+        .campaign-table th, .campaign-table td { padding:10px; border-bottom:1px solid rgba(15,23,42,0.04); text-align:left; }
+
+        .muted { color:var(--muted); }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="top">
+        <div class="brand">
+            <div class="logo"><img th:src="@{/brand-logo.svg}" alt="logo" style="width:36px;height:36px;object-fit:contain;"/></div>
+            <div>
+                <h1 style="margin:0;">inFluApp</h1>
+                <div class="muted">Business dashboard</div>
+            </div>
+        </div>
+        <div class="actions">
+            <a class="btn" th:href="@{/business/profile}">Edit profile</a>
+            <a class="btn" th:href="@{/business/home}">Home</a>
+            <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
+        </div>
+    </div>
+
+    <div class="metrics">
+        <div class="metric-card">
+            <div class="metric-title">Campaigns</div>
+            <div class="metric-value" th:text="${dashboard.totalCampaigns}">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Active campaigns</div>
+            <div class="metric-value" th:text="${dashboard.activeCampaigns}">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Total collaborations</div>
+            <div class="metric-value" th:text="${dashboard.totalCollaborations}">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Total budget</div>
+            <div class="metric-value" th:text="${#numbers.formatDecimal(dashboard.totalBudget,0,'POINT',2,'POINT')}">0</div>
+        </div>
+    </div>
+
+    <div class="section grid-two">
+        <div>
+            <h3 style="margin:0 0 8px 0;">Top campaigns</h3>
+            <table class="campaign-table">
+                <thead>
+                <tr><th>Title</th><th>Budget</th><th>Remaining</th><th>Collaborations</th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${dashboard.topCampaigns}">
+                    <td th:text="${c.title}">Campaign</td>
+                    <td th:text="${c.budget}">0</td>
+                    <td th:text="${c.remainingBudget}">0</td>
+                    <td th:text="${c.collaborationsCount}">0</td>
+                </tr>
+                <tr th:if="${dashboard.topCampaigns == null or #lists.isEmpty(dashboard.topCampaigns)}"><td colspan="4" class="muted">No campaigns yet</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

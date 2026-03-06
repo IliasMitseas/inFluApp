@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Influencer Dashboard</title>
+    <style>
+        :root {
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: rgba(15, 23, 42, 0.12);
+            --shadow: 0 18px 40px rgba(2, 6, 23, 0.12);
+            --primary: #2563eb;
+            --primaryHover: #1d4ed8;
+            --accent: #06b6d4;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            color: var(--text);
+            background:
+                    linear-gradient(135deg, rgba(14,165,233,0.12), rgba(99,102,241,0.08)),
+                    url('/auth-bg.svg');
+            background-size: cover;
+            background-position: center;
+            padding: 22px;
+        }
+        .card { max-width: 1000px; margin: 0 auto; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; box-shadow: var(--shadow); }
+        .top { display:flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .brand { display:flex; align-items:center; gap: 12px; }
+        .logo { width: 56px; height: 56px; border-radius: 12px; overflow: hidden; background: rgba(37,99,235,0.06); display:grid; place-items:center; }
+        .logo img { width: 36px; height: 36px; object-fit:contain; }
+        .actions { display:flex; align-items:center; gap: 10px; }
+        .btn { display:inline-block; padding: 9px 12px; border-radius: 10px; border:1px solid rgba(15,23,42,0.08); background: #fff; color: var(--text); font-weight:600; text-decoration:none; }
+        .btn-primary { background: var(--primary); border-color: transparent; color: #fff; }
+
+        .metrics { display:grid; grid-template-columns: repeat(1,1fr); gap:12px; margin-top:16px; }
+        @media (min-width:720px) { .metrics { grid-template-columns: repeat(4,1fr); } }
+        .metric-card { background: linear-gradient(180deg,#fff,#fafafa); border-radius:12px; padding:14px; border:1px solid rgba(15,23,42,0.06); }
+        .metric-title { font-size:0.85rem; color:var(--muted); }
+        .metric-value { font-size:1.4rem; font-weight:700; margin-top:6px; }
+
+        .section { margin-top:18px; }
+        .grid-two { display:grid; grid-template-columns: 1fr; gap:12px; }
+        @media (min-width:900px) { .grid-two { grid-template-columns: 2fr 1fr; } }
+
+        .post-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; }
+        .post-item { border:1px solid rgba(15,23,42,0.06); border-radius:10px; padding:10px; background:#fff; display:flex; justify-content:space-between; gap:12px; align-items:center; }
+        .post-preview { color:var(--muted); }
+        .badge { padding:6px 8px; border-radius:8px; font-weight:600; background:rgba(37,99,235,0.08); color:var(--primary); }
+
+        .platform-list { display:flex; gap:12px; align-items:center; }
+        .platform-item { background:rgba(15,23,42,0.03); padding:8px 10px; border-radius:8px; border:1px solid rgba(15,23,42,0.04); }
+
+        table { width:100%; border-collapse:collapse; }
+        th, td { text-align:left; padding:8px; border-bottom:1px solid rgba(15,23,42,0.04); }
+
+        .muted { color:var(--muted); }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="top">
+        <div class="brand">
+            <div class="logo" aria-hidden="true">
+                <img th:src="@{/brand-logo.svg}" alt="inFluApp" />
+            </div>
+            <div>
+                <h1 style="margin:0;">inFluApp</h1>
+                <div class="muted">Influencer dashboard</div>
+            </div>
+        </div>
+        <div class="actions">
+            <a class="btn" th:href="@{/influencer/profile}">Edit profile</a>
+            <a class="btn" th:href="@{/influencer/home}">Home</a>
+            <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
+        </div>
+    </div>
+
+    <div class="metrics" role="list">
+        <div class="metric-card" role="listitem">
+            <div class="metric-title">Total posts</div>
+            <div class="metric-value" th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(dashboard.totalPosts)}">0</div>
+        </div>
+        <div class="metric-card" role="listitem">
+            <div class="metric-title">Collaborations</div>
+            <div class="metric-value" th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(dashboard.totalCollaborations)}">0</div>
+        </div>
+        <div class="metric-card" role="listitem">
+            <div class="metric-title">Average engagement (%)</div>
+            <div class="metric-value" th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).twoDecimals(dashboard.avgEngagementRate)}">0</div>
+        </div>
+        <div class="metric-card" role="listitem">
+            <div class="metric-title">Total followers</div>
+            <div class="metric-value" th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(dashboard.totalFollowers)}">0</div>
+        </div>
+    </div>
+
+    <div class="section grid-two">
+        <div>
+            <h3 style="margin:0 0 8px 0;">Recent posts</h3>
+            <ul class="post-list">
+                <li class="post-item" th:each="p : ${dashboard.recentPosts}">
+                    <div>
+                        <div style="font-weight:700;" th:text="${p.contentPreview}">Post preview...</div>
+                        <div class="post-preview muted">Platform: <span th:text="${p.platform}">INST</span></div>
+                    </div>
+                    <div style="text-align:right;min-width:120px;">
+                        <div class="muted">Engagement</div>
+                        <!-- Show only formatted badge with two decimals; if null show 0.00% -->
+                        <div style="margin-top:6px;"><span class="badge" th:text="${p.engagementRate != null ? T(java.lang.String).format('%.2f', p.engagementRate) + '%' : '0.00%'}">0.00%</span></div>
+                    </div>
+                </li>
+                <li th:if="${dashboard.recentPosts == null or #lists.isEmpty(dashboard.recentPosts)}" class="muted">No recent posts</li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 style="margin:0 0 8px 0;">Platform breakdown</h3>
+            <div class="platform-list">
+                <div class="platform-item" th:each="pl : ${dashboard.platformCounts}" style="display:flex;align-items:center;gap:10px;">
+                    <!-- platform icon: emoji fallback mapped by enum name -->
+                    <div style="font-size:20px; width:28px; text-align:center;">
+                        <img th:if="${pl.platform != null}" th:src="@{'/' + ${pl.platform.name().toLowerCase()} + '.svg'}" alt="" style="width:28px;height:28px;object-fit:cover;" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='inline-block';" />
+                        <span th:if="${pl.platform != null}" th:classappend="' plat-' + ${pl.platform.name()}" style="display:none;">
+                            <span th:switch="${pl.platform != null ? pl.platform.name() : 'UNKNOWN'}">
+                                <span th:case="'INSTAGRAM'">📸</span>
+                                <span th:case="'TWITTER'">🐦</span>
+                                <span th:case="'FACEBOOK'">📘</span>
+                                <span th:case="'LINKEDIN'">🔗</span>
+                                <span th:case="'TIKTOK'">🎵</span>
+                                <span th:case="'YOUTUBE'">▶️</span>
+                                <span th:case="*">🔗</span>
+                            </span>
+                        </span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;">
+                        <div style="font-weight:700;" th:text="${pl.platform != null ? pl.platform.name() : 'UNKNOWN'}">INST</div>
+                        <div class="muted" th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(pl.count)}">0</div>
+                    </div>
+                </div>
+             </div>
+
+             <h3 style="margin:12px 0 8px 0;">Top posts</h3>
+            <table>
+                <thead><tr><th>Preview</th><th>Platform</th><th style="width:110px;">Engagement</th></tr></thead>
+                <tbody>
+                <tr th:each="tp : ${dashboard.topPosts}">
+                    <td th:text="${tp.contentPreview}">Post...</td>
+                    <td>
+                        <span th:switch="${tp.platform}">
+                            <span th:case="'INSTAGRAM'">📸 Instagram</span>
+                            <span th:case="'TWITTER'">🐦 Twitter</span>
+                            <span th:case="'FACEBOOK'">📘 Facebook</span>
+                            <span th:case="'LINKEDIN'">🔗 LinkedIn</span>
+                            <span th:case="'TIKTOK'">🎵 TikTok</span>
+                            <span th:case="'YOUTUBE'">▶️ YouTube</span>
+                            <span th:case="*" th:text="${tp.platform}">-</span>
+                        </span>
+                    </td>
+                    <td style="text-align:right; font-weight:700;" th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).twoDecimals(tp.engagementRate)} + '%'">0.00%</td>
+                </tr>
+                <tr th:if="${dashboard.topPosts == null or #lists.isEmpty(dashboard.topPosts)}"><td colspan="3" class="muted">No top posts</td></tr>
+                </tbody>
+            </table>
+         </div>
+     </div>
+
+ </div>
+ </body>
+ </html>
