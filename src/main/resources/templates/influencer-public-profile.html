@@ -5,53 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Influencer Profile</title>
     <style>
-        :root{--card:#fff;--text:#0f172a;--muted:#64748b;--border:rgba(15,23,42,0.12);--primary:#2563eb}
-        body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f6fafc;padding:24px}
-        .card{max-width:800px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px}
-        .top{display:flex;align-items:center;gap:12px}
-        .avatar{width:96px;height:96px;border-radius:12px;overflow:hidden}
-        .avatar img{width:100%;height:100%;object-fit:cover}
-        .meta{display:flex;flex-direction:column}
-        .meta .name{font-weight:700;font-size:1.2rem}
-        .meta .sub{color:var(--muted)}
-        .actions{margin-top:12px;display:flex;gap:8px}
-        .btn{padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:#fff;text-decoration:none;color:var(--text)}
-        .btn-primary{background:var(--primary);color:#fff;border-color:transparent}
+        :root {
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: rgba(15, 23, 42, 0.12);
+            --shadow: 0 18px 40px rgba(2, 6, 23, 0.12);
+            --primary: #2563eb;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 22px; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; color:var(--text);
+            background: linear-gradient(135deg, rgba(14,165,233,0.06), rgba(99,102,241,0.04)), url('/auth-bg.svg');
+            background-size: cover;
+        }
+        .card { max-width: 980px; margin: 0 auto; background: var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; box-shadow:var(--shadow); }
+        .top { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+        .brand { display:flex; gap:12px; align-items:center; }
+        .logo { width:56px; height:56px; border-radius:12px; overflow:hidden; display:grid; place-items:center; background: rgba(37,99,235,0.06); }
+        .logo img { width:36px; height:36px; object-fit:contain; }
+        .profile { display:flex; gap:14px; align-items:center; }
+        .avatar { width:96px; height:96px; border-radius:12px; overflow:hidden; background:#f3f4f6; }
+        .avatar img { width:100%; height:100%; object-fit:cover; }
+        .meta { display:flex; flex-direction:column; }
+        .name { font-weight:700; font-size:1.25rem; }
+        .sub { color:var(--muted); margin-top:4px; }
+        .actions { display:flex; gap:8px; align-items:center; }
+        .btn { padding:9px 12px; border-radius:10px; border:1px solid rgba(15,23,42,0.08); background:#fff; color:var(--text); text-decoration:none; font-weight:600; }
+        .btn-primary { background:var(--primary); color:#fff; border-color:transparent; }
+
+        .grid { display:grid; grid-template-columns:1fr; gap:12px; margin-top:16px; }
+        @media(min-width:900px){ .grid { grid-template-columns: 1fr 360px; } }
+        .box { background: rgba(15,23,42,0.03); border:1px solid rgba(15,23,42,0.06); border-radius:12px; padding:12px; }
+
+        .platform-list { display:flex; flex-direction:column; gap:8px; }
+        .platform-item { display:flex; justify-content:space-between; gap:8px; align-items:center; padding:8px; border-radius:8px; background:#fff; border:1px solid rgba(15,23,42,0.04); }
+        .muted { color:var(--muted); }
     </style>
 </head>
 <body>
 <div class="card">
     <div class="top">
-        <div class="avatar">
-            <img th:if="${influencer.imageUrl != null}" th:src="${influencer.imageUrl}" alt="avatar"/>
-            <img th:if="${influencer.imageUrl == null}" th:src="@{/brand-logo.svg}" alt="avatar"/>
-        </div>
-        <div class="meta" style="flex:1">
-            <div class="name" th:text="${influencer.name}">Name</div>
-            <div class="sub">
-                <span th:text="${influencer.username}">username</span> • <span th:text="${influencer.totalFollowers}">0</span> followers • <span th:text="${influencer.influencerType}">TYPE</span>
+        <div class="brand">
+            <div class="logo" aria-hidden="true"><img th:src="@{/brand-logo.svg}" alt="inFluApp"/></div>
+            <div>
+                <h1 style="margin:0;">inFluApp</h1>
+                <div class="muted">Influencer profile</div>
             </div>
-            <div class="muted" th:text="${influencer.location}"></div>
         </div>
-        <div>
+        <div class="actions">
+            <a th:href="@{/influencers/search}" class="btn">Back to search</a>
             <a th:href="@{/collaborations/request(influencerId=${influencer.id})}" class="btn btn-primary">Request collaboration</a>
         </div>
     </div>
 
-    <div style="margin-top:12px;">
-        <h3>About</h3>
-        <div class="muted" th:text="${influencer.bio}"></div>
+    <div style="margin-top:14px;" class="profile">
+        <div class="avatar">
+            <img th:if="${influencer.imageUrl != null and !#strings.isEmpty(influencer.imageUrl)}" th:src="${influencer.imageUrl}" alt="avatar" />
+            <img th:if="${influencer.imageUrl == null or #strings.isEmpty(influencer.imageUrl)}" th:src="@{/brand-logo.svg}" alt="avatar" />
+        </div>
+        <div class="meta" style="flex:1">
+            <div class="name" th:text="${influencer.name != null ? influencer.name : influencer.username}">Name</div>
+            <div class="sub">
+                <span th:text="${influencer.username}">username</span>
+                &nbsp;•&nbsp;
+                <span th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(influencer.totalFollowers)}">0</span>
+                &nbsp;followers • <span th:text="${influencer.influencerType}">TYPE</span>
+            </div>
+            <div class="muted" th:text="${influencer.location}"></div>
+        </div>
+        <div style="width:120px; text-align:right">
+            <!-- Optional CTA or indicators -->
+            <div class="muted">Engagement</div>
+            <div style="font-weight:700; font-size:1.1rem;" th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).twoDecimals(influencer.engagementRate)} + '%'">0.00%</div>
+        </div>
     </div>
 
-    <div style="margin-top:12px;">
-        <h3>Platforms</h3>
-        <div th:if="${influencer.socialMediaAccounts == null or influencer.socialMediaAccounts.isEmpty()}">No platforms</div>
-        <ul th:if="${influencer.socialMediaAccounts != null}">
-            <li th:each="sm : ${influencer.socialMediaAccounts}">
-                <span th:text="${sm.platform}">PLATFORM</span> — <span th:text="${sm.accountUrl}">url</span> • <span th:text="${sm.followers}">0</span> followers
-            </li>
-        </ul>
+    <div class="grid">
+        <div>
+            <div class="box">
+                <h3 style="margin:0 0 8px 0">About</h3>
+                <div class="muted" th:text="${influencer.bio}">Bio...</div>
+            </div>
+
+            <div class="box" style="margin-top:12px">
+                <h3 style="margin:0 0 8px 0">Platforms</h3>
+                <div th:if="${influencer.socialMediaAccounts == null or influencer.socialMediaAccounts.isEmpty()}" class="muted">No platforms</div>
+                <div class="platform-list" th:if="${influencer.socialMediaAccounts != null}">
+                    <div class="platform-item" th:each="sm : ${influencer.socialMediaAccounts}">
+                        <div>
+                            <div style="font-weight:700;" th:text="${sm.platform}">PLATFORM</div>
+                            <div class="muted" style="font-size:0.9rem;" th:text="${sm.accountUrl}">url</div>
+                        </div>
+                        <div class="muted" th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(sm.followers)}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="box">
+                <h3 style="margin:0 0 8px 0">Quick stats</h3>
+                <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+                    <div style="display:flex;justify-content:space-between;"><span class="muted">Total posts</span><strong th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(dashboard != null ? dashboard.totalPosts : influencer.totalFollowers)}">0</strong></div>
+                    <div style="display:flex;justify-content:space-between;"><span class="muted">Followers</span><strong th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(influencer.totalFollowers)}">0</strong></div>
+                    <div style="display:flex;justify-content:space-between;"><span class="muted">Avg engagement</span><strong th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).twoDecimals(influencer.engagementRate)} + '%'">0.00%</strong></div>
+                </div>
+            </div>
+
+            <div class="box" style="margin-top:12px">
+                <h3 style="margin:0 0 8px 0">Contact</h3>
+                <div class="muted">No public contact</div>
+            </div>
+        </div>
     </div>
+
 </div>
 </body>
 </html>
