@@ -190,8 +190,9 @@ public class CollaborationController {
         socialMedia.addPost(post);
         postRepository.save(post);
 
-        // Update influencer's overall engagement rate
+        // Update influencer overall engagement rate and score
         influencer.updateEngagementRate();
+        influencer.updateInfluencerScore();
         influencerRepository.save(influencer);
 
         return "redirect:/collaborations/" + collab.getId();
@@ -250,9 +251,10 @@ public class CollaborationController {
             post.getSocialMedia().getPosts().remove(post);
         }
 
-        // Update influencer engagement rate
+        // Update influencer engagement rate and score
         Influencer influencer = influencerRepository.findById(current.getId()).orElseThrow(NotFoundException::new);
         influencer.updateEngagementRate();
+        influencer.updateInfluencerScore();
         influencerRepository.save(influencer);
 
         return "redirect:/collaborations/" + collabId;

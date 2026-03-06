@@ -39,7 +39,7 @@
         .btn-primary { background: var(--primary); border-color: transparent; color: #fff; }
 
         .metrics { display:grid; grid-template-columns: repeat(1,1fr); gap:12px; margin-top:16px; }
-        @media (min-width:720px) { .metrics { grid-template-columns: repeat(4,1fr); } }
+        @media (min-width:720px) { .metrics { grid-template-columns: repeat(5,1fr); } }
         .metric-card { background: linear-gradient(180deg,#fff,#fafafa); border-radius:12px; padding:14px; border:1px solid rgba(15,23,42,0.06); }
         .metric-title { font-size:0.85rem; color:var(--muted); }
         .metric-value { font-size:1.4rem; font-weight:700; margin-top:6px; }
@@ -97,6 +97,10 @@
         <div class="metric-card" role="listitem">
             <div class="metric-title">Total followers</div>
             <div class="metric-value" th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(dashboard.totalFollowers)}">0</div>
+        </div>
+        <div class="metric-card" role="listitem">
+            <div class="metric-title">Score</div>
+            <div class="metric-value" th:text="${dashboard.influencerScore != null ? T(org.ilias.influapp.utils.NumberFormatUtils).twoDecimals(dashboard.influencerScore) + ' / 100' : 'N/A'}">N/A</div>
         </div>
     </div>
 

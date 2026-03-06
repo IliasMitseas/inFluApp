@@ -126,4 +126,41 @@ public class Influencer extends User {
         this.totalFollowers = total;
         return total;
     }
+
+
+    public void updateInfluencerScore() {
+        double score = 0.0;
+
+        // Engagement component 40%
+        if (this.engagementRate != null) {
+            double engVal = Math.min(this.engagementRate.doubleValue(), 20.0);
+            score += (engVal / 20.0) * 40.0;
+        }
+
+        //Followers component 30%
+        int followers = this.totalFollowers != null ? this.totalFollowers : 0;
+        if (followers > 0) {
+            double logFollowers = Math.log10(followers);
+            double logMax = Math.log10(1_000_000); // 6.0
+            score += (Math.min(logFollowers, logMax) / logMax) * 30.0;
+        }
+
+        // Posts component 20%
+        int postCount = 0;
+        if (socialMediaAccounts != null) {
+            for (SocialMedia sm : socialMediaAccounts) {
+                if (sm != null && sm.getPosts() != null) {
+                    postCount += sm.getPosts().size();
+                }
+            }
+        }
+        score += (Math.min(postCount, 100.0) / 100.0) * 20.0;
+
+        // Availability bonus 10%
+        if (Boolean.TRUE.equals(this.isAvailable)) {
+            score += 10.0;
+        }
+
+        this.influencerScore = Math.round(score * 100.0) / 100.0;
+    }
 }

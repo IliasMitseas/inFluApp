@@ -58,6 +58,7 @@ public class InfluencerServiceImpl implements InfluencerService {
         influencer.setInfluencerType(updateInfluencer.getInfluencerType());
         influencer.updateTotalFollowers();
         influencer.updateEngagementRate();
+        influencer.updateInfluencerScore();
 
         influencerRepository.save(influencer);
 
@@ -73,7 +74,7 @@ public class InfluencerServiceImpl implements InfluencerService {
         EnumSet<Platform> selected = platformsForm == null || platformsForm.getSelectedPlatforms() == null
                 ? EnumSet.noneOf(Platform.class) : EnumSet.copyOf(platformsForm.getSelectedPlatforms());
 
-        // Remove unselected platforms (use removeIf for efficiency with JPA cascade)
+        // Remove unselected platforms
         influencer.getSocialMediaAccounts().removeIf(sm ->
             sm != null && sm.getPlatform() != null && !selected.contains(sm.getPlatform()));
 
@@ -83,7 +84,7 @@ public class InfluencerServiceImpl implements InfluencerService {
                 .map(SocialMedia::getPlatform)
                 .toList();
 
-        // Add new platforms using the proper helper method
+        // Add new platforms
         for (Platform platform : selected) {
             if (!currentPlatforms.contains(platform)) {
                 SocialMedia sm = new SocialMedia();

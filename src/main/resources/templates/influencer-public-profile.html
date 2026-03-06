@@ -110,6 +110,7 @@
                     <div style="display:flex;justify-content:space-between;"><span class="muted">Total posts</span><strong th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(dashboard != null ? dashboard.totalPosts : influencer.totalFollowers)}">0</strong></div>
                     <div style="display:flex;justify-content:space-between;"><span class="muted">Followers</span><strong th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(influencer.totalFollowers)}">0</strong></div>
                     <div style="display:flex;justify-content:space-between;"><span class="muted">Avg engagement</span><strong th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).twoDecimals(influencer.engagementRate)} + '%'">0.00%</strong></div>
+                    <div style="display:flex;justify-content:space-between;"><span class="muted">Score</span><strong th:text="${influencer.influencerScore != null ? T(org.ilias.influapp.utils.NumberFormatUtils).twoDecimals(influencer.influencerScore) + ' / 100' : 'N/A'}">N/A</strong></div>
                 </div>
             </div>
 

@@ -31,6 +31,13 @@ public class InfluencerController {
     public String influencerHome(Authentication authentication, Model model) {
         User user = userService.currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
+
+        // Recalculate metrics so they are always up to date
+        influencer.updateTotalFollowers();
+        influencer.updateEngagementRate();
+        influencer.updateInfluencerScore();
+        influencerRepository.save(influencer);
+
         model.addAttribute("influencer", influencer);
 
         // Load collaboration requests for this influencer (only pending by default)

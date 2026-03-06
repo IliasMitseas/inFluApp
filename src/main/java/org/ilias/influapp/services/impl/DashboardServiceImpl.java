@@ -80,6 +80,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .totalCollaborations(totalCollaborations)
                 .avgEngagementRate(avgEng == null ? 0.0 : avgEng)
                 .totalFollowers(totalFollowers)
+                .influencerScore(influencer.getInfluencerScore())
                 .recentPosts(recent)
                 .platformCounts(platformCounts)
                 .topPosts(topPosts)

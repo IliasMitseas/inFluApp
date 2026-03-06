@@ -17,6 +17,7 @@ public class InfluencerDashboardDto {
     private Integer totalCollaborations;
     private Double avgEngagementRate;
     private Integer totalFollowers;
+    private Double influencerScore;
     private List<PostSummaryDto> recentPosts;
     private List<PlatformCountDto> platformCounts;
     private List<PostSummaryDto> topPosts;

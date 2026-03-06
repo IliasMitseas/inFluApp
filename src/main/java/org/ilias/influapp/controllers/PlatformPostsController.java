@@ -75,8 +75,9 @@ public class PlatformPostsController {
         socialMedia.addPost(post);
         postRepository.save(post);
 
-        // Update influencer's overall engagement rate
+        // Update influencer overall engagement rate
         influencer.updateEngagementRate();
+        influencer.updateInfluencerScore();
         influencerRepository.save(influencer);
 
         return "redirect:/influencer/social/" + platform + "/posts";
@@ -102,6 +103,7 @@ public class PlatformPostsController {
 
         // Update influencer engagement rate
         influencer.updateEngagementRate();
+        influencer.updateInfluencerScore();
         influencerRepository.save(influencer);
 
         return "redirect:/influencer/social/" + platform + "/posts";
