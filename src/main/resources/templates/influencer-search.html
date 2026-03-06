@@ -134,11 +134,6 @@
             </div>
 
             <div>
-                <label>Available</label>
-                <div class="form-row"><input type="checkbox" th:field="*{isAvailable}"/> <span class="muted" style="margin-left:8px;">Only show available</span></div>
-            </div>
-
-            <div>
                 <label>Sort by</label>
                 <select name="sort">
                     <option th:value="totalFollowers" th:selected="${sortField=='totalFollowers'}">Followers</option>

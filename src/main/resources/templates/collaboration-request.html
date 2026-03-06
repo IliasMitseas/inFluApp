@@ -45,8 +45,10 @@
                 <div class="muted small-muted">Send an offer to the influencer</div>
             </div>
         </div>
-        <div>
+        <div class="actions">
             <a th:href="@{/influencers/search}" class="btn">Back to search</a>
+            <!-- Header-level action: submits the collaboration form -->
+            <button type="button" class="btn btn-primary" onclick="submitCollabForm()">Send Request</button>
         </div>
     </div>
 
@@ -77,7 +79,7 @@
                 </span>
             </div>
 
-            <form th:action="@{/collaborations/request}" method="post">
+            <form id="collabForm" th:action="@{/collaborations/request}" method="post">
                 <input type="hidden" name="influencerId" th:value="${influencer.id}"/>
 
                 <div class="box">
@@ -143,6 +145,15 @@
         } else {
             box.classList.add('hidden');
             select.disabled = false;
+        }
+    }
+    function submitCollabForm(){
+        const form = document.getElementById('collabForm');
+        if(!form) return;
+        if(typeof form.requestSubmit === 'function'){
+            form.requestSubmit();
+        } else {
+            form.submit();
         }
     }
 </script>
