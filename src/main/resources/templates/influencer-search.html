@@ -182,9 +182,19 @@
                 <div class="meta">
                     <div class="title" th:text="${inf.name}">Name</div>
                     <div class="sub">
-                        <span th:text="${inf.username}">username</span> • <span th:text="${inf.totalFollowers}">0</span> followers • <span th:text="${inf.influencerType}">TYPE</span>
+                        <span th:text="${inf.username}">username</span>
+                        &nbsp;•&nbsp;
+                        <span th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(inf.totalFollowers)}">0</span>
+                        &nbsp;followers • <span th:text="${inf.influencerType}">TYPE</span>
                     </div>
                     <div class="muted" th:text="${inf.bio}"></div>
+
+                    <div class="result-details">
+                        <span><strong>Engagement:</strong>&nbsp;<span th:text="${inf.engagementRate != null ? T(org.ilias.influapp.utils.NumberFormatUtils).twoDecimals(inf.engagementRate) + '%' : '0.00%'}">0.00%</span></span>
+                        <span><strong>Score:</strong>&nbsp;<span th:text="${inf.influencerScore != null ? T(org.ilias.influapp.utils.NumberFormatUtils).twoDecimals(inf.influencerScore) : 'N/A'}">N/A</span></span>
+                        <span th:if="${inf.minCollaborationBudget != null}"><strong>Min budget:</strong>&nbsp;<span th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(inf.minCollaborationBudget) + ' €'}">-</span></span>
+                        <span th:if="${inf.minCollaborationBudget == null}"><strong>Min budget:</strong>&nbsp;<span class="muted">N/A</span></span>
+                    </div>
                 </div>
                 <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
                     <a th:href="@{/influencers/{id}(id=${inf.id})}" class="btn">View</a>
