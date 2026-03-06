@@ -28,6 +28,7 @@ public class AuthController {
         if (!model.containsAttribute("registerRequest")) {
             model.addAttribute("registerRequest", new RegisterRequest());
         }
+
         return "register";
     }
 
@@ -37,6 +38,7 @@ public class AuthController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerRequest", bindingResult);
             redirectAttributes.addFlashAttribute("registerRequest", request);
+
             return "redirect:/register";
         }
 
@@ -45,8 +47,10 @@ public class AuthController {
         } catch (IllegalArgumentException ex) {
             redirectAttributes.addFlashAttribute("registerError", ex.getMessage());
             redirectAttributes.addFlashAttribute("registerRequest", request);
+
             return "redirect:/register";
         }
+
         return "redirect:/login?registered";
     }
 }

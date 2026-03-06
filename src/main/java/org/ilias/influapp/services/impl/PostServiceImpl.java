@@ -1,10 +1,12 @@
-package org.ilias.influapp.services;
+package org.ilias.influapp.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.dtos.PostDto;
 import org.ilias.influapp.entities.*;
 import org.ilias.influapp.entities.Enums.PostSentiment;
 import org.ilias.influapp.entities.Enums.ReactionType;
+import org.ilias.influapp.services.PostService;
+import org.ilias.influapp.services.SentimentAnalyzer;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class PostServiceImpl implements PostService {
                 .build();
     }
 
+
     @Override
     public List<String> parseCommentsFromText(String commentsText) {
         List<String> commentsList = new ArrayList<>();
@@ -45,6 +48,7 @@ public class PostServiceImpl implements PostService {
 
         return commentsList;
     }
+
 
     @Override
     public List<Reaction> createReactionsFromCounts(Post post, CountsRequest countsRequest) {

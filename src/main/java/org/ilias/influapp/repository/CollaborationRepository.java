@@ -18,8 +18,6 @@ public interface CollaborationRepository extends JpaRepository<Collaboration, Lo
 
     List<Collaboration> findByCampaignBusinessId(Long businessId);
 
-    List<Collaboration> findByCampaignBusinessIdAndStatus(Long businessId, CollaborationStatus status);
-
     long countByInfluencerId(Long influencerId);
 
     @Query("SELECT COUNT(c) FROM Collaboration c WHERE c.campaign.business.id = :businessId")

@@ -1,7 +1,8 @@
-package org.ilias.influapp.services;
+package org.ilias.influapp.services.impl;
 
 import org.ilias.influapp.entities.Enums.PostSentiment;
 import org.ilias.influapp.entities.Reaction;
+import org.ilias.influapp.services.SentimentAnalyzer;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

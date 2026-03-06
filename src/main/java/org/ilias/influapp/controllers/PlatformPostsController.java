@@ -41,6 +41,7 @@ public class PlatformPostsController {
         model.addAttribute("socialMedia", socialMedia);
         model.addAttribute("posts", posts);
         model.addAttribute("postDto", new PostDto());
+
         return "influencer-posts";
     }
 
@@ -50,6 +51,7 @@ public class PlatformPostsController {
                                     @ModelAttribute PostDto postDto,
                                     @RequestParam(required = false) String commentsText,
                                     @ModelAttribute CountsRequest countsRequest) {
+
         User user = userService.currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
 

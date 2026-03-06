@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 public interface BusinessService {
+
     Business updateBusinessProfile(User user, Business updatedBusiness);
+
     void uploadProfileImage(Long businessId, MultipartFile file) throws IOException;
 }

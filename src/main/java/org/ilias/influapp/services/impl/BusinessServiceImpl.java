@@ -1,10 +1,12 @@
-package org.ilias.influapp.services;
+package org.ilias.influapp.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.Business;
 import org.ilias.influapp.entities.User;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.BusinessRepository;
+import org.ilias.influapp.services.BusinessService;
+import org.ilias.influapp.services.ImageUploadService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,7 +41,9 @@ public class BusinessServiceImpl implements BusinessService {
         return business;
     }
 
+
     public void uploadProfileImage(Long businessId, MultipartFile file) throws IOException {
+
         Business business = businessRepository.findById(businessId).orElseThrow(NotFoundException::new);
 
         // Use ImageUploadService for upload logic

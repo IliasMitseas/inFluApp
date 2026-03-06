@@ -31,7 +31,9 @@ public class BusinessInfluencerController {
 
     @GetMapping("/influencers/{id}")
     public String viewInfluencer(@PathVariable Long id, Model model) {
+
         Influencer influencer = influencerRepository.findById(id).orElseThrow(NotFoundException::new);
+
         model.addAttribute("influencer", influencer);
 
         return "influencer-public-profile";
@@ -43,6 +45,7 @@ public class BusinessInfluencerController {
         if (id == null) {
             return "forward:/influencer/profile";
         }
+
         return "redirect:/influencers/" + id;
     }
 
@@ -142,7 +145,7 @@ public class BusinessInfluencerController {
                     .title("Ad-hoc request from " + business.getCompanyName())
                     .description("Auto-created campaign for a single collaboration request")
                     .status(CampaignStatus.DRAFT)
-                    .targetCategory(org.ilias.influapp.entities.Enums.Category.OTHER)
+                    .targetCategory(Category.OTHER)
                     .budget(paymentAmount != null ? paymentAmount : 0.0)
                     .startDate(LocalDate.now())
                     .build();

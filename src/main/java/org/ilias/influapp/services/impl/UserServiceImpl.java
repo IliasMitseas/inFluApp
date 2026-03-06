@@ -1,10 +1,11 @@
-package org.ilias.influapp.services;
+package org.ilias.influapp.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.*;
 import org.ilias.influapp.entities.Enums.UserRole;
 import org.ilias.influapp.exceptions.UnauthorizedException;
 import org.ilias.influapp.repository.UserRepository;
+import org.ilias.influapp.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

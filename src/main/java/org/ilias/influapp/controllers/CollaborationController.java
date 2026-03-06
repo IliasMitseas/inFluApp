@@ -53,6 +53,7 @@ public class CollaborationController {
 
         model.addAttribute("collaboration", collab);
         model.addAttribute("isInfluencer", current instanceof Influencer);
+
         return "collaboration-view";
     }
 
@@ -74,8 +75,10 @@ public class CollaborationController {
         return "influencer-collaborations";
     }
 
+
     @GetMapping("/business/collaborations")
     public String businessCollaborations(Authentication authentication, Model model) {
+
         User current = userService.currentUser(authentication);
         if (current == null) {
             return "redirect:/login";
@@ -101,9 +104,11 @@ public class CollaborationController {
         return "business-collaborations";
     }
 
+
     @PostMapping("/collaborations/{id}/accept")
     @Transactional
     public String acceptCollaboration(@PathVariable Long id, Authentication authentication) {
+
         User current = userService.currentUser(authentication);
         Collaboration collab = collaborationRepository.findById(id).orElseThrow(NotFoundException::new);
 
@@ -116,6 +121,7 @@ public class CollaborationController {
 
         return "redirect:/influencer/home?success=collab_accepted";
     }
+
 
     @PostMapping("/collaborations/{id}/reject")
     @Transactional
@@ -132,6 +138,7 @@ public class CollaborationController {
 
         return "redirect:/influencer/home?success=collab_rejected";
     }
+
 
     @GetMapping("/collaborations/{id}/posts/new")
     public String createPostForCollab(@PathVariable Long id, Authentication authentication, Model model) {
@@ -198,9 +205,11 @@ public class CollaborationController {
         return "redirect:/collaborations/" + collab.getId();
     }
 
+
     @PostMapping("/collaborations/{id}/delete")
     @Transactional
     public String deleteCollaboration(@PathVariable Long id, Authentication authentication) {
+
         User current = userService.currentUser(authentication);
         Collaboration collab = collaborationRepository.findById(id).orElseThrow(NotFoundException::new);
 
@@ -230,12 +239,15 @@ public class CollaborationController {
         if (current instanceof Influencer) {
             return "redirect:/influencer/collaborations/active";
         }
+
         return "redirect:/business/collaborations";
     }
+
 
     @PostMapping("/collaborations/{collabId}/posts/{postId}/delete")
     @Transactional
     public String deletePost(@PathVariable Long collabId, @PathVariable Long postId, Authentication authentication) {
+
         User current = userService.currentUser(authentication);
         Collaboration collab = collaborationRepository.findById(collabId).orElseThrow(NotFoundException::new);
         Post post = postRepository.findById(postId).orElseThrow(NotFoundException::new);

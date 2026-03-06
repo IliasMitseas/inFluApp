@@ -3,11 +3,12 @@ package org.ilias.influapp.controllers;
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.dtos.ProfilePlatformsForm;
 import org.ilias.influapp.entities.*;
+import org.ilias.influapp.entities.Enums.CollaborationStatus;
 import org.ilias.influapp.entities.Enums.Platform;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.InfluencerRepository;
 import org.ilias.influapp.repository.CollaborationRepository;
-import org.ilias.influapp.services.InfluencerServiceImpl;
+import org.ilias.influapp.services.impl.InfluencerServiceImpl;
 import org.ilias.influapp.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,7 @@ public class InfluencerController {
 
     @GetMapping("/influencer/home")
     public String influencerHome(Authentication authentication, Model model) {
+
         User user = userService.currentUser(authentication);
         Influencer influencer = influencerRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
 
@@ -41,7 +43,7 @@ public class InfluencerController {
         model.addAttribute("influencer", influencer);
 
         // Load collaboration requests for this influencer (only pending by default)
-        List<Collaboration> requests = collaborationRepository.findByInfluencerIdAndStatus(influencer.getId(), org.ilias.influapp.entities.Enums.CollaborationStatus.PENDING);
+        List<Collaboration> requests = collaborationRepository.findByInfluencerIdAndStatus(influencer.getId(), CollaborationStatus.PENDING);
         model.addAttribute("collaborationRequests", requests);
 
         return "influencer-home";
@@ -59,6 +61,7 @@ public class InfluencerController {
         return "influencer-profile";
     }
 
+
     @PostMapping("/influencer/profile")
     public String updateInfluencerProfile(Authentication authentication, @ModelAttribute("influencer") Influencer updateInfluencer) {
         User user = userService.currentUser(authentication);
@@ -67,13 +70,16 @@ public class InfluencerController {
         return "redirect:/influencer/profile";
     }
 
+
     @PostMapping("/influencer/profile/platforms")
     public String updateInfluencerPlatforms(Authentication authentication, @ModelAttribute("platformsForm") ProfilePlatformsForm platformsForm) {
+
         User user = userService.currentUser(authentication);
         influencerService.updateInfluencerPlatforms(user.getId(), platformsForm);
 
         return "redirect:/influencer/home";
     }
+
 
     @PostMapping("/influencer/profile/image")
     public String uploadProfileImage(Authentication authentication, @RequestParam("file") MultipartFile file) {

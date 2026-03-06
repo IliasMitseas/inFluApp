@@ -28,7 +28,9 @@ public class BusinessController {
     public String businessHome(Authentication authentication, Model model) {
         User user = userService.currentUser(authentication);
         Business business = businessRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
+
         model.addAttribute("business", business);
+
         return "business-home";
     }
 
@@ -36,14 +38,19 @@ public class BusinessController {
     public String businessProfile(Authentication authentication, Model model) {
         User user = userService.currentUser(authentication);
         Business business = businessRepository.findById(user.getId()).orElseThrow(NotFoundException::new);
+
         model.addAttribute("business", business);
         model.addAttribute("categories", Category.values());
         model.addAttribute("companySizes", CompanySize.values());
+
         return "business-profile";
     }
 
     @PostMapping("/business/profile")
-    public String updateBusinessProfile(Authentication authentication, @ModelAttribute("business") Business updateBusiness, Model model) {
+    public String updateBusinessProfile(Authentication authentication,
+                                        @ModelAttribute("business") Business updateBusiness,
+                                        Model model) {
+
         User user = userService.currentUser(authentication);
         Business business = businessService.updateBusinessProfile(user, updateBusiness);
 
@@ -51,6 +58,7 @@ public class BusinessController {
         model.addAttribute("categories", Category.values());
         model.addAttribute("companySizes", CompanySize.values());
         model.addAttribute("success", true);
+
         return "business-profile";
     }
 
@@ -65,6 +73,7 @@ public class BusinessController {
         } catch (IOException e) {
             return "redirect:/business/profile?error=upload_failed";
         }
+
         return "redirect:/business/profile?success=image_uploaded";
     }
 }

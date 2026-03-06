@@ -1,4 +1,4 @@
-package org.ilias.influapp.services;
+package org.ilias.influapp.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.dtos.ProfilePlatformsForm;
@@ -9,6 +9,8 @@ import org.ilias.influapp.entities.SocialMedia;
 import org.ilias.influapp.entities.User;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.InfluencerRepository;
+import org.ilias.influapp.services.ImageUploadService;
+import org.ilias.influapp.services.InfluencerService;
 import org.ilias.influapp.specifications.InfluencerSpecification;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
