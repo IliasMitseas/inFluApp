@@ -16,5 +16,5 @@ public interface PostService {
 
     List<Reaction> createReactionsFromCounts(Post post, CountsRequest countsRequest);
 
-    PostSentiment calculateAutoSentiment(List<Reaction> reactions, List<String> comments);
+    PostSentiment calculateAndSaveHybridSentiment(Post post, List<Reaction> reactions, List<String> comments);
 }

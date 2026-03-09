@@ -36,6 +36,9 @@ public class Post {
     @JoinColumn(name = "collaboration_id")
     private Collaboration collaboration;
 
+    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private SentimentAnalysis sentimentAnalysis;
+
     public Integer getTotalReactions() {
         if (reactions == null || reactions.isEmpty()) {
             return 0;

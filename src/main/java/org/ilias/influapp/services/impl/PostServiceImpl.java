@@ -5,8 +5,8 @@ import org.ilias.influapp.dtos.PostDto;
 import org.ilias.influapp.entities.*;
 import org.ilias.influapp.entities.Enums.PostSentiment;
 import org.ilias.influapp.entities.Enums.ReactionType;
+import org.ilias.influapp.services.HybridSentimentService;
 import org.ilias.influapp.services.PostService;
-import org.ilias.influapp.services.SentimentAnalyzer;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
-    private final SentimentAnalyzer sentimentAnalyzer;
+    private final HybridSentimentService hybridSentimentService;
 
     @Override
     public Post createPostFromDto(PostDto postDto, SocialMedia socialMedia) {
@@ -84,8 +84,9 @@ public class PostServiceImpl implements PostService {
         return reaction;
     }
 
+
     @Override
-    public PostSentiment calculateAutoSentiment(List<Reaction> reactions, List<String> comments) {
-        return sentimentAnalyzer.analyzeSentiment(reactions, comments);
+    public PostSentiment calculateAndSaveHybridSentiment(Post post, List<Reaction> reactions, List<String> comments) {
+        return hybridSentimentService.analyzeAndSave(post, reactions, comments);
     }
 }

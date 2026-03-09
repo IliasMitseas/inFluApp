@@ -5,11 +5,11 @@ import org.ilias.influapp.entities.Reaction;
 
 import java.util.List;
 
-public interface SentimentAnalyzer {
+public interface EmojiSentimentAnalyzer {
 
-    PostSentiment analyzeSentiment(List<Reaction> reactions, List<String> comments);
+    PostSentiment analyzeEmojiSentiment(List<Reaction> reactions, List<String> comments);
 
     double calculateReactionScore(List<Reaction> reactions);
 
-    double calculateCommentScore(List<String> comments);
+    double calculateEmojiScore(List<String> comments);
 }

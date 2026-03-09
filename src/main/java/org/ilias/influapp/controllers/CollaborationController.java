@@ -188,7 +188,7 @@ public class CollaborationController {
         post.setReactions(reactions);
 
         // Calculate sentiment and engagement rate
-        PostSentiment autoSentiment = postService.calculateAutoSentiment(reactions, comments);
+        PostSentiment autoSentiment = postService.calculateAndSaveHybridSentiment(post, reactions, comments);
         post.setPostSentiment(autoSentiment);
         post.calculateAndSetEngagementRate();
 
