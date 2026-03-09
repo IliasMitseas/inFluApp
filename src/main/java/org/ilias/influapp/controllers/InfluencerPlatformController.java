@@ -57,9 +57,8 @@ public class InfluencerPlatformController {
         socialMedia.setAccountUrl(socialMediaUpdate.getAccountUrl());
         socialMedia.setFollowers(socialMediaUpdate.getFollowers());
         socialMedia.setUsername(socialMediaUpdate.getUsername());
-        socialMedia.setAverageComments(socialMediaUpdate.getAverageComments());
         socialMedia.setProfileViews(socialMediaUpdate.getProfileViews());
-        socialMedia.setAverageLikes(socialMediaUpdate.getAverageLikes());
+        // averageComments and averageLikes are auto-calculated from posts
 
         // Update influencer's total followers
         influencer.updateTotalFollowers();

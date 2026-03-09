@@ -39,7 +39,7 @@ public class HybridSentimentService {
         // 3. Reactions
         double reactionScore = emojiSentimentAnalyzer.calculateReactionScore(reactions);
 
-        // Weighted average with simple fallback logic
+        // Weighted average — weights adapt to data volume
         double finalPolarity;
         String methodDesc;
 

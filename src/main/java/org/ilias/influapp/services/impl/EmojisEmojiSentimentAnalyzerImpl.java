@@ -58,12 +58,12 @@ public class EmojisEmojiSentimentAnalyzerImpl implements EmojiSentimentAnalyzer 
             totalReactions += count;
 
             double weight = switch (reaction.getType()) {
-                case LOVE -> 0.5;
-                case LIKE -> 0.4;
+                case LOVE -> 0.8;
+                case LIKE -> 0.6;
                 case WOW -> 0.2;
-                case HAHA -> 0.1;
+                case HAHA -> 0.2;
                 case SAD -> -0.7;
-                case ANGRY -> -1.0;
+                case ANGRY -> -0.7;
             };
             weightedSum += count * weight;
         }

@@ -150,16 +150,14 @@
                            style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(15,23,42,0.12);" />
                 </div>
                 <div>
-                    <label for="averageComments" class="muted">Average comments</label>
-                    <input id="averageComments" name="averageComments" type="number" min="0"
-                           th:value="${socialMedia.averageComments}"
-                           style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(15,23,42,0.12);" />
+                    <label class="muted">Average comments per post</label>
+                    <div style="padding:10px; border-radius:10px; border:1px solid rgba(15,23,42,0.12); background:#f8fafc; color:var(--text); font-weight:600;"
+                         th:text="${socialMedia.averageComments != null ? socialMedia.averageComments : 0}">0</div>
                 </div>
                 <div>
-                    <label for="averageLikes" class="muted">Average likes per post</label>
-                    <input id="averageLikes" name="averageLikes" type="number" min="0"
-                           th:value="${socialMedia.averageLikes}"
-                           style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(15,23,42,0.12);" />
+                    <label class="muted">Average likes per post</label>
+                    <div style="padding:10px; border-radius:10px; border:1px solid rgba(15,23,42,0.12); background:#f8fafc; color:var(--text); font-weight:600;"
+                         th:text="${socialMedia.averageLikes != null ? socialMedia.averageLikes : 0}">0</div>
                 </div>
                 <div style="display:flex; gap:10px;">
                     <a class="btn" th:href="@{|/influencer/social/${platform}/posts|}">View/Add posts</a>

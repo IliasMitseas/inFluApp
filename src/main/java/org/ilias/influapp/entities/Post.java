@@ -49,7 +49,6 @@ public class Post {
     }
 
     public void calculateAndSetEngagementRate() {
-        // Συνολικές αλληλεπιδράσεις
         int totalReactions = getTotalReactions();
         int totalComments = (comments != null) ? comments.size() : 0;
         int totalShares = (shares != null) ? shares : 0;
@@ -63,18 +62,18 @@ public class Post {
         int reachValue = (reach != null) ? reach : 0;
         int impressionsValue = (impressionCount != null) ? impressionCount : 0;
 
-        // Το base πρέπει να είναι τουλάχιστον όσο τα totalInteractions
-        int base = Math.max(Math.max(reachValue, impressionsValue), (int) totalInteractions);
+        // Base = max(reach, impressions). These represent the audience size.
+        int base = Math.max(reachValue, impressionsValue);
 
         if (base == 0) {
+            // No reach/impressions data → cannot compute a meaningful rate
             engagementRate = 0.0;
             return;
         }
 
-        // Engagement Rate: πάντα <= 100%
-        engagementRate = (totalInteractions / base) * 100;
+        engagementRate = (totalInteractions / (double) base) * 100.0;
 
-        // safety net για λάθος δεδομένα
+        // Cap at 100% for edge cases where interactions exceed reach
         if (engagementRate > 100.0) {
             engagementRate = 100.0;
         }

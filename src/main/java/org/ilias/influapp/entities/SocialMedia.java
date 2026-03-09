@@ -55,6 +55,7 @@ public class SocialMedia {
         }
         posts.add(post);
         post.setSocialMedia(this);
+        updateAverages();
     }
 
     public void removePost(Post post) {
@@ -63,5 +64,26 @@ public class SocialMedia {
         }
         posts.remove(post);
         post.setSocialMedia(null);
+        updateAverages();
+    }
+
+
+    public void updateAverages() {
+        if (posts == null || posts.isEmpty()) {
+            this.averageLikes = 0;
+            this.averageComments = 0;
+            return;
+        }
+
+        int totalLikes = 0;
+        int totalComments = 0;
+
+        for (Post p : posts) {
+            totalLikes += p.getTotalReactions();
+            totalComments += (p.getComments() != null) ? p.getComments().size() : 0;
+        }
+
+        this.averageLikes = totalLikes / posts.size();
+        this.averageComments = totalComments / posts.size();
     }
 }

@@ -101,7 +101,7 @@ public class PlatformPostsController {
 
         // Remove from social media (orphanRemoval will delete the post)
         SocialMedia socialMedia = influencerService.findSocialMediaByPlatform(influencer, platform);
-        socialMedia.getPosts().remove(post);
+        socialMedia.removePost(post);
 
         // Update influencer engagement rate
         influencer.updateEngagementRate();
