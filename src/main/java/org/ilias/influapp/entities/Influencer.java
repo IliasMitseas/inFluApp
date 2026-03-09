@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.ilias.influapp.entities.Enums.Category;
 import org.ilias.influapp.entities.Enums.InfluencerType;
+import org.ilias.influapp.entities.Enums.PostSentiment;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -61,13 +62,7 @@ public class Influencer extends User {
         account.setInfluencer(this);
     }
 
-    public void removeSocialMediaAccount(SocialMedia account) {
-        if (account == null) {
-            return;
-        }
-        socialMediaAccounts.remove(account);
-        account.setInfluencer(null);
-    }
+
 
     public void addCollaboration(Collaboration collaboration) {
         if (collaboration == null) {
@@ -77,15 +72,9 @@ public class Influencer extends User {
         collaboration.setInfluencer(this);
     }
 
-    public void removeCollaboration(Collaboration collaboration) {
-        if (collaboration == null) {
-            return;
-        }
-        collaborations.remove(collaboration);
-        collaboration.setInfluencer(null);
-    }
 
     public void updateEngagementRate() {
+
         if (socialMediaAccounts == null || socialMediaAccounts.isEmpty()) {
             this.engagementRate = null;
             return;
@@ -114,6 +103,8 @@ public class Influencer extends User {
         }
     }
 
+
+
     public int updateTotalFollowers() {
         int total = 0;
         if (socialMediaAccounts != null && !socialMediaAccounts.isEmpty()) {
@@ -128,21 +119,23 @@ public class Influencer extends User {
     }
 
 
+
+
     public void updateInfluencerScore() {
         double score = 0.0;
 
-        // Engagement component 40%
+        // Engagement component 35%
         if (this.engagementRate != null) {
             double engVal = Math.min(this.engagementRate.doubleValue(), 20.0);
-            score += (engVal / 20.0) * 40.0;
+            score += (engVal / 20.0) * 35.0;
         }
 
-        //Followers component 30%
+        // Followers component 25%
         int followers = this.totalFollowers != null ? this.totalFollowers : 0;
         if (followers > 0) {
             double logFollowers = Math.log10(followers);
-            double logMax = Math.log10(1_000_000); // 6.0
-            score += (Math.min(logFollowers, logMax) / logMax) * 30.0;
+            double logMax = Math.log10(1_000_000);
+            score += (Math.min(logFollowers, logMax) / logMax) * 25.0;
         }
 
         // Posts component 20%
@@ -156,11 +149,41 @@ public class Influencer extends User {
         }
         score += (Math.min(postCount, 100.0) / 100.0) * 20.0;
 
-        // Availability bonus 10%
+        double sentimentSum = 0.0;
+        int sentimentCount = 0;
+
+        if (socialMediaAccounts != null) {
+            for (SocialMedia sm : socialMediaAccounts) {
+                if (sm != null && sm.getPosts() != null) {
+                    for (Post post : sm.getPosts()) {
+                        if (post.getPostSentiment() != null) {
+                            sentimentSum += sentimentToScore(post.getPostSentiment());
+                            sentimentCount++;
+                        }
+                    }
+                }
+            }
+        }
+        if (sentimentCount > 0) {
+            double avgSentiment = sentimentSum / sentimentCount;
+            score += ((avgSentiment + 1.0) / 2.0) * 15.0;
+        }
+
+        // Availability bonus 5%
         if (Boolean.TRUE.equals(this.isAvailable)) {
-            score += 10.0;
+            score += 5.0;
         }
 
         this.influencerScore = Math.round(score * 100.0) / 100.0;
+    }
+
+    private double sentimentToScore(PostSentiment sentiment) {
+        return switch (sentiment) {
+            case LOVE -> 0.6;
+            case LIKE -> 0.4;
+            case NEUTRAL -> 0.0;
+            case DISLIKE -> -0.4;
+            case TERRIBLE -> -0.6;
+        };
     }
 }
