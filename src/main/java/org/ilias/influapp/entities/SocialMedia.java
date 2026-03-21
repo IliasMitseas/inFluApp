@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.ilias.influapp.entities.Enums.Platform;
+import org.ilias.influapp.config.SocialMediaEntityListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(SocialMediaEntityListener.class)
 public class SocialMedia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,5 +87,28 @@ public class SocialMedia {
 
         this.averageLikes = totalLikes / posts.size();
         this.averageComments = totalComments / posts.size();
+    }
+
+    public void calculateProfileViews() {
+        int baseProfileViews = followers != null ? followers / 5 : 100;
+        
+        int reachBasedViews = 0;
+        if (posts != null) {
+            for (Post p : posts) {
+                if (p != null && p.getReach() != null) {
+                    reachBasedViews += p.getReach() / 10;
+                }
+            }
+        }
+        
+        double platformMultiplier = switch(platform) {
+            case INSTAGRAM -> 1.5;
+            case TIKTOK -> 2.0;
+            case YOUTUBE -> 1.2;
+            case FACEBOOK -> 1.0;
+            default -> 1.0;
+        };
+        
+        this.profileViews = (int) ((baseProfileViews + reachBasedViews) * platformMultiplier);
     }
 }

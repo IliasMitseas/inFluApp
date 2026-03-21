@@ -2,6 +2,7 @@ package org.ilias.influapp.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +20,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Public pages
                         .requestMatchers("/login", "/register", "/css/**", "/js/**", "/images/**").permitAll()
+                        // Swagger / OpenAPI - allow public access
+                        .requestMatchers("/v3/api-docs/**", "/v3/api-docs", "/swagger-ui/**", "/swagger-ui.html", "/swagger-ui/index.html", "/swagger-resources/**", "/webjars/**").permitAll()
                         // Static assets under src/main/resources/static
                         .requestMatchers("/*.svg", "/*.png", "/*.jpg", "/*.jpeg", "/*.webp", "/*.ico").permitAll()
                         // Role landing pages
@@ -57,6 +60,7 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID", "remember-me")
                         .permitAll()
                 )
+                .httpBasic(Customizer.withDefaults()) // Enable HTTP Basic Auth for Postman/API testing
                 .build();
     }
 

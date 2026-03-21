@@ -13,3 +13,7 @@ public interface SocialMediaRepository extends JpaRepository<SocialMedia, Long> 
     Optional<SocialMedia> findByInfluencerIdAndPlatform(Long influencerId, Platform platform);
     boolean existsByInfluencerIdAndPlatform(Long influencerId, Platform platform);
 }
+
+
+
+

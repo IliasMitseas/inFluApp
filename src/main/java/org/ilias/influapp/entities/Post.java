@@ -3,6 +3,7 @@ package org.ilias.influapp.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import org.ilias.influapp.entities.Enums.PostSentiment;
+import org.ilias.influapp.config.PostEntityListener;
 
 import java.util.List;
 
@@ -12,13 +13,14 @@ import java.util.List;
 @Entity(name = "posts")
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(PostEntityListener.class)
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Reaction> reactions;
     @ElementCollection
     @CollectionTable(name = "post_comments", joinColumns = @JoinColumn(name = "post_id"))
