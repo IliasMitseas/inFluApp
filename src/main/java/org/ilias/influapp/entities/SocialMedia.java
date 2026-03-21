@@ -74,19 +74,27 @@ public class SocialMedia {
         if (posts == null || posts.isEmpty()) {
             this.averageLikes = 0;
             this.averageComments = 0;
+            this.engagementRate = 0.0;
             return;
         }
 
         int totalLikes = 0;
         int totalComments = 0;
+        double totalEngagement = 0.0;
+        int postsWithEngagement = 0;
 
         for (Post p : posts) {
             totalLikes += p.getTotalReactions();
             totalComments += (p.getComments() != null) ? p.getComments().size() : 0;
+            if (p.getEngagementRate() != null) {
+                totalEngagement += p.getEngagementRate();
+                postsWithEngagement++;
+            }
         }
 
         this.averageLikes = totalLikes / posts.size();
         this.averageComments = totalComments / posts.size();
+        this.engagementRate = postsWithEngagement > 0 ? totalEngagement / postsWithEngagement : 0.0;
     }
 
     public void calculateProfileViews() {

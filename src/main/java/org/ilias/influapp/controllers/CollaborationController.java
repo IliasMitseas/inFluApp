@@ -196,6 +196,7 @@ public class CollaborationController {
         collab.addPost(post);
         socialMedia.addPost(post);
         postRepository.save(post);
+        socialMediaRepository.save(socialMedia);
 
         // Update influencer overall engagement rate and score
         influencer.updateEngagementRate();
@@ -260,7 +261,9 @@ public class CollaborationController {
         // Remove from both parent collections — orphanRemoval handles the actual delete
         collab.getPosts().remove(post);
         if (post.getSocialMedia() != null) {
-            post.getSocialMedia().getPosts().remove(post);
+            SocialMedia socialMedia = post.getSocialMedia();
+            socialMedia.removePost(post);
+            socialMediaRepository.save(socialMedia);
         }
 
         // Update influencer engagement rate and score

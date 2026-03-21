@@ -8,6 +8,7 @@ import org.ilias.influapp.entities.Enums.PostSentiment;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.InfluencerRepository;
 import org.ilias.influapp.repository.PostRepository;
+import org.ilias.influapp.repository.SocialMediaRepository;
 import org.ilias.influapp.services.InfluencerService;
 import org.ilias.influapp.services.PostService;
 import org.ilias.influapp.services.UserService;
@@ -26,6 +27,7 @@ public class PlatformPostsController {
     private final InfluencerRepository influencerRepository;
     private final InfluencerService influencerService;
     private final PostRepository postRepository;
+    private final SocialMediaRepository socialMediaRepository;
     private final PostService postService;
 
     @GetMapping("/influencer/social/{platform}/posts")
@@ -76,6 +78,7 @@ public class PlatformPostsController {
         // Add post to social media using proper helper method
         socialMedia.addPost(post);
         postRepository.save(post);
+        socialMediaRepository.save(socialMedia);
 
         // Update influencer overall engagement rate
         influencer.updateEngagementRate();
@@ -102,6 +105,7 @@ public class PlatformPostsController {
         // Remove from social media (orphanRemoval will delete the post)
         SocialMedia socialMedia = influencerService.findSocialMediaByPlatform(influencer, platform);
         socialMedia.removePost(post);
+        socialMediaRepository.save(socialMedia);
 
         // Update influencer engagement rate
         influencer.updateEngagementRate();

@@ -104,6 +104,14 @@ public class TestDataLoader implements CommandLineRunner {
         Influencer inf5 = createOrUpdateInfluencer("inf5@example.com", "inf5", "Inf Five", "pass", true);
         Influencer inf6 = createOrUpdateInfluencer("inf6@example.com", "inf6", "Inf Six", "pass", false);
 
+        // Create 6 influencers with POOR profiles (low followers, low engagement)
+        Influencer inf7 = createOrUpdateInfluencer("inf7@example.com", "inf7", "Poor Performer One", "pass", true);
+        Influencer inf8 = createOrUpdateInfluencer("inf8@example.com", "inf8", "Low Engagement Two", "pass", true);
+        Influencer inf9 = createOrUpdateInfluencer("inf9@example.com", "inf9", "Fake Followers Three", "pass", false);
+        Influencer inf10 = createOrUpdateInfluencer("inf10@example.com", "inf10", "Inactive Four", "pass", true);
+        Influencer inf11 = createOrUpdateInfluencer("inf11@example.com", "inf11", "Controversial Five", "pass", true);
+        Influencer inf12 = createOrUpdateInfluencer("inf12@example.com", "inf12", "Shadow Banned Six", "pass", false);
+
         // Add detailed profile information for each influencer
         try {
             inf1.setAge("29");
@@ -178,6 +186,14 @@ public class TestDataLoader implements CommandLineRunner {
 
         createSocialMediaIfNotExists(inf6, Platform.INSTAGRAM, "@inf6", "https://instagram.com/inf6");
         createSocialMediaIfNotExists(inf6, Platform.TIKTOK, "@inf6t", "https://tiktok.com/@inf6");
+
+        // Create social media accounts for poor performers as well (required by c7-c12 post seeds)
+        createSocialMediaIfNotExists(inf7, Platform.INSTAGRAM, "@inf7", "https://instagram.com/inf7");
+        createSocialMediaIfNotExists(inf8, Platform.TIKTOK, "@inf8", "https://tiktok.com/@inf8");
+        createSocialMediaIfNotExists(inf9, Platform.INSTAGRAM, "@inf9", "https://instagram.com/inf9");
+        createSocialMediaIfNotExists(inf10, Platform.YOUTUBE, "InfTenYT", "https://youtube.com/inf10");
+        createSocialMediaIfNotExists(inf11, Platform.TIKTOK, "@inf11", "https://tiktok.com/@inf11");
+        createSocialMediaIfNotExists(inf12, Platform.INSTAGRAM, "@inf12", "https://instagram.com/inf12");
 
         // Create collaborations and posts for each collaboration
         log.info("Creating collaborations with posts...");
@@ -260,20 +276,118 @@ public class TestDataLoader implements CommandLineRunner {
             log.info("Created PENDING collaboration c2={} (not accepted)", pending1.getId());
         }
 
+        // ========== COLLABORATIONS WITH POOR PERFORMERS (inf7-inf12) ==========
+        log.info("Creating collaborations for POOR PERFORMERS with bad engagement...");
+        
+        // Biz1 -> Inf7 (Summer Promo) + post with very poor engagement
+        if (summer != null) {
+            Collaboration c7 = createCollaborationIfNotExists(summer, inf7, CollaborationStatus.ACCEPTED, 150.0);
+            SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf7.getId(), Platform.INSTAGRAM).orElse(null);
+            if (c7 != null && sm != null) {
+                createPostForCollaboration(c7, sm, "Summer promo post from ACME Corp. Check it out!",
+                    List.of("Spam?", "Not interested"), 
+                    120, 300, Map.of(ReactionType.LIKE, 5, ReactionType.SAD, 2, ReactionType.ANGRY, 3), 1);
+            } else {
+                log.warn("Skipped c7 post seed (summer/inf7): collaborationPresent={}, socialMediaPresent={}", c7 != null, sm != null);
+            }
+        }
+
+        // Biz2 -> Inf8 (Q2 Marketing) + post with extremely low engagement
+        if (q2 != null) {
+            Collaboration c8 = createCollaborationIfNotExists(q2, inf8, CollaborationStatus.ACCEPTED, 100.0);
+            SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf8.getId(), Platform.TIKTOK).orElse(null);
+            if (c8 != null && sm != null) {
+                createPostForCollaboration(c8, sm, "Beta LLC Q2 Marketing content. New product available now.",
+                    List.of(), // No comments
+                    50, 150, Map.of(ReactionType.LIKE, 2, ReactionType.HAHA, 1), 0);
+            } else {
+                log.warn("Skipped c8 post seed (q2/inf8): collaborationPresent={}, socialMediaPresent={}", c8 != null, sm != null);
+            }
+        }
+
+        // Biz1 -> Inf9 (Holiday Sale) + post with MOSTLY NEGATIVE reactions (fake followers, no real engagement)
+        if (holiday != null) {
+            Collaboration c9 = createCollaborationIfNotExists(holiday, inf9, CollaborationStatus.ACCEPTED, 200.0);
+            SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf9.getId(), Platform.INSTAGRAM).orElse(null);
+            if (c9 != null && sm != null) {
+                createPostForCollaboration(c9, sm, "Holiday Sale from ACME! Limited time offer inside!",
+                    List.of("Obvious promotion", "Untrustworthy", "Fake engagement"), 
+                    300, 800, Map.of(ReactionType.LIKE, 8, ReactionType.ANGRY, 15, ReactionType.SAD, 5, ReactionType.WOW, 2), 5);
+            } else {
+                log.warn("Skipped c9 post seed (holiday/inf9): collaborationPresent={}, socialMediaPresent={}", c9 != null, sm != null);
+            }
+        }
+
+        // Biz3 -> Inf10 (Brand Awareness) + post with almost NO engagement (inactive account)
+        if (ba != null) {
+            Collaboration c10 = createCollaborationIfNotExists(ba, inf10, CollaborationStatus.ACCEPTED, 120.0);
+            SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf10.getId(), Platform.YOUTUBE).orElse(null);
+            if (c10 != null && sm != null) {
+                createPostForCollaboration(c10, sm, "Gamma Co brand awareness video. Check this out.",
+                    List.of(), // No comments
+                    40, 120, Map.of(ReactionType.LIKE, 1), 0);
+            } else {
+                log.warn("Skipped c10 post seed (brand-awareness/inf10): collaborationPresent={}, socialMediaPresent={}", c10 != null, sm != null);
+            }
+        }
+
+        // Biz2 -> Inf11 (New Product Launch) + post with CONTROVERSIAL/NEGATIVE reactions
+        if (launch != null) {
+            Collaboration c11 = createCollaborationIfNotExists(launch, inf11, CollaborationStatus.ACCEPTED, 180.0);
+            SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf11.getId(), Platform.TIKTOK).orElse(null);
+            if (c11 != null && sm != null) {
+                createPostForCollaboration(c11, sm, "Beta product launch. What do you think about this?",
+                    List.of("Bad quality", "Not worth it", "Horrible experience", "Waste of money", "Disappointed"), 
+                    400, 1200, Map.of(ReactionType.ANGRY, 45, ReactionType.SAD, 20, ReactionType.LIKE, 15, ReactionType.HAHA, 5, ReactionType.WOW, 3), 8);
+            } else {
+                log.warn("Skipped c11 post seed (launch/inf11): collaborationPresent={}, socialMediaPresent={}", c11 != null, sm != null);
+            }
+        }
+
+        // Biz3 -> Inf12 (Product Demo) + post with minimal engagement (shadow banned)
+        if (demo != null) {
+            Collaboration c12 = createCollaborationIfNotExists(demo, inf12, CollaborationStatus.ACCEPTED, 110.0);
+            SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf12.getId(), Platform.INSTAGRAM).orElse(null);
+            if (c12 != null && sm != null) {
+                createPostForCollaboration(c12, sm, "Gamma Co product demo with more details.",
+                    List.of(), // No comments due to shadow ban
+                    25, 80, Map.of(ReactionType.LIKE, 1, ReactionType.SAD, 1), 0);
+            } else {
+                log.warn("Skipped c12 post seed (demo/inf12): collaborationPresent={}, socialMediaPresent={}", c12 != null, sm != null);
+            }
+        }
+
+        // ========== ADDITIONAL TEST CASES ==========
+        // More posts from good influencers but with poor performance variations
+        if (summer != null) {
+            // Second post from inf1 with slightly lower engagement
+            Collaboration c13 = createCollaborationIfNotExists(summer, inf1, CollaborationStatus.ACCEPTED, 350.0);
+            SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf1.getId(), Platform.YOUTUBE).orElse(null);
+            if (c13 != null && sm != null) {
+                createPostForCollaboration(c13, sm, "Summer deals roundup! Here's what ACME Corp is offering this season.",
+                    List.of("Good info", "Helpful post"), 
+                    5000, 15000, Map.of(ReactionType.LIKE, 150, ReactionType.LOVE, 30, ReactionType.WOW, 10), 25);
+            }
+        }
+
+        // Post with mixed reactions
+        if (q2 != null) {
+            Collaboration c14 = createCollaborationIfNotExists(q2, inf3, CollaborationStatus.ACCEPTED, 300.0);
+            SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf3.getId(), Platform.FACEBOOK).orElse(null);
+            if (c14 != null && sm != null) {
+                createPostForCollaboration(c14, sm, "Beta LLC Q2 marketing update. New strategies ahead!",
+                    List.of("Interesting", "Not convinced", "Tell us more", "Okay I guess"), 
+                    2000, 6000, Map.of(ReactionType.LIKE, 120, ReactionType.LOVE, 20, ReactionType.SAD, 15, ReactionType.ANGRY, 8), 30);
+            }
+        }
+
         // Update all SocialMedia metrics using direct SQL instead of entity methods
         log.info("Updating SocialMedia metrics using database updates...");
-        try {
-            // Use direct SQL UPDATE to calculate average_likes from reactions
-            updateAverageLikesInDatabase();
-            updateEngagementRateInDatabase();
-            updateAverageCommentsInDatabase();
-            updateProfileViewsInDatabase();
-            
-            log.info("✓ All SocialMedia metrics updated successfully via SQL");
-        } catch (Throwable ex) {
-            log.warn("✗ Failed to update SocialMedia metrics: {}", ex.getMessage());
-            ex.printStackTrace();
-        }
+        try { updateAverageLikesInDatabase(); } catch (Throwable ex) { log.warn("Failed average_likes update: {}", ex.getMessage()); }
+        try { updateEngagementRateInDatabase(); } catch (Throwable ex) { log.warn("Failed engagement_rate update: {}", ex.getMessage()); }
+        try { updateAverageCommentsInDatabase(); } catch (Throwable ex) { log.warn("Failed average_comments update: {}", ex.getMessage()); }
+        try { updateProfileViewsInDatabase(); } catch (Throwable ex) { log.warn("Failed profile_views update: {}", ex.getMessage()); }
+        log.info("✓ SocialMedia metric update pass completed");
 
         log.info("TestDataLoader finished - comprehensive test data seeding complete");
         
@@ -561,15 +675,15 @@ public class TestDataLoader implements CommandLineRunner {
                     log.info("Processing: {} ({}) - ID: {}", sm.getUsername(), sm.getPlatform(), sm.getId());
                     
                     int totalReactions = 0;
-                    int postCount = 0;
-                    
-                    // Get posts for this social media
-                    if (sm.getPosts() != null && !sm.getPosts().isEmpty()) {
-                        postCount = sm.getPosts().size();
+                    List<Post> posts = postRepository.findBySocialMediaId(sm.getId());
+                    int postCount = posts.size();
+
+                    // Always query posts by social media id to avoid stale in-memory collections
+                    if (!posts.isEmpty()) {
                         log.info("  Found {} posts", postCount);
                         
                         // For each post, fetch reactions directly from database
-                        for (Post p : sm.getPosts()) {
+                        for (Post p : posts) {
                             if (p != null) {
                                 log.info("    Post ID: {}, Reactions count: {}", p.getId(), 
                                     p.getReactions() != null ? p.getReactions().size() : "NULL");
@@ -628,11 +742,11 @@ public class TestDataLoader implements CommandLineRunner {
             List<SocialMedia> allSm = socialMediaRepository.findAll();
             for (SocialMedia sm : allSm) {
                 int totalComments = 0;
-                int postCount = 0;
-                
-                if (sm.getPosts() != null && !sm.getPosts().isEmpty()) {
-                    postCount = sm.getPosts().size();
-                    for (Post p : sm.getPosts()) {
+                List<Post> posts = postRepository.findBySocialMediaId(sm.getId());
+                int postCount = posts.size();
+
+                if (!posts.isEmpty()) {
+                    for (Post p : posts) {
                         if (p != null && p.getComments() != null) {
                             totalComments += p.getComments().size();
                         }
@@ -656,15 +770,13 @@ public class TestDataLoader implements CommandLineRunner {
             List<SocialMedia> allSm = socialMediaRepository.findAll();
             for (SocialMedia sm : allSm) {
                 double totalEngagement = 0.0;
-                int postCount = 0;
-                
-                if (sm.getPosts() != null && !sm.getPosts().isEmpty()) {
-                    for (Post p : sm.getPosts()) {
-                        if (p != null) {
-                            postCount++;
-                            if (p.getEngagementRate() != null) {
-                                totalEngagement += p.getEngagementRate();
-                            }
+                List<Post> posts = postRepository.findBySocialMediaId(sm.getId());
+                int postCount = posts.size();
+
+                if (!posts.isEmpty()) {
+                    for (Post p : posts) {
+                        if (p != null && p.getEngagementRate() != null) {
+                            totalEngagement += p.getEngagementRate();
                         }
                     }
                 }
