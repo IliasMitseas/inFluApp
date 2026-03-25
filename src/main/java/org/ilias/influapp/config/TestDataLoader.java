@@ -66,6 +66,43 @@ public class TestDataLoader implements CommandLineRunner {
         this.postService = postService;
     }
 
+    /**
+     * Recalculate influencer-level derived metrics from their social media accounts
+     * and persist them immediately. This ensures engagementRate/influencerScore
+     * are written to DB for test data without requiring a profile view.
+     */
+    private void updateInfluencerMetricsFromSocialMedia() {
+        log.info("Recalculating and persisting influencer metrics for all influencers...");
+        List<Influencer> all = influencerRepository.findAll();
+        for (Influencer inf : all) {
+            try {
+                // Reload to ensure associations are fetched lazily if necessary
+                Influencer reloaded = influencerRepository.findById(inf.getId()).orElse(inf);
+
+                // Ensure each SocialMedia has latest averages (in case they were updated directly)
+                if (reloaded.getSocialMediaAccounts() != null) {
+                    for (SocialMedia sm : reloaded.getSocialMediaAccounts()) {
+                        try {
+                            SocialMedia refreshed = socialMediaRepository.findById(sm.getId()).orElse(sm);
+                            // If SocialMedia.updateAverages would change values, call it
+                            refreshed.updateAverages();
+                            socialMediaRepository.saveAndFlush(refreshed);
+                        } catch (Throwable ignore) {}
+                    }
+                }
+
+                // Recalculate influencer derived metrics and save
+                reloaded.updateTotalFollowers();
+                reloaded.updateEngagementRate();
+                reloaded.updateInfluencerScore();
+                influencerRepository.saveAndFlush(reloaded);
+                log.info("  Persisted influencer {}: followers={}, engagement={}, score={}", reloaded.getUsername(), reloaded.getTotalFollowers(), reloaded.getEngagementRate(), reloaded.getInfluencerScore());
+            } catch (Throwable ex) {
+                log.warn("  Failed to persist influencer metrics for {}: {}", inf.getUsername(), ex.getMessage());
+            }
+        }
+    }
+
     @Override
     @Transactional
     public void run(String... args) {
@@ -389,6 +426,9 @@ public class TestDataLoader implements CommandLineRunner {
         try { updateProfileViewsInDatabase(); } catch (Throwable ex) { log.warn("Failed profile_views update: {}", ex.getMessage()); }
         log.info("✓ SocialMedia metric update pass completed");
 
+
+        try { updateInfluencerMetricsFromSocialMedia(); } catch (Throwable ex) { log.warn("Failed to persist influencer metrics: {}", ex.getMessage()); }
+
         log.info("TestDataLoader finished - comprehensive test data seeding complete");
         
         // Summary counts to help verification
@@ -609,7 +649,15 @@ public class TestDataLoader implements CommandLineRunner {
                 r.setCount(entry.getValue());
                 reactions.add(r);
             }
+            // Persist reactions
             reactionRepository.saveAll(reactions);
+            // Attach reactions to the post and persist the post so engagement calculations see them
+            try {
+                p.setReactions(reactions);
+                p = postRepository.saveAndFlush(p);
+            } catch (Throwable ex) {
+                log.warn("Failed to attach reactions to post {}: {}", p.getId(), ex.getMessage());
+            }
             log.info("Created {} reactions for post id={}", reactions.size(), p.getId());
         }
         
@@ -634,6 +682,17 @@ public class TestDataLoader implements CommandLineRunner {
             log.warn("Failed to calculate sentiment for post {}: {}", p.getId(), ex.getMessage());
         }
         
+        // Ensure SocialMedia has the post in its collection so entity listeners and
+        // in-memory calculations use consistent data
+        try {
+            if (sm != null && !sm.getPosts().contains(p)) {
+                sm.addPost(p);
+                socialMediaRepository.saveAndFlush(sm);
+            }
+        } catch (Throwable ex) {
+            log.warn("Failed to link post to social media {}: {}", sm != null ? sm.getId() : null, ex.getMessage());
+        }
+
         // Ensure collaboration has post reference
         try {
             if (!coll.getPosts().contains(p)) {
@@ -648,18 +707,13 @@ public class TestDataLoader implements CommandLineRunner {
         return p;
     }
 
-    /**
-     * Update average_likes using entity-based approach
-     */
+
     private void updateAverageLikesInDatabase() {
         log.info("Updating average_likes using entity-based approach...");
         updateAverageLikesViaEntities();
     }
 
-    /**
-     * Fallback: Update average_likes using entity access with explicit reaction fetching
-     */
-    @Transactional
+
     private void updateAverageLikesViaEntities() {
         try {
             log.info("=== STARTING AVERAGE_LIKES UPDATE ===");
