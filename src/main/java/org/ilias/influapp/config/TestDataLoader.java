@@ -1,5 +1,6 @@
 package org.ilias.influapp.config;
 
+import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.*;
 import org.ilias.influapp.entities.Enums.Category;
 import org.ilias.influapp.entities.Enums.CampaignStatus;
@@ -7,6 +8,7 @@ import org.ilias.influapp.entities.Enums.CollaborationStatus;
 import org.ilias.influapp.entities.Enums.Platform;
 import org.ilias.influapp.entities.Enums.UserRole;
 import org.ilias.influapp.repository.*;
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +21,12 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ilias.influapp.services.HybridSentimentService;
-import org.ilias.influapp.services.PostService;
 import org.ilias.influapp.entities.Enums.ReactionType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Component
 @Order(2)
+@RequiredArgsConstructor
 @SuppressWarnings("null")
 public class TestDataLoader implements CommandLineRunner {
 
@@ -41,28 +43,6 @@ public class TestDataLoader implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final HybridSentimentService hybridSentimentService;
 
-    public TestDataLoader(BusinessRepository businessRepository,
-                          InfluencerRepository influencerRepository,
-                          CampaignRepository campaignRepository,
-                          CollaborationRepository collaborationRepository,
-                          PostRepository postRepository,
-                          SentimentAnalysisRepository sentimentAnalysisRepository,
-                          SocialMediaRepository socialMediaRepository,
-                          ReactionRepository reactionRepository,
-                          PasswordEncoder passwordEncoder,
-                          HybridSentimentService hybridSentimentService,
-                          PostService postService) {
-        this.businessRepository = businessRepository;
-        this.influencerRepository = influencerRepository;
-        this.campaignRepository = campaignRepository;
-        this.collaborationRepository = collaborationRepository;
-        this.postRepository = postRepository;
-        this.sentimentAnalysisRepository = sentimentAnalysisRepository;
-        this.socialMediaRepository = socialMediaRepository;
-        this.reactionRepository = reactionRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.hybridSentimentService = hybridSentimentService;
-    }
 
 
     private void updateInfluencerMetricsFromSocialMedia() {
@@ -73,7 +53,7 @@ public class TestDataLoader implements CommandLineRunner {
                 // Reload to ensure associations are fetched lazily if necessary
                 Influencer reloaded = influencerRepository.findById(inf.getId()).orElse(inf);
 
-                // Ensure each SocialMedia has latest averages (in case they were updated directly)
+                // Ensure each SocialMedia has latest averages
                 if (reloaded.getSocialMediaAccounts() != null) {
                     for (SocialMedia sm : reloaded.getSocialMediaAccounts()) {
                         try {
@@ -99,16 +79,16 @@ public class TestDataLoader implements CommandLineRunner {
 
     @Override
     @Transactional
-    public void run(String... args) {
+    public void run(String @NonNull ... args) {
         log.info("TestDataLoader starting - ensuring comprehensive test data exists...");
 
         // Force recreate: delete existing reactions, sentiment analyses, posts and collaborations
         try {
             log.info("TestDataLoader force-recreate: deleting reactions, sentiment analyses, posts and collaborations...");
-            reactionRepository.findAll().forEach(r -> reactionRepository.delete(r));
-            sentimentAnalysisRepository.findAll().forEach(sa -> sentimentAnalysisRepository.delete(sa));
-            postRepository.findAll().forEach(p -> postRepository.delete(p));
-            collaborationRepository.findAll().forEach(c -> collaborationRepository.delete(c));
+            reactionRepository.deleteAll(reactionRepository.findAll());
+            sentimentAnalysisRepository.deleteAll(sentimentAnalysisRepository.findAll());
+            postRepository.deleteAll(postRepository.findAll());
+            collaborationRepository.deleteAll(collaborationRepository.findAll());
             log.info("TestDataLoader force-recreate: deletions complete.");
         } catch (Throwable ex) {
             log.warn("TestDataLoader force-recreate deletion failed: {}", ex.getMessage());
@@ -388,7 +368,6 @@ public class TestDataLoader implements CommandLineRunner {
             }
         }
 
-        // ========== ADDITIONAL TEST CASES ==========
         // More posts from good influencers but with poor performance variations
         if (summer != null) {
             // Second post from inf1 with slightly lower engagement
@@ -414,15 +393,28 @@ public class TestDataLoader implements CommandLineRunner {
 
         // Update all SocialMedia metrics using direct SQL instead of entity methods
         log.info("Updating SocialMedia metrics using database updates...");
-        try { updateAverageLikesInDatabase(); } catch (Throwable ex) { log.warn("Failed average_likes update: {}", ex.getMessage()); }
-        try { updateEngagementRateInDatabase(); } catch (Throwable ex) { log.warn("Failed engagement_rate update: {}", ex.getMessage()); }
-        try { updateAverageCommentsInDatabase(); } catch (Throwable ex) { log.warn("Failed average_comments update: {}", ex.getMessage()); }
-        try { updateProfileViewsInDatabase(); } catch (Throwable ex) { log.warn("Failed profile_views update: {}", ex.getMessage()); }
+        try {
+            updateAverageLikesInDatabase();
+        } catch (Throwable ex) {
+            log.warn("Failed average_likes update: {}", ex.getMessage());
+        }
+        try {
+            updateEngagementRateInDatabase(); }
+        catch (Throwable ex)
+        { log.warn("Failed engagement_rate update: {}", ex.getMessage());
+        }
+        try { updateAverageCommentsInDatabase();
+        } catch (Throwable ex)
+        { log.warn("Failed average_comments update: {}", ex.getMessage());
+        }
+        try { updateProfileViewsInDatabase();
+        } catch (Throwable ex) {
+            log.warn("Failed profile_views update: {}", ex.getMessage());
+        }
         log.info("✓ SocialMedia metric update pass completed");
 
-        // ========= ADD TWO STRONGLY NEGATIVE POSTS (should compute to TERRIBLE) =========
+        //  Posts with sentiment terrible
         try {
-            // Candidate 1: inf11 on TikTok (many angry reactions + strong negative English+Greek comments)
             if (launch != null) {
                 Collaboration neg1 = createCollaborationIfNotExists(launch, inf11, CollaborationStatus.ACCEPTED, 20.0, "forced-negative-seed-1");
                 SocialMedia smNeg1 = socialMediaRepository.findByInfluencerIdAndPlatform(inf11.getId(), Platform.TIKTOK).orElse(null);
@@ -439,7 +431,7 @@ public class TestDataLoader implements CommandLineRunner {
                 }
             }
 
-            // Candidate 2: inf9 on Instagram (negative comments in Greek+English and many ANGRY reactions)
+            // Candidate 2
             if (holiday != null) {
                 Collaboration neg2 = createCollaborationIfNotExists(holiday, inf9, CollaborationStatus.ACCEPTED, 15.0, "forced-negative-seed-2");
                 SocialMedia smNeg2 = socialMediaRepository.findByInfluencerIdAndPlatform(inf9.getId(), Platform.INSTAGRAM).orElse(null);
@@ -459,7 +451,10 @@ public class TestDataLoader implements CommandLineRunner {
         }
 
 
-        try { updateInfluencerMetricsFromSocialMedia(); } catch (Throwable ex) { log.warn("Failed to persist influencer metrics: {}", ex.getMessage()); }
+        try { updateInfluencerMetricsFromSocialMedia();
+        } catch (Throwable ex) {
+            log.warn("Failed to persist influencer metrics: {}", ex.getMessage());
+        }
 
         log.info("TestDataLoader finished - comprehensive test data seeding complete");
         
@@ -476,7 +471,6 @@ public class TestDataLoader implements CommandLineRunner {
             log.info("TestDataLoader SUMMARY: businesses={}, influencers={}, campaigns={}, collaborations={}, posts={}, reactions={}, sentiments={}, socialMedia={}", 
                 bizCount, infCount, campCount, collCount, postCount, reactionCount, sentimentCount, smCount);
         } catch (Throwable ignored) {}
-
     }
 
 
@@ -502,28 +496,44 @@ public class TestDataLoader implements CommandLineRunner {
                     .companyName(companyName)
                     .build();
             // Set comprehensive business details
-            try { b.setCategory(Category.OTHER); } catch (Throwable ignored) {}
-            try { b.setCompanySize(org.ilias.influapp.entities.Enums.CompanySize.MEDIUM); } catch (Throwable ignored) {}
-            try { b.setEstablishedYear("2020"); } catch (Throwable ignored) {}
-            try { b.setDescription("Professional " + companyName + " - Leaders in their industry"); } catch (Throwable ignored) {}
-            try { b.setPhone("+30-210-" + (9000000 + (int)(Math.random()*1000000))); } catch (Throwable ignored) {}
-            try { b.setContactEmail(email); } catch (Throwable ignored) {}
-            try { b.setAddress((100 + (int)(Math.random()*900)) + " Syntagma Ave, Athens, 105 64"); } catch (Throwable ignored) {}
-            try { b.setWebSite("https://www." + username + ".gr"); } catch (Throwable ignored) {}
+            try { b.setCategory(Category.OTHER);
+            } catch (Throwable ignored) {}
+            try { b.setCompanySize(org.ilias.influapp.entities.Enums.CompanySize.MEDIUM);
+            } catch (Throwable ignored) {}
+            try { b.setEstablishedYear("2020");
+            } catch (Throwable ignored) {}
+            try { b.setDescription("Professional " + companyName + " - Leaders in their industry");
+            } catch (Throwable ignored) {}
+            try { b.setPhone("+30-210-" + (9000000 + (int)(Math.random()*1000000)));
+            } catch (Throwable ignored) {}
+            try { b.setContactEmail(email);
+            } catch (Throwable ignored) {}
+            try { b.setAddress((100 + (int)(Math.random()*900)) + " Syntagma Ave, Athens, 105 64");
+            } catch (Throwable ignored) {}
+            try { b.setWebSite("https://www." + username + ".gr");
+            } catch (Throwable ignored) {}
             b = businessRepository.save(b);
             log.info("Created business {} id={} (category={}, companySize={}, address set)", email, b.getId(), b.getCategory(), b.getCompanySize());
         } else {
             b.setUsername(username);
             b.setPassword(ensureEncoded(rawPassword));
             b.setCompanyName(companyName);
-            try { b.setCategory(Category.OTHER); } catch (Throwable ignored) {}
-            try { b.setCompanySize(org.ilias.influapp.entities.Enums.CompanySize.MEDIUM); } catch (Throwable ignored) {}
-            try { b.setEstablishedYear("2020"); } catch (Throwable ignored) {}
-            try { b.setDescription("Professional " + companyName + " - Leaders in their industry"); } catch (Throwable ignored) {}
-            try { b.setPhone("+30-210-" + (9000000 + (int)(Math.random()*1000000))); } catch (Throwable ignored) {}
-            try { b.setContactEmail(email); } catch (Throwable ignored) {}
-            try { b.setAddress((100 + (int)(Math.random()*900)) + " Syntagma Ave, Athens, 105 64"); } catch (Throwable ignored) {}
-            try { b.setWebSite("https://www." + username + ".gr"); } catch (Throwable ignored) {}
+            try { b.setCategory(Category.OTHER);
+            } catch (Throwable ignored) {}
+            try { b.setCompanySize(org.ilias.influapp.entities.Enums.CompanySize.MEDIUM);
+            } catch (Throwable ignored) {}
+            try { b.setEstablishedYear("2020");
+            } catch (Throwable ignored) {}
+            try { b.setDescription("Professional " + companyName + " - Leaders in their industry");
+            } catch (Throwable ignored) {}
+            try { b.setPhone("+30-210-" + (9000000 + (int)(Math.random()*1000000)));
+            } catch (Throwable ignored) {}
+            try { b.setContactEmail(email);
+            } catch (Throwable ignored) {}
+            try { b.setAddress((100 + (int)(Math.random()*900)) + " Syntagma Ave, Athens, 105 64");
+            } catch (Throwable ignored) {}
+            try { b.setWebSite("https://www." + username + ".gr");
+            } catch (Throwable ignored) {}
             b = businessRepository.save(b);
             log.info("Updated business {} id={} (all fields refreshed)", email, b.getId());
         }
@@ -562,15 +572,23 @@ public class TestDataLoader implements CommandLineRunner {
                     .isAvailable(available)
                     .build();
             // Set comprehensive influencer profile details
-            try { newInf.setAge(String.valueOf(20 + (int)(Math.random()*15))); } catch (Throwable ignored) {}
-            try { newInf.setLocation(new String[]{"Athens, GR", "Thessaloniki, GR", "London, UK", "Berlin, DE", "New York, US"}[(int)(Math.random()*5)]); } catch (Throwable ignored) {}
+            try { newInf.setAge(String.valueOf(20 + (int)(Math.random()*15)));
+            } catch (Throwable ignored) {}
+            try { newInf.setLocation(new String[]{"Athens, GR", "Thessaloniki, GR", "London, UK", "Berlin, DE", "New York, US"}[(int)(Math.random()*5)]);
+            } catch (Throwable ignored) {}
             try { newInf.setBio("Professional content creator - " + name + ". Creating engaging content for brands and communities."); } catch (Throwable ignored) {}
-            try { newInf.setCategory(Category.OTHER); } catch (Throwable ignored) {}
-            try { newInf.setInfluencerType(org.ilias.influapp.entities.Enums.InfluencerType.MICRO); } catch (Throwable ignored) {}
-            try { newInf.setTotalFollowers(10000 + (int)(Math.random()*90000)); } catch (Throwable ignored) {}
-            try { newInf.setEngagementRate(new java.math.BigDecimal(String.valueOf(2.5 + (Math.random()*7.5))).setScale(2, java.math.RoundingMode.HALF_UP)); } catch (Throwable ignored) {}
-            try { newInf.setInfluencerScore(60.0 + (Math.random()*35)); } catch (Throwable ignored) {}
-            try { newInf.setMinCollaborationBudget(100 + (int)(Math.random()*900)); } catch (Throwable ignored) {}
+            try { newInf.setCategory(Category.OTHER);
+            } catch (Throwable ignored) {}
+            try { newInf.setInfluencerType(org.ilias.influapp.entities.Enums.InfluencerType.MICRO);
+            } catch (Throwable ignored) {}
+            try { newInf.setTotalFollowers(10000 + (int)(Math.random()*90000));
+            } catch (Throwable ignored) {}
+            try { newInf.setEngagementRate(new java.math.BigDecimal(String.valueOf(2.5 + (Math.random()*7.5))).setScale(2, java.math.RoundingMode.HALF_UP));
+            } catch (Throwable ignored) {}
+            try { newInf.setInfluencerScore(60.0 + (Math.random()*35));
+            } catch (Throwable ignored) {}
+            try { newInf.setMinCollaborationBudget(100 + (int)(Math.random()*900));
+            } catch (Throwable ignored) {}
             inf = influencerRepository.save(newInf);
             log.info("Created influencer {} id={} (followers={}, engagementRate={}, score={})", email, inf.getId(), inf.getTotalFollowers(), inf.getEngagementRate(), inf.getInfluencerScore());
         } else {
@@ -578,15 +596,23 @@ public class TestDataLoader implements CommandLineRunner {
             inf.setPassword(ensureEncoded(rawPassword));
             inf.setName(name);
             inf.setIsAvailable(available);
-            try { inf.setAge(String.valueOf(20 + (int)(Math.random()*15))); } catch (Throwable ignored) {}
-            try { inf.setLocation(new String[]{"Athens, GR", "Thessaloniki, GR", "London, UK", "Berlin, DE", "New York, US"}[(int)(Math.random()*5)]); } catch (Throwable ignored) {}
+            try { inf.setAge(String.valueOf(20 + (int)(Math.random()*15)));
+            } catch (Throwable ignored) {}
+            try { inf.setLocation(new String[]{"Athens, GR", "Thessaloniki, GR", "London, UK", "Berlin, DE", "New York, US"}[(int)(Math.random()*5)]);
+            } catch (Throwable ignored) {}
             try { inf.setBio("Professional content creator - " + name + ". Creating engaging content for brands and communities."); } catch (Throwable ignored) {}
-            try { inf.setCategory(Category.OTHER); } catch (Throwable ignored) {}
-            try { inf.setInfluencerType(org.ilias.influapp.entities.Enums.InfluencerType.MICRO); } catch (Throwable ignored) {}
-            try { inf.setTotalFollowers(10000 + (int)(Math.random()*90000)); } catch (Throwable ignored) {}
-            try { inf.setEngagementRate(new java.math.BigDecimal(String.valueOf(2.5 + (Math.random()*7.5))).setScale(2, java.math.RoundingMode.HALF_UP)); } catch (Throwable ignored) {}
-            try { inf.setInfluencerScore(60.0 + (Math.random()*35)); } catch (Throwable ignored) {}
-            try { inf.setMinCollaborationBudget(100 + (int)(Math.random()*900)); } catch (Throwable ignored) {}
+            try { inf.setCategory(Category.OTHER);
+            } catch (Throwable ignored) {}
+            try { inf.setInfluencerType(org.ilias.influapp.entities.Enums.InfluencerType.MICRO);
+            } catch (Throwable ignored) {}
+            try { inf.setTotalFollowers(10000 + (int)(Math.random()*90000));
+            } catch (Throwable ignored) {}
+            try { inf.setEngagementRate(new java.math.BigDecimal(String.valueOf(2.5 + (Math.random()*7.5))).setScale(2, java.math.RoundingMode.HALF_UP));
+            } catch (Throwable ignored) {}
+            try { inf.setInfluencerScore(60.0 + (Math.random()*35));
+            } catch (Throwable ignored) {}
+            try { inf.setMinCollaborationBudget(100 + (int)(Math.random()*900));
+            } catch (Throwable ignored) {}
             inf = influencerRepository.save(inf);
             log.info("Updated influencer {} id={} (all profile fields refreshed)", email, inf.getId());
         }
@@ -737,7 +763,6 @@ public class TestDataLoader implements CommandLineRunner {
         } catch (Throwable ex) {
             log.warn("Failed to link post to collaboration: {}", ex.getMessage());
         }
-        
         return p;
     }
 
@@ -821,9 +846,7 @@ public class TestDataLoader implements CommandLineRunner {
         }
     }
 
-    /**
-     * Update average_comments using post comments
-     */
+
     private void updateAverageCommentsInDatabase() {
         try {
             log.info("Updating average_comments in social_media");
@@ -849,9 +872,7 @@ public class TestDataLoader implements CommandLineRunner {
         }
     }
 
-    /**
-     * Update engagement_rate from post engagement rates
-     */
+
     private void updateEngagementRateInDatabase() {
         try {
             log.info("Updating engagement_rate in social_media");
@@ -883,9 +904,7 @@ public class TestDataLoader implements CommandLineRunner {
         }
     }
 
-    /**
-     * Update profile_views based on followers and platform
-     */
+
     private void updateProfileViewsInDatabase() {
         try {
             log.info("Updating profile_views in social_media");
