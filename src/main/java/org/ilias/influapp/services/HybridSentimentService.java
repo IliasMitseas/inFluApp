@@ -39,7 +39,7 @@ public class HybridSentimentService {
         // 3. Reactions
         double reactionScore = emojiSentimentAnalyzer.calculateReactionScore(reactions);
 
-        // Weighted average — weights adapt to data volume
+        // Weighted average — adapt weights dynamically using signal strengths
         double finalPolarity;
         String methodDesc;
 
@@ -48,15 +48,59 @@ public class HybridSentimentService {
             confidence = 0.5;
             methodDesc = "No data — defaulted to Neutral";
         } else if (!hasText) {
+            // Only reactions available
             finalPolarity = reactionScore;
             confidence = 0.5;
             methodDesc = "Reactions only (100%)";
         } else if (!hasReactions) {
+            // Only text available
             finalPolarity = coreNlpScore * 0.80 + emojiScore * 0.20;
             methodDesc = "CoreNLP (80%) + Emoji (20%)";
         } else {
-            finalPolarity = coreNlpScore * 0.70 + emojiScore * 0.15 + reactionScore * 0.15;
-            methodDesc = "CoreNLP (70%) + Emoji (15%) + Reactions (15%)";
+            // Both text and reactions present — compute dynamic weights
+            int totalReactionsCount = 0;
+            if (reactions != null) {
+                for (Reaction r : reactions) {
+                    if (r != null && r.getCount() != null) totalReactionsCount += r.getCount();
+                }
+            }
+
+            double absReaction = Math.abs(reactionScore);
+
+            // Base weights
+            double wCore = 0.70;
+            double wEmoji = 0.15;
+            double wReaction = 0.15;
+
+            // If CoreNLP shows low confidence (e.g. non-English text) reduce its weight
+            if (confidence < 0.6) {
+                // scale down core weight proportionally but keep a minimum
+                double factor = Math.max(0.4, confidence); // don't reduce below 0.4
+                wCore *= factor;
+                // redistribute freed weight to reactions
+                wReaction += (0.70 - wCore) * 0.6;
+                wEmoji += (0.70 - wCore) * 0.4;
+            }
+
+            // If reactions are both numerous and strongly negative/positive, favor them
+            if (totalReactionsCount >= 200 && absReaction > 0.5) {
+                wReaction = Math.max(wReaction, 0.60);
+                // reduce core proportionally
+                wCore = Math.max(0.20, wCore - 0.30);
+                methodDesc = "Reactions-dominated (high volume & strong polarity)";
+            } else if (totalReactionsCount >= 100 && absReaction > 0.4) {
+                wReaction = Math.max(wReaction, 0.45);
+                wCore = Math.max(0.25, wCore - 0.15);
+                methodDesc = "Reactions-strong (moderate volume)";
+            } else {
+                methodDesc = "CoreNLP + Emoji + Reactions (adaptive)";
+            }
+
+            // Normalize weights to sum to 1
+            double sum = wCore + wEmoji + wReaction;
+            wCore /= sum; wEmoji /= sum; wReaction /= sum;
+
+            finalPolarity = coreNlpScore * wCore + emojiScore * wEmoji + reactionScore * wReaction;
         }
 
         // Clamp to [-1, 1]

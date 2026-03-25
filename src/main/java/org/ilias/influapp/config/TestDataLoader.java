@@ -236,7 +236,7 @@ public class TestDataLoader implements CommandLineRunner {
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf1.getId(), Platform.INSTAGRAM).orElse(null);
             if (c1 != null && sm != null) {
                 createPostForCollaboration(c1, sm, "Check out ACME's Summer Promo! Amazing deals for the season 🌞", 
-                    List.of("Love it!", "Great products!", "Where can I buy?", "Amazing quality!"), 
+                    List.of("Love it!", "Great products!", "Where can I buy?", "Amazing quality!", "Φανταστικό!", "Μου αρέσει"), 
                     25000, 75000, Map.of(ReactionType.LIKE, 1200, ReactionType.LOVE, 300, ReactionType.WOW, 50, ReactionType.HAHA, 25), 300);
             }
         }
@@ -316,7 +316,7 @@ public class TestDataLoader implements CommandLineRunner {
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf7.getId(), Platform.INSTAGRAM).orElse(null);
             if (c7 != null && sm != null) {
                 createPostForCollaboration(c7, sm, "Summer promo post from ACME Corp. Check it out!",
-                    List.of("Spam?", "Not interested"), 
+                    List.of("Spam?", "Not interested", "Σπαμ;", "Δεν με ενδιαφέρει", "Χάλια, δεν το προτείνω"), 
                     120, 300, Map.of(ReactionType.LIKE, 5, ReactionType.SAD, 2, ReactionType.ANGRY, 3), 1);
             } else {
                 log.warn("Skipped c7 post seed (summer/inf7): collaborationPresent={}, socialMediaPresent={}", c7 != null, sm != null);
@@ -329,7 +329,7 @@ public class TestDataLoader implements CommandLineRunner {
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf8.getId(), Platform.TIKTOK).orElse(null);
             if (c8 != null && sm != null) {
                 createPostForCollaboration(c8, sm, "Beta LLC Q2 Marketing content. New product available now.",
-                    List.of(), // No comments
+                    List.of("Δεν με ενδιαφέρει", "Δεν αξίζει", "Όχι ευχαριστώ"),
                     50, 150, Map.of(ReactionType.LIKE, 2, ReactionType.HAHA, 1), 0);
             } else {
                 log.warn("Skipped c8 post seed (q2/inf8): collaborationPresent={}, socialMediaPresent={}", c8 != null, sm != null);
@@ -342,7 +342,7 @@ public class TestDataLoader implements CommandLineRunner {
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf9.getId(), Platform.INSTAGRAM).orElse(null);
             if (c9 != null && sm != null) {
                 createPostForCollaboration(c9, sm, "Holiday Sale from ACME! Limited time offer inside!",
-                    List.of("Obvious promotion", "Untrustworthy", "Fake engagement"), 
+                    List.of("Obvious promotion", "Untrustworthy", "Fake engagement", "Ψεύτικο", "Απάτη", "Χάλια προσφορές"), 
                     300, 800, Map.of(ReactionType.LIKE, 8, ReactionType.ANGRY, 15, ReactionType.SAD, 5, ReactionType.WOW, 2), 5);
             } else {
                 log.warn("Skipped c9 post seed (holiday/inf9): collaborationPresent={}, socialMediaPresent={}", c9 != null, sm != null);
@@ -368,7 +368,7 @@ public class TestDataLoader implements CommandLineRunner {
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf11.getId(), Platform.TIKTOK).orElse(null);
             if (c11 != null && sm != null) {
                 createPostForCollaboration(c11, sm, "Beta product launch. What do you think about this?",
-                    List.of("Bad quality", "Not worth it", "Horrible experience", "Waste of money", "Disappointed"), 
+                    List.of("Bad quality", "Not worth it", "Horrible experience", "Waste of money", "Disappointed", "Χάλια ποιότητα", "Απαίσιο", "Δεν το προτείνω"), 
                     400, 1200, Map.of(ReactionType.ANGRY, 45, ReactionType.SAD, 20, ReactionType.LIKE, 15, ReactionType.HAHA, 5, ReactionType.WOW, 3), 8);
             } else {
                 log.warn("Skipped c11 post seed (launch/inf11): collaborationPresent={}, socialMediaPresent={}", c11 != null, sm != null);
@@ -419,6 +419,44 @@ public class TestDataLoader implements CommandLineRunner {
         try { updateAverageCommentsInDatabase(); } catch (Throwable ex) { log.warn("Failed average_comments update: {}", ex.getMessage()); }
         try { updateProfileViewsInDatabase(); } catch (Throwable ex) { log.warn("Failed profile_views update: {}", ex.getMessage()); }
         log.info("✓ SocialMedia metric update pass completed");
+
+        // ========= ADD TWO STRONGLY NEGATIVE POSTS (should compute to TERRIBLE) =========
+        try {
+            // Candidate 1: inf11 on TikTok (many angry reactions + strong negative English+Greek comments)
+            if (launch != null) {
+                Collaboration neg1 = createCollaborationIfNotExists(launch, inf11, CollaborationStatus.ACCEPTED, 20.0, "forced-negative-seed-1");
+                SocialMedia smNeg1 = socialMediaRepository.findByInfluencerIdAndPlatform(inf11.getId(), Platform.TIKTOK).orElse(null);
+                if (neg1 != null && smNeg1 != null) {
+                    createPostForCollaboration(neg1, smNeg1,
+                        "Absolutely terrible product — complete scam. Do NOT buy! 😡",
+                        List.of(
+                            "Worst product ever. Terrible quality and customer support.",
+                            "Do not buy this. Completely broken and useless.",
+                            "Refund please, total scam.",
+                            "Χάλια προϊόν, απαράδεκτο. Μην το αγοράσετε! 😡",
+                            "Απαίσιο, κακή ποιότητα και εξυπηρέτηση."),
+                        150, 420, Map.of(ReactionType.ANGRY, 450, ReactionType.SAD, 120, ReactionType.LIKE, 3), 0);
+                }
+            }
+
+            // Candidate 2: inf9 on Instagram (negative comments in Greek+English and many ANGRY reactions)
+            if (holiday != null) {
+                Collaboration neg2 = createCollaborationIfNotExists(holiday, inf9, CollaborationStatus.ACCEPTED, 15.0, "forced-negative-seed-2");
+                SocialMedia smNeg2 = socialMediaRepository.findByInfluencerIdAndPlatform(inf9.getId(), Platform.INSTAGRAM).orElse(null);
+                if (neg2 != null && smNeg2 != null) {
+                    createPostForCollaboration(neg2, smNeg2,
+                        "Misleading offer, horrible service. Terrible experience. 😡🤬",
+                        List.of(
+                            "This is disgusting, worst service I've encountered.",
+                            "Terrible, do not trust this company.",
+                            "Απάτη, δεν ανταποκρίνεται στις προσδοκίες.",
+                            "Σοβαρό πρόβλημα, κακή εμπειρία, απαράδεκτο."),
+                        90, 200, Map.of(ReactionType.ANGRY, 380, ReactionType.SAD, 90, ReactionType.LIKE, 2), 0);
+                }
+            }
+        } catch (Throwable ex) {
+            log.warn("Failed adding negative posts for TERRIBLE sentiment seeds: {}", ex.getMessage());
+        }
 
 
         try { updateInfluencerMetricsFromSocialMedia(); } catch (Throwable ex) { log.warn("Failed to persist influencer metrics: {}", ex.getMessage()); }
