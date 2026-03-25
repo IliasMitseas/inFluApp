@@ -38,7 +38,6 @@ public class TestDataLoader implements CommandLineRunner {
     private final SentimentAnalysisRepository sentimentAnalysisRepository;
     private final SocialMediaRepository socialMediaRepository;
     private final ReactionRepository reactionRepository;
-    private final PostService postService;
     private final PasswordEncoder passwordEncoder;
     private final HybridSentimentService hybridSentimentService;
 
@@ -63,14 +62,9 @@ public class TestDataLoader implements CommandLineRunner {
         this.reactionRepository = reactionRepository;
         this.passwordEncoder = passwordEncoder;
         this.hybridSentimentService = hybridSentimentService;
-        this.postService = postService;
     }
 
-    /**
-     * Recalculate influencer-level derived metrics from their social media accounts
-     * and persist them immediately. This ensures engagementRate/influencerScore
-     * are written to DB for test data without requiring a profile view.
-     */
+
     private void updateInfluencerMetricsFromSocialMedia() {
         log.info("Recalculating and persisting influencer metrics for all influencers...");
         List<Influencer> all = influencerRepository.findAll();
@@ -126,12 +120,12 @@ public class TestDataLoader implements CommandLineRunner {
         Business biz3 = createOrUpdateBusiness("biz3@example.com", "biz3", "Gamma Co", "pass");
 
         // Create campaigns for each business
-        createCampaignIfNotExists(biz1, "Summer Promo", 1500.0);
-        createCampaignIfNotExists(biz1, "Holiday Sale", 2000.0);
-        createCampaignIfNotExists(biz2, "New Product Launch", 3000.0);
-        createCampaignIfNotExists(biz2, "Q2 Marketing", 2500.0);
-        createCampaignIfNotExists(biz3, "Brand Awareness", 1200.0);
-        createCampaignIfNotExists(biz3, "Product Demo", 1800.0);
+        createCampaignIfNotExists(biz1, "Summer Promo", 1500.0, "10 posts");
+        createCampaignIfNotExists(biz1, "Holiday Sale", 2000.0, "5 posts with videos");
+        createCampaignIfNotExists(biz2, "New Product Launch", 3000.0, "20 posts with unboxing");
+        createCampaignIfNotExists(biz2, "Q2 Marketing", 2500.0, "15 posts with reviews");
+        createCampaignIfNotExists(biz3, "Brand Awareness", 1200.0, "5 posts with videos");
+        createCampaignIfNotExists(biz3, "Product Demo", 1800.0, "20 posts with demos");
 
         // Create 6 influencers with complete profiles
         Influencer inf1 = createOrUpdateInfluencer("inf1@example.com", "inf1", "Inf One", "pass", true);
@@ -238,7 +232,7 @@ public class TestDataLoader implements CommandLineRunner {
         // Biz1 -> Inf1 (Summer Promo) + post
         Campaign summer = campaignRepository.findByBusinessId(biz1.getId()).stream().filter(c -> "Summer Promo".equals(c.getTitle())).findFirst().orElse(null);
         if (summer != null) {
-            Collaboration c1 = createCollaborationIfNotExists(summer, inf1, CollaborationStatus.ACCEPTED, 350.0);
+            Collaboration c1 = createCollaborationIfNotExists(summer, inf1, CollaborationStatus.ACCEPTED, 350.0, "3 posts with vids and photos about the super promo with a discount code");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf1.getId(), Platform.INSTAGRAM).orElse(null);
             if (c1 != null && sm != null) {
                 createPostForCollaboration(c1, sm, "Check out ACME's Summer Promo! Amazing deals for the season 🌞", 
@@ -250,7 +244,7 @@ public class TestDataLoader implements CommandLineRunner {
         // Biz1 -> Inf2 (Holiday Sale) + post
         Campaign holiday = campaignRepository.findByBusinessId(biz1.getId()).stream().filter(c -> "Holiday Sale".equals(c.getTitle())).findFirst().orElse(null);
         if (holiday != null) {
-            Collaboration c2 = createCollaborationIfNotExists(holiday, inf2, CollaborationStatus.ACCEPTED, 400.0);
+            Collaboration c2 = createCollaborationIfNotExists(holiday, inf2, CollaborationStatus.ACCEPTED, 400.0, "posts promoting holiday deals");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf2.getId(), Platform.TIKTOK).orElse(null);
             if (c2 != null && sm != null) {
                 createPostForCollaboration(c2, sm, "Holiday deals are LIVE! 🎄✨ Don't miss these incredible offers!", 
@@ -262,7 +256,7 @@ public class TestDataLoader implements CommandLineRunner {
         // Biz2 -> Inf3 (New Product Launch) + post
         Campaign launch = campaignRepository.findByBusinessId(biz2.getId()).stream().filter(c -> "New Product Launch".equals(c.getTitle())).findFirst().orElse(null);
         if (launch != null) {
-            Collaboration c3 = createCollaborationIfNotExists(launch, inf3, CollaborationStatus.ACCEPTED, 500.0);
+            Collaboration c3 = createCollaborationIfNotExists(launch, inf3, CollaborationStatus.ACCEPTED, 500.0, "10 Posts promoting the new beta product");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf3.getId(), Platform.TIKTOK).orElse(null);
             if (c3 != null && sm != null) {
                 createPostForCollaboration(c3, sm, "Launching the new Beta product! 🚀 This is CRAZY good. Check it out!", 
@@ -274,7 +268,7 @@ public class TestDataLoader implements CommandLineRunner {
         // Biz3 -> Inf4 (Brand Awareness) + post
         Campaign ba = campaignRepository.findByBusinessId(biz3.getId()).stream().filter(c -> "Brand Awareness".equals(c.getTitle())).findFirst().orElse(null);
         if (ba != null) {
-            Collaboration c4 = createCollaborationIfNotExists(ba, inf4, CollaborationStatus.ACCEPTED, 250.0);
+            Collaboration c4 = createCollaborationIfNotExists(ba, inf4, CollaborationStatus.ACCEPTED, 250.0, "5 post promoting brand awareness");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf4.getId(), Platform.YOUTUBE).orElse(null);
             if (c4 != null && sm != null) {
                 createPostForCollaboration(c4, sm, "Talking about Gamma Co today - their solutions are game-changing for the tech industry", 
@@ -285,7 +279,7 @@ public class TestDataLoader implements CommandLineRunner {
 
         // Biz2 -> Inf5 (New Product Launch) + post
         if (launch != null) {
-            Collaboration c5 = createCollaborationIfNotExists(launch, inf5, CollaborationStatus.ACCEPTED, 320.0);
+            Collaboration c5 = createCollaborationIfNotExists(launch, inf5, CollaborationStatus.ACCEPTED, 320.0, "3 Post for product honest review");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf5.getId(), Platform.INSTAGRAM).orElse(null);
             if (c5 != null && sm != null) {
                 createPostForCollaboration(c5, sm, "Beta launch first impressions! 📸 This product is really impressive", 
@@ -297,7 +291,7 @@ public class TestDataLoader implements CommandLineRunner {
         // Biz3 -> Inf6 (Product Demo) + post
         Campaign demo = campaignRepository.findByBusinessId(biz3.getId()).stream().filter(c -> "Product Demo".equals(c.getTitle())).findFirst().orElse(null);
         if (demo != null) {
-            Collaboration c6 = createCollaborationIfNotExists(demo, inf6, CollaborationStatus.ACCEPTED, 280.0);
+            Collaboration c6 = createCollaborationIfNotExists(demo, inf6, CollaborationStatus.ACCEPTED, 280.0, "5 reviews of the product");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf6.getId(), Platform.INSTAGRAM).orElse(null);
             if (c6 != null && sm != null) {
                 createPostForCollaboration(c6, sm, "Featuring Gamma Co's latest products 👨‍🍳 Quality you can taste and see!", 
@@ -309,7 +303,7 @@ public class TestDataLoader implements CommandLineRunner {
         // Add some PENDING collaborations (not accepted yet)
         Campaign q2 = campaignRepository.findByBusinessId(biz2.getId()).stream().filter(c -> "Q2 Marketing".equals(c.getTitle())).findFirst().orElse(null);
         if (q2 != null) {
-            Collaboration pending1 = createCollaborationIfNotExists(q2, inf2, CollaborationStatus.PENDING, 275.0);
+            Collaboration pending1 = createCollaborationIfNotExists(q2, inf2, CollaborationStatus.PENDING, 275.0, "10 posts with reviews");
             log.info("Created PENDING collaboration c2={} (not accepted)", pending1.getId());
         }
 
@@ -318,7 +312,7 @@ public class TestDataLoader implements CommandLineRunner {
         
         // Biz1 -> Inf7 (Summer Promo) + post with very poor engagement
         if (summer != null) {
-            Collaboration c7 = createCollaborationIfNotExists(summer, inf7, CollaborationStatus.ACCEPTED, 150.0);
+            Collaboration c7 = createCollaborationIfNotExists(summer, inf7, CollaborationStatus.ACCEPTED, 150.0, "4 videos promoting the summer offers");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf7.getId(), Platform.INSTAGRAM).orElse(null);
             if (c7 != null && sm != null) {
                 createPostForCollaboration(c7, sm, "Summer promo post from ACME Corp. Check it out!",
@@ -331,7 +325,7 @@ public class TestDataLoader implements CommandLineRunner {
 
         // Biz2 -> Inf8 (Q2 Marketing) + post with extremely low engagement
         if (q2 != null) {
-            Collaboration c8 = createCollaborationIfNotExists(q2, inf8, CollaborationStatus.ACCEPTED, 100.0);
+            Collaboration c8 = createCollaborationIfNotExists(q2, inf8, CollaborationStatus.ACCEPTED, 100.0, "2 posts with text about the product");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf8.getId(), Platform.TIKTOK).orElse(null);
             if (c8 != null && sm != null) {
                 createPostForCollaboration(c8, sm, "Beta LLC Q2 Marketing content. New product available now.",
@@ -344,7 +338,7 @@ public class TestDataLoader implements CommandLineRunner {
 
         // Biz1 -> Inf9 (Holiday Sale) + post with MOSTLY NEGATIVE reactions (fake followers, no real engagement)
         if (holiday != null) {
-            Collaboration c9 = createCollaborationIfNotExists(holiday, inf9, CollaborationStatus.ACCEPTED, 200.0);
+            Collaboration c9 = createCollaborationIfNotExists(holiday, inf9, CollaborationStatus.ACCEPTED, 200.0, "5 posts promoting holiday sales");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf9.getId(), Platform.INSTAGRAM).orElse(null);
             if (c9 != null && sm != null) {
                 createPostForCollaboration(c9, sm, "Holiday Sale from ACME! Limited time offer inside!",
@@ -357,7 +351,7 @@ public class TestDataLoader implements CommandLineRunner {
 
         // Biz3 -> Inf10 (Brand Awareness) + post with almost NO engagement (inactive account)
         if (ba != null) {
-            Collaboration c10 = createCollaborationIfNotExists(ba, inf10, CollaborationStatus.ACCEPTED, 120.0);
+            Collaboration c10 = createCollaborationIfNotExists(ba, inf10, CollaborationStatus.ACCEPTED, 120.0, "10 videos and photos promoting the brand");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf10.getId(), Platform.YOUTUBE).orElse(null);
             if (c10 != null && sm != null) {
                 createPostForCollaboration(c10, sm, "Gamma Co brand awareness video. Check this out.",
@@ -370,7 +364,7 @@ public class TestDataLoader implements CommandLineRunner {
 
         // Biz2 -> Inf11 (New Product Launch) + post with CONTROVERSIAL/NEGATIVE reactions
         if (launch != null) {
-            Collaboration c11 = createCollaborationIfNotExists(launch, inf11, CollaborationStatus.ACCEPTED, 180.0);
+            Collaboration c11 = createCollaborationIfNotExists(launch, inf11, CollaborationStatus.ACCEPTED, 180.0, "3 posts with reviews of the product");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf11.getId(), Platform.TIKTOK).orElse(null);
             if (c11 != null && sm != null) {
                 createPostForCollaboration(c11, sm, "Beta product launch. What do you think about this?",
@@ -383,7 +377,7 @@ public class TestDataLoader implements CommandLineRunner {
 
         // Biz3 -> Inf12 (Product Demo) + post with minimal engagement (shadow banned)
         if (demo != null) {
-            Collaboration c12 = createCollaborationIfNotExists(demo, inf12, CollaborationStatus.ACCEPTED, 110.0);
+            Collaboration c12 = createCollaborationIfNotExists(demo, inf12, CollaborationStatus.ACCEPTED, 110.0, "20 posts with demos");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf12.getId(), Platform.INSTAGRAM).orElse(null);
             if (c12 != null && sm != null) {
                 createPostForCollaboration(c12, sm, "Gamma Co product demo with more details.",
@@ -398,7 +392,7 @@ public class TestDataLoader implements CommandLineRunner {
         // More posts from good influencers but with poor performance variations
         if (summer != null) {
             // Second post from inf1 with slightly lower engagement
-            Collaboration c13 = createCollaborationIfNotExists(summer, inf1, CollaborationStatus.ACCEPTED, 350.0);
+            Collaboration c13 = createCollaborationIfNotExists(summer, inf1, CollaborationStatus.ACCEPTED, 350.0, "5 Posts promoting the offers");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf1.getId(), Platform.YOUTUBE).orElse(null);
             if (c13 != null && sm != null) {
                 createPostForCollaboration(c13, sm, "Summer deals roundup! Here's what ACME Corp is offering this season.",
@@ -409,7 +403,7 @@ public class TestDataLoader implements CommandLineRunner {
 
         // Post with mixed reactions
         if (q2 != null) {
-            Collaboration c14 = createCollaborationIfNotExists(q2, inf3, CollaborationStatus.ACCEPTED, 300.0);
+            Collaboration c14 = createCollaborationIfNotExists(q2, inf3, CollaborationStatus.ACCEPTED, 300.0, "10 posts for Q2 marketing");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf3.getId(), Platform.FACEBOOK).orElse(null);
             if (c14 != null && sm != null) {
                 createPostForCollaboration(c14, sm, "Beta LLC Q2 marketing update. New strategies ahead!",
@@ -498,7 +492,7 @@ public class TestDataLoader implements CommandLineRunner {
         return b;
     }
 
-    private Campaign createCampaignIfNotExists(Business b, String title, Double budget) {
+    private Campaign createCampaignIfNotExists(Business b, String title, Double budget, String goals) {
         Campaign existing = campaignRepository.findByBusinessId(b.getId()).stream().filter(c -> title.equals(c.getTitle())).findFirst().orElse(null);
         if (existing != null) return existing;
         Campaign camp = Campaign.builder()
@@ -509,6 +503,7 @@ public class TestDataLoader implements CommandLineRunner {
                 .targetCategory(Category.OTHER)
                 .budget(budget)
                 .startDate(LocalDate.now())
+                .goals(goals)
                 .build();
         camp = campaignRepository.save(camp);
         b.addCampaign(camp);
@@ -597,7 +592,7 @@ public class TestDataLoader implements CommandLineRunner {
         } catch (Throwable ignored) {}
     }
 
-    private Collaboration createCollaborationIfNotExists(Campaign camp, Influencer inf, CollaborationStatus status, Double payment) {
+    private Collaboration createCollaborationIfNotExists(Campaign camp, Influencer inf, CollaborationStatus status, Double payment, String deliverables) {
         for (Collaboration c : collaborationRepository.findAll()) {
             if (c.getCampaign() != null && c.getInfluencer() != null
                     && camp.getId() != null && c.getCampaign().getId() != null
@@ -613,6 +608,7 @@ public class TestDataLoader implements CommandLineRunner {
         coll.setStatus(status);
         coll.setPaymentAmount(payment);
         coll.setStartDate(LocalDate.now());
+        coll.setDeliverables(deliverables);
         coll = collaborationRepository.save(coll);
         camp.addCollaboration(coll);
         campaignRepository.save(camp);
