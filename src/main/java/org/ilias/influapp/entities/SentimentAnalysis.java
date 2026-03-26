@@ -45,5 +45,8 @@ public class SentimentAnalysis {
     private Double emojiScore;
 
     private Double reactionScore;
+    
+    @Column(name = "manual_label")
+    private String manualLabel;
 }
 

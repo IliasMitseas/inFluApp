@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import jakarta.persistence.EntityManager;
 import org.ilias.influapp.services.HybridSentimentService;
 import org.ilias.influapp.entities.Enums.ReactionType;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,7 +43,6 @@ public class TestDataLoader implements CommandLineRunner {
     private final ReactionRepository reactionRepository;
     private final PasswordEncoder passwordEncoder;
     private final HybridSentimentService hybridSentimentService;
-
 
 
     private void updateInfluencerMetricsFromSocialMedia() {
@@ -215,9 +215,9 @@ public class TestDataLoader implements CommandLineRunner {
             Collaboration c1 = createCollaborationIfNotExists(summer, inf1, CollaborationStatus.ACCEPTED, 350.0, "3 posts with vids and photos about the super promo with a discount code");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf1.getId(), Platform.INSTAGRAM).orElse(null);
             if (c1 != null && sm != null) {
-                createPostForCollaboration(c1, sm, "Check out ACME's Summer Promo! Amazing deals for the season 🌞", 
+                createPostForCollaborationWithManualLabel(c1, sm, "Check out ACME's Summer Promo! Amazing deals for the season 🌞", 
                     List.of("Love it!", "Great products!", "Where can I buy?", "Amazing quality!", "Φανταστικό!", "Μου αρέσει"), 
-                    25000, 75000, Map.of(ReactionType.LIKE, 1200, ReactionType.LOVE, 300, ReactionType.WOW, 50, ReactionType.HAHA, 25), 300);
+                    25000, 75000, Map.of(ReactionType.LIKE, 1200, ReactionType.LOVE, 300, ReactionType.WOW, 50, ReactionType.HAHA, 25), 300, inferManualLabel("Check out ACME's Summer Promo! Amazing deals for the season 🌞"));
             }
         }
 
@@ -227,9 +227,9 @@ public class TestDataLoader implements CommandLineRunner {
             Collaboration c2 = createCollaborationIfNotExists(holiday, inf2, CollaborationStatus.ACCEPTED, 400.0, "posts promoting holiday deals");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf2.getId(), Platform.TIKTOK).orElse(null);
             if (c2 != null && sm != null) {
-                createPostForCollaboration(c2, sm, "Holiday deals are LIVE! 🎄✨ Don't miss these incredible offers!", 
+                createPostForCollaborationWithManualLabel(c2, sm, "Holiday deals are LIVE! 🎄✨ Don't miss these incredible offers!", 
                     List.of("Nice deals!", "Where to buy?", "Love this!", "Must have!"), 
-                    15000, 45000, Map.of(ReactionType.LIKE, 800, ReactionType.LOVE, 120, ReactionType.HAHA, 40, ReactionType.ANGRY, 10), 120);
+                    15000, 45000, Map.of(ReactionType.LIKE, 800, ReactionType.LOVE, 120, ReactionType.HAHA, 40, ReactionType.ANGRY, 10), 120, inferManualLabel("Holiday deals are LIVE! 🎄✨ Don't miss these incredible offers!"));
             }
         }
 
@@ -239,9 +239,9 @@ public class TestDataLoader implements CommandLineRunner {
             Collaboration c3 = createCollaborationIfNotExists(launch, inf3, CollaborationStatus.ACCEPTED, 500.0, "10 Posts promoting the new beta product");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf3.getId(), Platform.TIKTOK).orElse(null);
             if (c3 != null && sm != null) {
-                createPostForCollaboration(c3, sm, "Launching the new Beta product! 🚀 This is CRAZY good. Check it out!", 
+                createPostForCollaborationWithManualLabel(c3, sm, "Launching the new Beta product! 🚀 This is CRAZY good. Check it out!", 
                     List.of("Congrats!", "Can't wait to try it!", "Tell us more please!", "Looks awesome!"), 
-                    40000, 120000, Map.of(ReactionType.LIKE, 2000, ReactionType.WOW, 500, ReactionType.LOVE, 300, ReactionType.SAD, 5), 800);
+                    40000, 120000, Map.of(ReactionType.LIKE, 2000, ReactionType.WOW, 500, ReactionType.LOVE, 300, ReactionType.SAD, 5), 800, inferManualLabel("Launching the new Beta product! 🚀 This is CRAZY good. Check it out!"));
             }
         }
 
@@ -251,9 +251,9 @@ public class TestDataLoader implements CommandLineRunner {
             Collaboration c4 = createCollaborationIfNotExists(ba, inf4, CollaborationStatus.ACCEPTED, 250.0, "5 post promoting brand awareness");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf4.getId(), Platform.YOUTUBE).orElse(null);
             if (c4 != null && sm != null) {
-                createPostForCollaboration(c4, sm, "Talking about Gamma Co today - their solutions are game-changing for the tech industry", 
+                createPostForCollaborationWithManualLabel(c4, sm, "Talking about Gamma Co today - their solutions are game-changing for the tech industry", 
                     List.of("Informative review!", "Good overview!", "Nice video production!", "Very detailed!"), 
-                    8000, 22000, Map.of(ReactionType.LIKE, 300, ReactionType.LOVE, 20, ReactionType.WOW, 10, ReactionType.SAD, 2), 40);
+                    8000, 22000, Map.of(ReactionType.LIKE, 300, ReactionType.LOVE, 20, ReactionType.WOW, 10, ReactionType.SAD, 2), 40, inferManualLabel("Talking about Gamma Co today - their solutions are game-changing for the tech industry"));
             }
         }
 
@@ -262,9 +262,9 @@ public class TestDataLoader implements CommandLineRunner {
             Collaboration c5 = createCollaborationIfNotExists(launch, inf5, CollaborationStatus.ACCEPTED, 320.0, "3 Post for product honest review");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf5.getId(), Platform.INSTAGRAM).orElse(null);
             if (c5 != null && sm != null) {
-                createPostForCollaboration(c5, sm, "Beta launch first impressions! 📸 This product is really impressive", 
+                createPostForCollaborationWithManualLabel(c5, sm, "Beta launch first impressions! 📸 This product is really impressive", 
                     List.of("Cool features!", "Looks good to me!", "Where to buy?", "Love the design!"), 
-                    32000, 95000, Map.of(ReactionType.LIKE, 1500, ReactionType.LOVE, 200, ReactionType.WOW, 150, ReactionType.ANGRY, 15), 220);
+                    32000, 95000, Map.of(ReactionType.LIKE, 1500, ReactionType.LOVE, 200, ReactionType.WOW, 150, ReactionType.ANGRY, 15), 220, inferManualLabel("Beta launch first impressions! 📸 This product is really impressive"));
             }
         }
 
@@ -274,9 +274,9 @@ public class TestDataLoader implements CommandLineRunner {
             Collaboration c6 = createCollaborationIfNotExists(demo, inf6, CollaborationStatus.ACCEPTED, 280.0, "5 reviews of the product");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf6.getId(), Platform.INSTAGRAM).orElse(null);
             if (c6 != null && sm != null) {
-                createPostForCollaboration(c6, sm, "Featuring Gamma Co's latest products 👨‍🍳 Quality you can taste and see!", 
+                createPostForCollaborationWithManualLabel(c6, sm, "Featuring Gamma Co's latest products 👨‍🍳 Quality you can taste and see!", 
                     List.of("Mouth-watering!", "Need this now!", "Beautiful presentation!", "Definitely interested!"), 
-                    28000, 85000, Map.of(ReactionType.LIKE, 1800, ReactionType.LOVE, 450, ReactionType.WOW, 80, ReactionType.HAHA, 30), 180);
+                    28000, 85000, Map.of(ReactionType.LIKE, 1800, ReactionType.LOVE, 450, ReactionType.WOW, 80, ReactionType.HAHA, 30), 180, inferManualLabel("Featuring Gamma Co's latest products 👨‍🍳 Quality you can taste and see!"));
             }
         }
 
@@ -295,9 +295,9 @@ public class TestDataLoader implements CommandLineRunner {
             Collaboration c7 = createCollaborationIfNotExists(summer, inf7, CollaborationStatus.ACCEPTED, 150.0, "4 videos promoting the summer offers");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf7.getId(), Platform.INSTAGRAM).orElse(null);
             if (c7 != null && sm != null) {
-                createPostForCollaboration(c7, sm, "Summer promo post from ACME Corp. Check it out!",
+                createPostForCollaborationWithManualLabel(c7, sm, "Summer promo post from ACME Corp. Check it out!",
                     List.of("Spam?", "Not interested", "Σπαμ;", "Δεν με ενδιαφέρει", "Χάλια, δεν το προτείνω"), 
-                    120, 300, Map.of(ReactionType.LIKE, 5, ReactionType.SAD, 2, ReactionType.ANGRY, 3), 1);
+                    120, 300, Map.of(ReactionType.LIKE, 5, ReactionType.SAD, 2, ReactionType.ANGRY, 3), 1, inferManualLabel("Summer promo post from ACME Corp. Check it out!"));
             } else {
                 log.warn("Skipped c7 post seed (summer/inf7): collaborationPresent={}, socialMediaPresent={}", c7 != null, sm != null);
             }
@@ -308,9 +308,9 @@ public class TestDataLoader implements CommandLineRunner {
             Collaboration c8 = createCollaborationIfNotExists(q2, inf8, CollaborationStatus.ACCEPTED, 100.0, "2 posts with text about the product");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf8.getId(), Platform.TIKTOK).orElse(null);
             if (c8 != null && sm != null) {
-                createPostForCollaboration(c8, sm, "Beta LLC Q2 Marketing content. New product available now.",
+                createPostForCollaborationWithManualLabel(c8, sm, "Beta LLC Q2 Marketing content. New product available now.",
                     List.of("Δεν με ενδιαφέρει", "Δεν αξίζει", "Όχι ευχαριστώ"),
-                    50, 150, Map.of(ReactionType.LIKE, 2, ReactionType.HAHA, 1), 0);
+                    50, 150, Map.of(ReactionType.LIKE, 2, ReactionType.HAHA, 1), 0, inferManualLabel("Beta LLC Q2 Marketing content. New product available now."));
             } else {
                 log.warn("Skipped c8 post seed (q2/inf8): collaborationPresent={}, socialMediaPresent={}", c8 != null, sm != null);
             }
@@ -321,9 +321,9 @@ public class TestDataLoader implements CommandLineRunner {
             Collaboration c9 = createCollaborationIfNotExists(holiday, inf9, CollaborationStatus.ACCEPTED, 200.0, "5 posts promoting holiday sales");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf9.getId(), Platform.INSTAGRAM).orElse(null);
             if (c9 != null && sm != null) {
-                createPostForCollaboration(c9, sm, "Holiday Sale from ACME! Limited time offer inside!",
+                createPostForCollaborationWithManualLabel(c9, sm, "Holiday Sale from ACME! Limited time offer inside!",
                     List.of("Obvious promotion", "Untrustworthy", "Fake engagement", "Ψεύτικο", "Απάτη", "Χάλια προσφορές"), 
-                    300, 800, Map.of(ReactionType.LIKE, 8, ReactionType.ANGRY, 15, ReactionType.SAD, 5, ReactionType.WOW, 2), 5);
+                    300, 800, Map.of(ReactionType.LIKE, 8, ReactionType.ANGRY, 15, ReactionType.SAD, 5, ReactionType.WOW, 2), 5, inferManualLabel("Holiday Sale from ACME! Limited time offer inside!"));
             } else {
                 log.warn("Skipped c9 post seed (holiday/inf9): collaborationPresent={}, socialMediaPresent={}", c9 != null, sm != null);
             }
@@ -334,9 +334,9 @@ public class TestDataLoader implements CommandLineRunner {
             Collaboration c10 = createCollaborationIfNotExists(ba, inf10, CollaborationStatus.ACCEPTED, 120.0, "10 videos and photos promoting the brand");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf10.getId(), Platform.YOUTUBE).orElse(null);
             if (c10 != null && sm != null) {
-                createPostForCollaboration(c10, sm, "Gamma Co brand awareness video. Check this out.",
+                createPostForCollaborationWithManualLabel(c10, sm, "Gamma Co brand awareness video. Check this out.",
                     List.of(), // No comments
-                    40, 120, Map.of(ReactionType.LIKE, 1), 0);
+                    40, 120, Map.of(ReactionType.LIKE, 1), 0, inferManualLabel("Gamma Co brand awareness video. Check this out."));
             } else {
                 log.warn("Skipped c10 post seed (brand-awareness/inf10): collaborationPresent={}, socialMediaPresent={}", c10 != null, sm != null);
             }
@@ -347,9 +347,9 @@ public class TestDataLoader implements CommandLineRunner {
             Collaboration c11 = createCollaborationIfNotExists(launch, inf11, CollaborationStatus.ACCEPTED, 180.0, "3 posts with reviews of the product");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf11.getId(), Platform.TIKTOK).orElse(null);
             if (c11 != null && sm != null) {
-                createPostForCollaboration(c11, sm, "Beta product launch. What do you think about this?",
+                createPostForCollaborationWithManualLabel(c11, sm, "Beta product launch. What do you think about this?",
                     List.of("Bad quality", "Not worth it", "Horrible experience", "Waste of money", "Disappointed", "Χάλια ποιότητα", "Απαίσιο", "Δεν το προτείνω"), 
-                    400, 1200, Map.of(ReactionType.ANGRY, 45, ReactionType.SAD, 20, ReactionType.LIKE, 15, ReactionType.HAHA, 5, ReactionType.WOW, 3), 8);
+                    400, 1200, Map.of(ReactionType.ANGRY, 45, ReactionType.SAD, 20, ReactionType.LIKE, 15, ReactionType.HAHA, 5, ReactionType.WOW, 3), 8, inferManualLabel("Beta product launch. What do you think about this?"));
             } else {
                 log.warn("Skipped c11 post seed (launch/inf11): collaborationPresent={}, socialMediaPresent={}", c11 != null, sm != null);
             }
@@ -360,9 +360,9 @@ public class TestDataLoader implements CommandLineRunner {
             Collaboration c12 = createCollaborationIfNotExists(demo, inf12, CollaborationStatus.ACCEPTED, 110.0, "20 posts with demos");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf12.getId(), Platform.INSTAGRAM).orElse(null);
             if (c12 != null && sm != null) {
-                createPostForCollaboration(c12, sm, "Gamma Co product demo with more details.",
+                createPostForCollaborationWithManualLabel(c12, sm, "Gamma Co product demo with more details.",
                     List.of(), // No comments due to shadow ban
-                    25, 80, Map.of(ReactionType.LIKE, 1, ReactionType.SAD, 1), 0);
+                    25, 80, Map.of(ReactionType.LIKE, 1, ReactionType.SAD, 1), 0, inferManualLabel("Gamma Co product demo with more details."));
             } else {
                 log.warn("Skipped c12 post seed (demo/inf12): collaborationPresent={}, socialMediaPresent={}", c12 != null, sm != null);
             }
@@ -374,9 +374,9 @@ public class TestDataLoader implements CommandLineRunner {
             Collaboration c13 = createCollaborationIfNotExists(summer, inf1, CollaborationStatus.ACCEPTED, 350.0, "5 Posts promoting the offers");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf1.getId(), Platform.YOUTUBE).orElse(null);
             if (c13 != null && sm != null) {
-                createPostForCollaboration(c13, sm, "Summer deals roundup! Here's what ACME Corp is offering this season.",
+                createPostForCollaborationWithManualLabel(c13, sm, "Summer deals roundup! Here's what ACME Corp is offering this season.",
                     List.of("Good info", "Helpful post"), 
-                    5000, 15000, Map.of(ReactionType.LIKE, 150, ReactionType.LOVE, 30, ReactionType.WOW, 10), 25);
+                    5000, 15000, Map.of(ReactionType.LIKE, 150, ReactionType.LOVE, 30, ReactionType.WOW, 10), 25, inferManualLabel("Summer deals roundup! Here's what ACME Corp is offering this season."));
             }
         }
 
@@ -385,9 +385,9 @@ public class TestDataLoader implements CommandLineRunner {
             Collaboration c14 = createCollaborationIfNotExists(q2, inf3, CollaborationStatus.ACCEPTED, 300.0, "10 posts for Q2 marketing");
             SocialMedia sm = socialMediaRepository.findByInfluencerIdAndPlatform(inf3.getId(), Platform.FACEBOOK).orElse(null);
             if (c14 != null && sm != null) {
-                createPostForCollaboration(c14, sm, "Beta LLC Q2 marketing update. New strategies ahead!",
+                createPostForCollaborationWithManualLabel(c14, sm, "Beta LLC Q2 marketing update. New strategies ahead!",
                     List.of("Interesting", "Not convinced", "Tell us more", "Okay I guess"), 
-                    2000, 6000, Map.of(ReactionType.LIKE, 120, ReactionType.LOVE, 20, ReactionType.SAD, 15, ReactionType.ANGRY, 8), 30);
+                    2000, 6000, Map.of(ReactionType.LIKE, 120, ReactionType.LOVE, 20, ReactionType.SAD, 15, ReactionType.ANGRY, 8), 30, inferManualLabel("Beta LLC Q2 marketing update. New strategies ahead!"));
             }
         }
 
@@ -419,7 +419,7 @@ public class TestDataLoader implements CommandLineRunner {
                 Collaboration neg1 = createCollaborationIfNotExists(launch, inf11, CollaborationStatus.ACCEPTED, 20.0, "forced-negative-seed-1");
                 SocialMedia smNeg1 = socialMediaRepository.findByInfluencerIdAndPlatform(inf11.getId(), Platform.TIKTOK).orElse(null);
                 if (neg1 != null && smNeg1 != null) {
-                    createPostForCollaboration(neg1, smNeg1,
+                    createPostForCollaborationWithManualLabel(neg1, smNeg1,
                         "Absolutely terrible product — complete scam. Do NOT buy! 😡",
                         List.of(
                             "Worst product ever. Terrible quality and customer support.",
@@ -427,7 +427,7 @@ public class TestDataLoader implements CommandLineRunner {
                             "Refund please, total scam.",
                             "Χάλια προϊόν, απαράδεκτο. Μην το αγοράσετε! 😡",
                             "Απαίσιο, κακή ποιότητα και εξυπηρέτηση."),
-                        150, 420, Map.of(ReactionType.ANGRY, 450, ReactionType.SAD, 120, ReactionType.LIKE, 3), 0);
+                        150, 420, Map.of(ReactionType.ANGRY, 450, ReactionType.SAD, 120, ReactionType.LIKE, 3), 0, inferManualLabel("Absolutely terrible product — complete scam. Do NOT buy! 😡"));
                 }
             }
 
@@ -436,14 +436,14 @@ public class TestDataLoader implements CommandLineRunner {
                 Collaboration neg2 = createCollaborationIfNotExists(holiday, inf9, CollaborationStatus.ACCEPTED, 15.0, "forced-negative-seed-2");
                 SocialMedia smNeg2 = socialMediaRepository.findByInfluencerIdAndPlatform(inf9.getId(), Platform.INSTAGRAM).orElse(null);
                 if (neg2 != null && smNeg2 != null) {
-                    createPostForCollaboration(neg2, smNeg2,
+                    createPostForCollaborationWithManualLabel(neg2, smNeg2,
                         "Misleading offer, horrible service. Terrible experience. 😡🤬",
                         List.of(
                             "This is disgusting, worst service I've encountered.",
                             "Terrible, do not trust this company.",
                             "Απάτη, δεν ανταποκρίνεται στις προσδοκίες.",
                             "Σοβαρό πρόβλημα, κακή εμπειρία, απαράδεκτο."),
-                        90, 200, Map.of(ReactionType.ANGRY, 380, ReactionType.SAD, 90, ReactionType.LIKE, 2), 0);
+                        90, 200, Map.of(ReactionType.ANGRY, 380, ReactionType.SAD, 90, ReactionType.LIKE, 2), 0, inferManualLabel("Misleading offer, horrible service. Terrible experience. 😡🤬"));
                 }
             }
         } catch (Throwable ex) {
@@ -454,6 +454,136 @@ public class TestDataLoader implements CommandLineRunner {
         try { updateInfluencerMetricsFromSocialMedia();
         } catch (Throwable ex) {
             log.warn("Failed to persist influencer metrics: {}", ex.getMessage());
+        }
+
+
+        // === EXTRA: seed additional Greek-language test posts with manual labels ===
+        log.info("Seeding extra Greek test posts with manual labels...");
+        try {
+            // find a few social media accounts to attach these posts
+            List<SocialMedia> sms = socialMediaRepository.findAll();
+            if (sms != null && !sms.isEmpty()) {
+                // pick first few
+                SocialMedia s1 = sms.get(0);
+                SocialMedia s2 = sms.size() > 1 ? sms.get(1) : s1;
+                SocialMedia s3 = sms.size() > 2 ? sms.get(2) : s1;
+
+                // Negative / TERRIBLE examples (Greek)
+                createPostForCollaborationWithManualLabel(
+                        collaborationRepository.findAll().get(0), s1,
+                        "Απαίσιο προϊόν, χάλια εξυπηρέτηση. Μην το αγοράσετε! 😡",
+                        List.of("Απαίσιο!", "Μην το αγοράσετε", "Χάλια"),
+                        100, 300, Map.of(ReactionType.ANGRY, 250, ReactionType.SAD, 50), 2,
+                        "TERRIBLE");
+
+                createPostForCollaborationWithManualLabel(
+                        collaborationRepository.findAll().get(0), s2,
+                        "Φρικτική εμπειρία. Καμία επιστροφή χρημάτων — απαράδεκτο.",
+                        List.of("Φρικτό", "Δεν το προτείνω", "Απαράδεκτο"),
+                        80, 200, Map.of(ReactionType.ANGRY, 180, ReactionType.SAD, 40), 1,
+                        "TERRIBLE");
+
+                // Negative / DISLIKE examples
+                createPostForCollaborationWithManualLabel(
+                        collaborationRepository.findAll().get(0), s3,
+                        "Δεν μου άρεσε, πολύ μέτριο προϊόν.",
+                        List.of("Δεν μου άρεσε", "Μέτριο"),
+                        200, 600, Map.of(ReactionType.ANGRY, 20, ReactionType.LIKE, 5), 3,
+                        "DISLIKE");
+
+                // Positive / LOVE examples (Greek)
+                createPostForCollaborationWithManualLabel(
+                        collaborationRepository.findAll().get(1), s1,
+                        "Απίστευτο! Το λάτρεψα ❤️ Το προτείνω ανεπιφύλακτα!",
+                        List.of("Το λάτρεψα", "Τέλειο", "Μπράβο"),
+                        500, 1400, Map.of(ReactionType.LOVE, 400, ReactionType.LIKE, 200), 20,
+                        "LOVE");
+
+                // Neutral examples
+                createPostForCollaborationWithManualLabel(
+                        collaborationRepository.findAll().get(1), s2,
+                        "Ανακοίνωση προϊόντος: διαθέσιμο τώρα.",
+                        List.of("Ευχαριστούμε για την ενημέρωση"),
+                        120, 320, Map.of(ReactionType.LIKE, 10), 0,
+                        "NEUTRAL");
+            }
+        } catch (Throwable ex) {
+            log.warn("Failed to seed extra Greek test posts: {}", ex.getMessage());
+        }
+
+        // === EXTRA: expand manual-labeled test set with more Greek variants (A) ===
+        log.info("Seeding additional manual-labeled variants to increase test set coverage...");
+        try {
+            List<SocialMedia> smsAll = socialMediaRepository.findAll();
+            List<Collaboration> colls = collaborationRepository.findAll();
+            if (!smsAll.isEmpty() && !colls.isEmpty()) {
+                SocialMedia s = smsAll.get(0);
+                Collaboration coll = colls.get(0);
+
+                String[] terribleVariants = new String[] {
+                    "Απαίσιο προϊόν, χάλια εξυπηρέτηση. Μην το αγοράσετε! 😡",
+                    "Φοβερά κακή ποιότητα — απογοήτευση. Απαράδεκτο.",
+                    "Πλήρης απάτη, δεν λειτουργεί. Χάλια εμπειρία.",
+                    "Απολύτως απαίσιο, χάσιμο χρημάτων. 🤬",
+                    "Τραγική κατάσταση, μηδέποτε αγοράσετε αυτό το προϊόν",
+                    "Απαράδεκτο προϊόν — πέντε φορές χειρότερο από ό,τι περίμενα"
+                };
+
+                String[] dislikeVariants = new String[] {
+                    "Δεν μου άρεσε, πολύ μέτριο προϊόν.",
+                    "Μέτριο, όχι κακό αλλά ούτε καλό.",
+                    "Το προϊόν είναι απλά μέτριο, περιμέναμε καλύτερα.",
+                    "Δεν εντυπωσιάστηκα, όχι για μένα."
+                };
+
+                String[] loveVariants = new String[] {
+                    "Απίστευτο! Το λάτρεψα ❤️ Το προτείνω ανεπιφύλακτα!",
+                    "Το αγαπώ — τέλειο προϊόν, εξαιρετική ποιότητα! 😍",
+                    "Συγχαρητήρια, εξαιρετική δουλειά, θα το ξανααγοράσω",
+                    "Το συνιστώ, πολυαγαπημένο! 💯"
+                };
+
+                String[] likeVariants = new String[] {
+                    "Μου αρέσει, καλό value-for-money.",
+                    "Θετικό προϊόν, θα το προτείνω σε φίλους.",
+                    "Καλό συνολικά, μερικά μικρά μειονεκτήματα."
+                };
+
+                String[] neutralVariants = new String[] {
+                    "Ανακοίνωση προϊόντος: διαθέσιμο τώρα.",
+                    "Πληροφορίες σχετικά με το προϊόν — διαθέσιμο στις αγορές.",
+                    "Ενημέρωση: νέο προϊόν στο κατάστημα."
+                };
+
+                // create multiple variants per label
+                for (int i = 0; i < 6; i++) {
+                    String text = terribleVariants[i % terribleVariants.length] + " (#" + (i+1) + ")";
+                    createPostForCollaborationWithManualLabel(coll, s, text, List.of("Απαίσιο", "Μην το αγοράσετε"), 80 + i*5, 200 + i*10, Map.of(ReactionType.ANGRY, 120 + i*20, ReactionType.SAD, 20 + i*5), 1, "TERRIBLE");
+                }
+
+                for (int i = 0; i < 6; i++) {
+                    String text = dislikeVariants[i % dislikeVariants.length] + " (#" + (i+1) + ")";
+                    createPostForCollaborationWithManualLabel(coll, s, text, List.of("Δεν μου άρεσε", "Μέτριο"), 150 + i*10, 450 + i*20, Map.of(ReactionType.ANGRY, 10 + i*2, ReactionType.LIKE, 5 + i), 2, "DISLIKE");
+                }
+
+                for (int i = 0; i < 6; i++) {
+                    String text = loveVariants[i % loveVariants.length] + " (#" + (i+1) + ")";
+                    createPostForCollaborationWithManualLabel(colls.size() > 1 ? colls.get(1) : coll, s, text, List.of("Το λάτρεψα", "Τέλειο"), 400 + i*50, 1200 + i*100, Map.of(ReactionType.LOVE, 200 + i*30, ReactionType.LIKE, 80 + i*20), 10 + i, "LOVE");
+                }
+
+                for (int i = 0; i < 6; i++) {
+                    String text = likeVariants[i % likeVariants.length] + " (#" + (i+1) + ")";
+                    createPostForCollaborationWithManualLabel(colls.size() > 1 ? colls.get(1) : coll, s, text, List.of("Μου αρέσει", "Καλό"), 220 + i*20, 600 + i*40, Map.of(ReactionType.LIKE, 60 + i*10), 5, "LIKE");
+                }
+
+                for (int i = 0; i < 6; i++) {
+                    String text = neutralVariants[i % neutralVariants.length] + " (#" + (i+1) + ")";
+                    createPostForCollaborationWithManualLabel(colls.size() > 1 ? colls.get(1) : coll, s, text, List.of("Ευχαριστούμε για την ενημέρωση"), 100 + i*5, 300 + i*10, Map.of(ReactionType.LIKE, 5 + i), 0, "NEUTRAL");
+                }
+                log.info("Seeded additional {} manual-labeled posts", 36);
+            }
+        } catch (Throwable ex) {
+            log.warn("Failed to seed expanded manual-labeled variants: {}", ex.getMessage());
         }
 
         log.info("TestDataLoader finished - comprehensive test data seeding complete");
@@ -471,6 +601,35 @@ public class TestDataLoader implements CommandLineRunner {
             log.info("TestDataLoader SUMMARY: businesses={}, influencers={}, campaigns={}, collaborations={}, posts={}, reactions={}, sentiments={}, socialMedia={}", 
                 bizCount, infCount, campCount, collCount, postCount, reactionCount, sentimentCount, smCount);
         } catch (Throwable ignored) {}
+
+        // Optional: re-analyze all existing posts using the (possibly updated) HybridSentimentService
+        try {
+            String rean = System.getenv("REANALYZE_SENTIMENTS");
+            if (rean != null && "true".equalsIgnoreCase(rean)) {
+                log.info("REANALYZE_SENTIMENTS=true — re-running sentiment analysis for all posts (this may take a while)");
+                List<Post> allPosts = postRepository.findAll();
+                for (Post p : allPosts) {
+                    try {
+                        var reactions = p.getReactions();
+                        var comments = p.getComments();
+                        var sentiment = hybridSentimentService.analyzeAndSave(p, reactions, comments);
+                        // Persist SentimentAnalysis (analyzeAndSave attaches it to Post; save to persist)
+                        postRepository.save(p);
+                        // Optionally copy sentiment to posts.postSentiment if explicitly requested (dangerous for evaluation)
+                        String forceSet = System.getenv("TESTDATA_SET_POST_SENTIMENT");
+                        if (forceSet != null && "true".equalsIgnoreCase(forceSet)) {
+                            p.setPostSentiment(sentiment);
+                            postRepository.save(p);
+                        }
+                    } catch (Throwable ex) {
+                        log.warn("Failed to re-analyze post {}: {}", p.getId(), ex.getMessage());
+                    }
+                }
+                log.info("Re-analysis complete");
+            }
+        } catch (Throwable ex) {
+            log.warn("Failed running re-analysis step: {}", ex.getMessage());
+        }
     }
 
 
@@ -656,6 +815,39 @@ public class TestDataLoader implements CommandLineRunner {
         } catch (Throwable ignored) {}
     }
 
+    // Simple heuristic to infer a manual label from post content. This is only used to seed
+    // test data when no manual_label exists. It intentionally avoids using model outputs.
+    private String inferManualLabel(String content) {
+        if (content == null) return null;
+        String low = content.toLowerCase();
+        // TERRIBLE indicators (Greek/English)
+        String[] terrible = new String[]{"terrible", "very negative", "απαίσιο", "απαρα", "μην το αγοράσετε", "απαράδεκτο", "απάτη", "χάλια", "παρακαλώ μην"};
+        for (String k : terrible) {
+            if (low.contains(k)) return "TERRIBLE";
+        }
+        // DISLIKE indicators
+        String[] dislike = new String[]{"dislike", "negative", "δεν μου άρεσε", "μέτριο", "δεν εντυπωσιάστηκα", "όχι για μένα"};
+        for (String k : dislike) {
+            if (low.contains(k)) return "DISLIKE";
+        }
+        // LOVE indicators
+        String[] love = new String[]{"love", "λάτρεψα", "το λάτρεψα", "το αγαπώ", "😍", "❤️", "συγχαρητήρια"};
+        for (String k : love) {
+            if (low.contains(k)) return "LOVE";
+        }
+        // LIKE indicators
+        String[] like = new String[]{"like", "θετικό", "μου αρέσει", "θετικό προϊόν", "καλό"};
+        for (String k : like) {
+            if (low.contains(k)) return "LIKE";
+        }
+        // NEUTRAL default if contains neutral words
+        String[] neutral = new String[]{"announcement", "available", "διαθέσιμο", "πληροφορίες", "ενημέρωση", "ανακοίνωση"};
+        for (String k : neutral) {
+            if (low.contains(k)) return "NEUTRAL";
+        }
+        return null;
+    }
+
     private Collaboration createCollaborationIfNotExists(Campaign camp, Influencer inf, CollaborationStatus status, Double payment, String deliverables) {
         for (Collaboration c : collaborationRepository.findAll()) {
             if (c.getCampaign() != null && c.getInfluencer() != null
@@ -741,6 +933,26 @@ public class TestDataLoader implements CommandLineRunner {
         } catch (Throwable ex) {
             log.warn("Failed to calculate sentiment for post {}: {}", p.getId(), ex.getMessage());
         }
+
+        // If there's a SentimentAnalysis row and no manual_label set, infer a reasonable manual label
+        // from the post content using a simple keyword heuristic. We do NOT override existing manual labels
+        // and we avoid using model predictions to prevent leakage in test data.
+        try {
+            var saOpt2 = sentimentAnalysisRepository.findByPostId(p.getId());
+            if (saOpt2.isPresent()) {
+                SentimentAnalysis sa = saOpt2.get();
+                if (sa.getManualLabel() == null) {
+                    String inferred = inferManualLabel(p.getContent());
+                    if (inferred != null) {
+                        sa.setManualLabel(inferred);
+                        sentimentAnalysisRepository.save(sa);
+                        log.info("Inferred and set manual_label='{}' for post id={}", inferred, p.getId());
+                    }
+                }
+            }
+        } catch (Throwable ex) {
+            log.warn("Failed to infer/set manual_label for post {}: {}", p.getId(), ex.getMessage());
+        }
         
         // Ensure SocialMedia has the post in its collection so entity listeners and
         // in-memory calculations use consistent data
@@ -762,6 +974,26 @@ public class TestDataLoader implements CommandLineRunner {
             log.info("Post id={} linked to collaboration id={}", p.getId(), coll.getId());
         } catch (Throwable ex) {
             log.warn("Failed to link post to collaboration: {}", ex.getMessage());
+        }
+        return p;
+    }
+
+    // New helper: create post and then set a human/manual label in sentiment_analysis for a clean test set
+    private Post createPostForCollaborationWithManualLabel(Collaboration coll, SocialMedia sm, String content, List<String> comments, Integer reach, Integer impressions, Map<ReactionType, Integer> reactionCounts, Integer shares, String manualLabel) {
+        Post p = createPostForCollaboration(coll, sm, content, comments, reach, impressions, reactionCounts, shares);
+        if (p == null) return null;
+        try {
+            var saOpt = sentimentAnalysisRepository.findByPostId(p.getId());
+            if (saOpt.isPresent()) {
+                SentimentAnalysis sa = saOpt.get();
+                sa.setManualLabel(manualLabel);
+                sentimentAnalysisRepository.save(sa);
+                log.info("Set manual_label='{}' for post id={}", manualLabel, p.getId());
+            } else {
+                log.warn("No SentimentAnalysis found for post id={} to set manual_label", p.getId());
+            }
+        } catch (Throwable ex) {
+            log.warn("Failed to set manual_label for post {}: {}", p.getId(), ex.getMessage());
         }
         return p;
     }

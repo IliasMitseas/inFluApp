@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +22,14 @@ public class HybridSentimentService {
 
     private final CoreNlpSentimentService coreNlpService;
     private final EmojiSentimentAnalyzer emojiSentimentAnalyzer;
+
+    // Small Greek lexicon to help when CoreNLP confidence is low or text is Greek
+    private static final Set<String> GREEK_NEGATIVE_KEYWORDS = Set.of(
+            "απαίσ", "χάλια", "απαράδ", "φρικτ", "απαίσιο", "απαράδεκτο", "δεν μου αρέσε", "δεν το προτείνω", "σπασμενο", "απάτη"
+    );
+    private static final Set<String> GREEK_POSITIVE_KEYWORDS = Set.of(
+            "λάτρ", "λατρεψ", "τέλει", "τέλεια", "μπράβο", "υπέροχ", "σούπερ", "το λάτρεψα"
+    );
 
 
     public PostSentiment analyzeAndSave(Post post, List<Reaction> reactions, List<String> comments) {
@@ -32,6 +42,17 @@ public class HybridSentimentService {
         SentimentResult nlpResult = analyzeText(post, comments);
         double coreNlpScore = nlpResult.polarity();
         double confidence = nlpResult.confidence();
+
+        // Apply Greek lexicon bias when appropriate (helps where CoreNLP struggles with Greek)
+        double lexiconBias = detectGreekLexiconBias(comments, post.getContent());
+        if (lexiconBias != 0.0) {
+            // If CoreNLP confidence is low (<0.7), lean more on lexicon; otherwise blend
+            double lexWeight = confidence < 0.7 ? 0.7 : 0.35;
+            coreNlpScore = clamp(coreNlpScore * (1.0 - lexWeight) + lexiconBias * lexWeight);
+            // slightly reduce confidence when applying lexicon correction
+            confidence = Math.min(1.0, confidence + Math.abs(lexiconBias) * 0.1);
+            log.debug("Applied lexicon bias {} to coreNlpScore -> {} (conf={}) for post {}", lexiconBias, coreNlpScore, confidence, post.getId());
+        }
 
         // 2. Emoji — analyze emoji in comments
         double emojiScore = emojiSentimentAnalyzer.calculateEmojiScore(comments);
@@ -54,8 +75,8 @@ public class HybridSentimentService {
             methodDesc = "Reactions only (100%)";
         } else if (!hasReactions) {
             // Only text available
-            finalPolarity = coreNlpScore * 0.80 + emojiScore * 0.20;
-            methodDesc = "CoreNLP (80%) + Emoji (20%)";
+            finalPolarity = coreNlpScore * 0.85 + emojiScore * 0.15;
+            methodDesc = "CoreNLP (85%) + Emoji (15%)";
         } else {
             // Both text and reactions present — compute dynamic weights
             int totalReactionsCount = 0;
@@ -74,23 +95,24 @@ public class HybridSentimentService {
 
             // If CoreNLP shows low confidence (e.g. non-English text) reduce its weight
             if (confidence < 0.6) {
-                // scale down core weight proportionally but keep a minimum
-                double factor = Math.max(0.4, confidence); // don't reduce below 0.4
+                double factor = Math.max(0.35, confidence); // allow slightly lower floor
                 wCore *= factor;
-                // redistribute freed weight to reactions
-                wReaction += (0.70 - wCore) * 0.6;
-                wEmoji += (0.70 - wCore) * 0.4;
+                // redistribute freed weight to reactions and emoji
+                wReaction += (0.70 - wCore) * 0.7;
+                wEmoji += (0.70 - wCore) * 0.3;
             }
 
             // If reactions are both numerous and strongly negative/positive, favor them
-            if (totalReactionsCount >= 200 && absReaction > 0.5) {
-                wReaction = Math.max(wReaction, 0.60);
-                // reduce core proportionally
-                wCore = Math.max(0.20, wCore - 0.30);
+            if (totalReactionsCount >= 200 && absReaction > 0.55) {
+                // Give reactions much stronger influence for high-volume, high-polarity signals
+                wReaction = Math.max(wReaction, 0.85);
+                // reduce core and emoji proportionally
+                wCore = Math.max(0.08, wCore * 0.15);
+                wEmoji = Math.max(0.03, wEmoji * 0.3);
                 methodDesc = "Reactions-dominated (high volume & strong polarity)";
-            } else if (totalReactionsCount >= 100 && absReaction > 0.4) {
-                wReaction = Math.max(wReaction, 0.45);
-                wCore = Math.max(0.25, wCore - 0.15);
+            } else if (totalReactionsCount >= 120 && absReaction > 0.45) {
+                wReaction = Math.max(wReaction, 0.55);
+                wCore = Math.max(0.22, wCore - 0.18);
                 methodDesc = "Reactions-strong (moderate volume)";
             } else {
                 methodDesc = "CoreNLP + Emoji + Reactions (adaptive)";
@@ -101,6 +123,12 @@ public class HybridSentimentService {
             wCore /= sum; wEmoji /= sum; wReaction /= sum;
 
             finalPolarity = coreNlpScore * wCore + emojiScore * wEmoji + reactionScore * wReaction;
+
+            // If reaction signal is extremely strong (very negative/very positive) favor it directly
+            if (absReaction > 0.75 && totalReactionsCount >= 100) {
+                finalPolarity = reactionScore * 0.98 + finalPolarity * 0.02; // almost pure reaction
+                methodDesc += " [reaction override]";
+            }
         }
 
         // Clamp to [-1, 1]
@@ -124,7 +152,7 @@ public class HybridSentimentService {
 
         post.setSentimentAnalysis(analysis);
 
-        log.info("Sentiment for post {}: {} (polarity={}, confidence={})", post.getId(), analysis.getLabel(), analysis.getPolarity(), analysis.getConfidence());
+        log.info("Sentiment for post {}: {} (polarity={}, confidence={}, method={})", post.getId(), analysis.getLabel(), analysis.getPolarity(), analysis.getConfidence(), methodDesc);
 
         return sentiment;
     }
@@ -164,10 +192,11 @@ public class HybridSentimentService {
     }
 
     private PostSentiment polarityToSentiment(double polarity) {
-        if (polarity >= 0.4) return PostSentiment.LOVE;
-        if (polarity >= 0.1) return PostSentiment.LIKE;
-        if (polarity >= -0.1) return PostSentiment.NEUTRAL;
-        if (polarity >= -0.4) return PostSentiment.DISLIKE;
+        // Adjusted thresholds to better match manual labels and reaction overrides
+        if (polarity >= 0.40) return PostSentiment.LOVE;
+        if (polarity >= 0.12) return PostSentiment.LIKE;
+        if (polarity >= -0.05) return PostSentiment.NEUTRAL;
+        if (polarity >= -0.30) return PostSentiment.DISLIKE;
         return PostSentiment.TERRIBLE;
     }
 
@@ -180,5 +209,29 @@ public class HybridSentimentService {
             case TERRIBLE -> "Very Negative";
         };
     }
-}
 
+    private double clamp(double v) {
+        if (Double.isNaN(v)) return 0.0;
+        return Math.max(-1.0, Math.min(1.0, v));
+    }
+
+    private double detectGreekLexiconBias(List<String> comments, String content) {
+        double bias = 0.0;
+        if (content != null && !content.isBlank()) {
+            String lower = content.toLowerCase(Locale.ROOT);
+            for (String k : GREEK_NEGATIVE_KEYWORDS) if (lower.contains(k)) { bias -= 0.8; break; }
+            for (String k : GREEK_POSITIVE_KEYWORDS) if (lower.contains(k)) { bias += 0.8; break; }
+        }
+        if (comments != null && !comments.isEmpty()) {
+            for (String c : comments) {
+                if (c == null) continue;
+                String lower = c.toLowerCase(Locale.ROOT);
+                for (String k : GREEK_NEGATIVE_KEYWORDS) if (lower.contains(k)) { bias -= 0.8; break; }
+                for (String k : GREEK_POSITIVE_KEYWORDS) if (lower.contains(k)) { bias += 0.8; break; }
+                if (bias != 0.0) break;
+            }
+        }
+        // clamp bias to [-1,1]
+        return clamp(bias);
+    }
+}
