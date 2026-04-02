@@ -6,9 +6,7 @@ import org.ilias.influapp.entities.Post;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * JPA EntityListener to update influencer score whenever a post is created or updated
- */
+
 public class PostEntityListener {
 
     private static final Logger log = LoggerFactory.getLogger(PostEntityListener.class);
