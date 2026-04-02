@@ -211,6 +211,10 @@
             <div class="muted" th:text="${influencer.engagementRate != null ? T(org.ilias.influapp.utils.NumberFormatUtils).twoDecimals(influencer.engagementRate) + '%' : '0.00%'}">0.00%</div>
         </div>
         <div class="box">
+            <strong>Avg sentiment</strong>
+            <div class="muted" th:text="${influencer.avgPostSentimentLabel != null ? influencer.avgPostSentimentLabel : 'N/A'}">N/A</div>
+        </div>
+        <div class="box">
             <strong>Score</strong>
             <div class="muted" th:text="${influencer.influencerScore != null ? T(org.ilias.influapp.utils.NumberFormatUtils).twoDecimals(influencer.influencerScore) + ' / 100' : 'N/A'}">N/A</div>
         </div>

@@ -10,6 +10,7 @@ import org.ilias.influapp.entities.Enums.PostSentiment;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "influencers")
@@ -45,6 +46,8 @@ public class Influencer extends User {
     private BigDecimal engagementRate;
 
     private Double influencerScore;
+
+    private Double avgPostSentiment;
 
     @Builder.Default
     @OneToMany(mappedBy = "influencer", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -164,9 +167,13 @@ public class Influencer extends User {
                 }
             }
         }
+        double avgSentiment = 0.0;
         if (sentimentCount > 0) {
-            double avgSentiment = sentimentSum / sentimentCount;
+            avgSentiment = sentimentSum / sentimentCount;
             score += ((avgSentiment + 1.0) / 2.0) * 15.0;
+            this.avgPostSentiment = Math.round(avgSentiment * 10000.0) / 10000.0; // keep a small scale
+        } else {
+            this.avgPostSentiment = null;
         }
 
         // Availability bonus 5%
@@ -185,5 +192,17 @@ public class Influencer extends User {
             case DISLIKE -> -0.4;
             case TERRIBLE -> -0.6;
         };
+    }
+
+    @Transient
+    public PostSentiment getAvgPostSentimentLabel() {
+        if (this.avgPostSentiment == null) return null;
+        double v = this.avgPostSentiment;
+        // thresholds are midpoints between numeric mapping in sentimentToScore
+        if (v >= 0.5) return PostSentiment.LOVE;
+        if (v >= 0.2) return PostSentiment.LIKE;
+        if (v > -0.2) return PostSentiment.NEUTRAL;
+        if (v >= -0.5) return PostSentiment.DISLIKE;
+        return PostSentiment.TERRIBLE;
     }
 }
