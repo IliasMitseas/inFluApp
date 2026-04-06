@@ -275,6 +275,78 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Brand Fit Criteria Section -->
+            <div style="margin-top: 18px; padding: 16px; background: rgba(37, 99, 235, 0.06); border: 1px solid rgba(37, 99, 235, 0.20); border-radius: 12px;">
+                <label style="font-size: 1rem; color: var(--text); font-weight: 600; margin-bottom: 12px; display: block;">🎯 Recommendation Criteria (for Influencer Matching)</label>
+
+                <div class="grid two" style="margin-top: 12px;">
+                    <div>
+                        <label for="targetCategory">Target Content Category</label>
+                        <select id="targetCategory" name="targetCategory">
+                            <option value="" th:selected="${business.targetCategory == null}">-- Select category --</option>
+                            <option th:each="cat : ${categories}"
+                                    th:value="${cat}"
+                                    th:text="${cat}"
+                                    th:selected="${business.targetCategory == cat}">
+                            </option>
+                        </select>
+                        <small style="display: block; color: var(--muted); margin-top: 4px;">What type of content should influencers create?</small>
+                    </div>
+
+                    <div>
+                        <label for="targetAgeGroup">Target Audience Age Group</label>
+                        <select id="targetAgeGroup" name="targetAgeGroup">
+                            <option value="" th:selected="${business.targetAgeGroup == null}">-- Select age group --</option>
+                            <option value="TEENS" th:selected="${business.targetAgeGroup?.name() == 'TEENS'}">Teens (13-17)</option>
+                            <option value="YOUNG_ADULTS" th:selected="${business.targetAgeGroup?.name() == 'YOUNG_ADULTS'}">Young Adults (18-24)</option>
+                            <option value="ADULTS" th:selected="${business.targetAgeGroup?.name() == 'ADULTS'}">Adults (25-44)</option>
+                            <option value="MIDDLE_AGED" th:selected="${business.targetAgeGroup?.name() == 'MIDDLE_AGED'}">Middle Aged (45-64)</option>
+                            <option value="SENIORS" th:selected="${business.targetAgeGroup?.name() == 'SENIORS'}">Seniors (65+)</option>
+                            <option value="ALL_AGES" th:selected="${business.targetAgeGroup?.name() == 'ALL_AGES'}">All Ages</option>
+                        </select>
+                        <small style="display: block; color: var(--muted); margin-top: 4px;">Age group of your target audience</small>
+                    </div>
+                </div>
+
+                <div class="grid two" style="margin-top: 12px;">
+                    <div>
+                        <label for="targetGenderGroup">Target Audience Gender</label>
+                        <select id="targetGenderGroup" name="targetGenderGroup">
+                            <option value="" th:selected="${business.targetGenderGroup == null}">-- Select gender --</option>
+                            <option value="MALE" th:selected="${business.targetGenderGroup?.name() == 'MALE'}">Male</option>
+                            <option value="FEMALE" th:selected="${business.targetGenderGroup?.name() == 'FEMALE'}">Female</option>
+                            <option value="NON_BINARY" th:selected="${business.targetGenderGroup?.name() == 'NON_BINARY'}">Non-Binary</option>
+                            <option value="OTHER" th:selected="${business.targetGenderGroup?.name() == 'OTHER'}">Other</option>
+                            <option value="ANY" th:selected="${business.targetGenderGroup?.name() == 'ANY'}">Any Gender</option>
+                        </select>
+                        <small style="display: block; color: var(--muted); margin-top: 4px;">Primary audience gender focus</small>
+                    </div>
+
+                    <div>
+                        <label for="preferredInfluencerType">Preferred Influencer Type</label>
+                        <select id="preferredInfluencerType" name="preferredInfluencerType">
+                            <option value="" th:selected="${business.preferredInfluencerType == null}">-- Select type --</option>
+                            <option value="MACRO" th:selected="${business.preferredInfluencerType?.name() == 'MACRO'}">Macro (100K+ followers)</option>
+                            <option value="MICRO" th:selected="${business.preferredInfluencerType?.name() == 'MICRO'}">Micro (10K-100K followers)</option>
+                            <option value="NANO" th:selected="${business.preferredInfluencerType?.name() == 'NANO'}">Nano (1K-10K followers)</option>
+                        </select>
+                        <small style="display: block; color: var(--muted); margin-top: 4px;">What size influencers do you prefer?</small>
+                    </div>
+                </div>
+
+                <div class="grid two" style="margin-top: 12px;">
+                    <div>
+                        <label for="maxBudgetPerCollaboration">Max Budget per Collaboration (€)</label>
+                        <input id="maxBudgetPerCollaboration" name="maxBudgetPerCollaboration" type="number" th:value="${business.maxBudgetPerCollaboration}" placeholder="5000" min="0" step="100" />
+                        <small style="display: block; color: var(--muted); margin-top: 4px;">Maximum budget for each collaboration</small>
+                    </div>
+                </div>
+
+                <div class="hint" style="margin-top: 12px;">
+                    💡 These settings help us recommend influencers that are the best fit for your brand. Leave empty to see all available influencers.
+                </div>
+            </div>
         </div>
 
         <div class="actions">

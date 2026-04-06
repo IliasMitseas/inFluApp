@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.ilias.influapp.entities.*;
 import org.ilias.influapp.entities.Enums.Category;
 import org.ilias.influapp.entities.Enums.CompanySize;
+import org.ilias.influapp.entities.Enums.AgeGroup;
+import org.ilias.influapp.entities.Enums.GenderGroup;
+import org.ilias.influapp.entities.Enums.InfluencerType;
 import org.ilias.influapp.exceptions.NotFoundException;
 import org.ilias.influapp.repository.BusinessRepository;
 import org.ilias.influapp.services.BusinessService;
@@ -42,6 +45,9 @@ public class BusinessController {
         model.addAttribute("business", business);
         model.addAttribute("categories", Category.values());
         model.addAttribute("companySizes", CompanySize.values());
+        model.addAttribute("ageGroups", AgeGroup.values());
+        model.addAttribute("genderGroups", GenderGroup.values());
+        model.addAttribute("influencerTypes", InfluencerType.values());
 
         return "business-profile";
     }
@@ -57,6 +63,9 @@ public class BusinessController {
         model.addAttribute("business", business);
         model.addAttribute("categories", Category.values());
         model.addAttribute("companySizes", CompanySize.values());
+        model.addAttribute("ageGroups", AgeGroup.values());
+        model.addAttribute("genderGroups", GenderGroup.values());
+        model.addAttribute("influencerTypes", InfluencerType.values());
         model.addAttribute("success", true);
 
         return "business-profile";

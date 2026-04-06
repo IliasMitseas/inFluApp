@@ -134,6 +134,22 @@
             </div>
 
             <div>
+                <label>Target age group</label>
+                <select th:field="*{ageGroup}">
+                    <option value="">Any</option>
+                    <option th:each="a : ${T(org.ilias.influapp.entities.Enums.AgeGroup).values()}" th:value="${a}" th:text="${a}"></option>
+                </select>
+            </div>
+
+            <div>
+                <label>Target gender</label>
+                <select th:field="*{genderTarget}">
+                    <option value="">Any</option>
+                    <option th:each="g : ${T(org.ilias.influapp.entities.Enums.GenderGroup).values()}" th:value="${g}" th:text="${g}"></option>
+                </select>
+            </div>
+
+            <div>
                 <label>Min engagement (%)</label>
                 <input type="number" step="0.01" th:field="*{minEngagement}" placeholder="e.g. 1.5" />
             </div>
@@ -202,28 +218,23 @@
         <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
             <input id="pageInput" type="hidden" name="page" th:value="${currentPage}"/>
             <button class="btn btn-primary" type="submit">Search</button>
-            <button type="button" class="btn" onclick="submitLabelOnly()">Search by label</button>
+            <button type="button" class="btn" onclick="recommend()">Recommend</button>
             <a th:href="@{/influencers/search}" class="btn">Reset</a>
         </div>
     </form>
 
     <script>
-        function submitLabelOnly() {
+        /* "Search by label" button removed per request. */
+
+        function recommend() {
             const form = document.getElementById('searchForm');
-            const keep = ['selectedSentiment','page'];
-            // Clear all inputs/selects except the ones we want to keep
-            Array.from(form.elements).forEach(el => {
-                if (!el.name) return;
-                if (keep.includes(el.name)) return;
-                if (el.type === 'select-one' || el.type === 'text' || el.type === 'number' || el.type === 'hidden') {
-                    try { el.value = ''; } catch(e) {}
-                }
-                if (el.type === 'checkbox' || el.type === 'radio') {
-                    el.checked = false;
-                }
-            });
+            const originalAction = form.action;
+            form.action = '/influencers/recommend';
+            // ensure page = 0
             document.getElementById('pageInput').value = 0;
             form.submit();
+            // restore (not strictly necessary since page reloads)
+            form.action = originalAction;
         }
     </script>
 
@@ -270,6 +281,35 @@
                 </span>
 
                 <a th:if="${results.hasNext()}" href="#" th:onclick="|document.getElementById('pageInput').value=${results.number + 1};document.getElementById('searchForm').submit();return false;|" class="page-link">Next</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="results" th:if="${recommendations != null}">
+        <h3 style="margin-top:12px;">Recommended influencers</h3>
+        <div th:if="${#lists.isEmpty(recommendations)}" class="muted" style="margin-top:8px;">No recommendations found — try widening your filters (remove location or lower minimums).</div>
+        <div th:each="rec : ${recommendations}" class="result-item" style="margin-top:12px;">
+            <div class="avatar">
+                <img th:if="${rec.influencer.imageUrl != null}" th:src="${rec.influencer.imageUrl}" alt="avatar" />
+                <img th:if="${rec.influencer.imageUrl == null}" th:src="@{/brand-logo.svg}" alt="placeholder" />
+            </div>
+            <div class="meta">
+                <div class="title" th:text="${rec.influencer.name}">Name</div>
+                <div class="sub">
+                    <span th:text="${rec.influencer.username}">username</span>
+                    &nbsp;•&nbsp;
+                    <span th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(rec.influencer.totalFollowers)}">0</span>
+                    &nbsp;followers • <span th:text="${rec.influencer.influencerType}">TYPE</span>
+                </div>
+                <div class="muted" th:text="${rec.influencer.bio}"></div>
+                <div class="result-details">
+                    <span><strong>Score:</strong>&nbsp;<span th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).twoDecimals(rec.score)}">0.00</span></span>
+                    <span><strong>Sentiment:</strong>&nbsp;<span th:text="${rec.influencer.avgPostSentimentLabel != null ? rec.influencer.avgPostSentimentLabel : 'N/A'}">N/A</span></span>
+                </div>
+            </div>
+            <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
+                <a th:href="@{/influencers/{id}(id=${rec.influencer.id})}" class="btn">View</a>
+                <a th:href="@{/collaborations/request(influencerId=${rec.influencer.id})}" class="btn btn-primary">Request</a>
             </div>
         </div>
     </div>

@@ -5,6 +5,9 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.ilias.influapp.entities.Enums.Category;
 import org.ilias.influapp.entities.Enums.CompanySize;
+import org.ilias.influapp.entities.Enums.AgeGroup;
+import org.ilias.influapp.entities.Enums.GenderGroup;
+import org.ilias.influapp.entities.Enums.InfluencerType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +49,21 @@ public class Business extends User {
     private String facebookUrl;
     private String instagramUrl;
     private String twitterUrl;
+
+    // Brand Fit Criteria for Recommendations
+    @Enumerated(EnumType.STRING)
+    private Category targetCategory;
+
+    @Enumerated(EnumType.STRING)
+    private AgeGroup targetAgeGroup;
+
+    @Enumerated(EnumType.STRING)
+    private GenderGroup targetGenderGroup;
+
+    @Enumerated(EnumType.STRING)
+    private InfluencerType preferredInfluencerType;
+
+    private Integer maxBudgetPerCollaboration;
 
     @Builder.Default
     @OneToMany(mappedBy = "business", cascade = CascadeType.ALL, orphanRemoval = true)

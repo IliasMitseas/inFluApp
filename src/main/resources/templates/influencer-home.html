@@ -170,6 +170,18 @@
             <div class="muted" th:text="${influencer.age}">0</div>
         </div>
         <div class="box">
+            <strong>Age group</strong>
+            <div class="muted" th:text="${influencer.ageGroup != null ? influencer.ageGroup : 'Not set'}">Not set</div>
+        </div>
+        <div class="box">
+            <strong>Gender</strong>
+            <div class="muted" th:text="${influencer.gender != null ? influencer.gender : 'Not set'}">Not set</div>
+        </div>
+        <div class="box">
+            <strong>Audience target gender</strong>
+            <div class="muted" th:text="${influencer.genderTarget != null ? influencer.genderTarget : 'Not set'}">Not set</div>
+        </div>
+        <div class="box">
             <strong>Location</strong>
             <div class="muted" th:text="${influencer.location}">0</div>
         </div>

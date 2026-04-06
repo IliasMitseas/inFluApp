@@ -23,6 +23,8 @@ import org.slf4j.LoggerFactory;
 import jakarta.persistence.EntityManager;
 import org.ilias.influapp.services.HybridSentimentService;
 import org.ilias.influapp.entities.Enums.ReactionType;
+import org.ilias.influapp.entities.Enums.AgeGroup;
+import org.ilias.influapp.entities.Enums.GenderGroup;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Component
@@ -748,6 +750,9 @@ public class TestDataLoader implements CommandLineRunner {
             } catch (Throwable ignored) {}
             try { newInf.setMinCollaborationBudget(100 + (int)(Math.random()*900));
             } catch (Throwable ignored) {}
+            try { newInf.setAgeGroup(AgeGroup.values()[(int)(Math.random()*AgeGroup.values().length)]); } catch (Throwable ignored) {}
+            try { newInf.setGender(GenderGroup.values()[(int)(Math.random()*GenderGroup.values().length)]); } catch (Throwable ignored) {}
+            try { newInf.setGenderTarget(GenderGroup.values()[(int)(Math.random()*GenderGroup.values().length)]); } catch (Throwable ignored) {}
             inf = influencerRepository.save(newInf);
             log.info("Created influencer {} id={} (followers={}, engagementRate={}, score={})", email, inf.getId(), inf.getTotalFollowers(), inf.getEngagementRate(), inf.getInfluencerScore());
         } else {
@@ -772,6 +777,9 @@ public class TestDataLoader implements CommandLineRunner {
             } catch (Throwable ignored) {}
             try { inf.setMinCollaborationBudget(100 + (int)(Math.random()*900));
             } catch (Throwable ignored) {}
+            try { inf.setAgeGroup(AgeGroup.values()[(int)(Math.random()*AgeGroup.values().length)]); } catch (Throwable ignored) {}
+            try { inf.setGender(GenderGroup.values()[(int)(Math.random()*GenderGroup.values().length)]); } catch (Throwable ignored) {}
+            try { inf.setGenderTarget(GenderGroup.values()[(int)(Math.random()*GenderGroup.values().length)]); } catch (Throwable ignored) {}
             inf = influencerRepository.save(inf);
             log.info("Updated influencer {} id={} (all profile fields refreshed)", email, inf.getId());
         }

@@ -26,4 +26,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     List<PlatformCountDto> countByPlatformForInfluencer(@Param("influencerId") Long influencerId);
 
     List<Post> findTop5BySocialMediaInfluencerIdOrderByEngagementRateDesc(Long influencerId);
+
+    // Count posts for an influencer that contain a keyword (case-insensitive)
+    long countBySocialMediaInfluencerIdAndContentContainingIgnoreCase(Long influencerId, String content);
 }

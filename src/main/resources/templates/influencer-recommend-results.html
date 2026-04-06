@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<title>Recommended influencers</title>
+	<style>
+		body { font-family: Arial, Helvetica, sans-serif; margin: 20px; }
+		.card { border: 1px solid #ddd; padding: 12px; margin-bottom: 12px; border-radius: 6px; }
+		.muted { color: #666; }
+		.score { float: right; font-weight: bold; }
+		.back { margin-bottom: 16px; display:inline-block; }
+		.breakdown { font-size: 0.9em; color: #444; margin-top: 8px; }
+	</style>
+</head>
+<body>
+
+<a class="back" th:href="@{/influencers/search}">← Back to search</a>
+<h1>Recommended influencers</h1>
+
+<div th:if="${recommendationCount == null or recommendationCount == 0}">
+	<div class="muted">No recommendations found — try widening your filters (remove location or lower minimums).</div>
+</div>
+
+<div th:if="${recommendationCount != null and recommendationCount > 0}">
+	<div class="muted">Found <strong th:text="${recommendationCount}">0</strong> recommendation(s).</div>
+
+	<div th:each="rec,iterStat : ${recommendations}">
+		<div class="card">
+			<div>
+				<a th:href="@{'/influencers/' + ${rec.influencer.id}}" th:text="${rec.influencer.displayName}">Influencer Name</a>
+				<span class="score" th:text="${#numbers.formatDecimal(rec.score, 1, 'POINT', 2, 'NONE')} + ' pts'">0.00 pts</span>
+			</div>
+			<div class="muted" th:text="${rec.influencer.location != null ? rec.influencer.location : 'Location not set'}">Location</div>
+
+			<div class="breakdown">
+				<div>Keyword score: <strong th:text="${#numbers.formatDecimal(rec.keywordScore, 1, 'POINT', 2, 'NONE')}">0.00</strong></div>
+				<div>Aspect sentiment score: <strong th:text="${#numbers.formatDecimal(rec.aspectSentimentScore, 1, 'POINT', 2, 'NONE')}">0.00</strong></div>
+				<div>Engagement score: <strong th:text="${#numbers.formatDecimal(rec.engagementScore, 1, 'POINT', 2, 'NONE')}">0.00</strong></div>
+				<div>Activity score: <strong th:text="${#numbers.formatDecimal(rec.activityScore, 1, 'POINT', 2, 'NONE')}">0.00</strong></div>
+				<div>Influencer score: <strong th:text="${#numbers.formatDecimal(rec.influencerScore, 1, 'POINT', 2, 'NONE')}">0.00</strong></div>
+				<div>Age match: <strong th:text="${#numbers.formatDecimal(rec.ageMatchScore, 1, 'POINT', 2, 'NONE')}">0.00</strong></div>
+				<div>Gender match: <strong th:text="${#numbers.formatDecimal(rec.genderMatchScore, 1, 'POINT', 2, 'NONE')}">0.00</strong></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
+
+

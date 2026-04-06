@@ -3,9 +3,7 @@ package org.ilias.influapp.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.ilias.influapp.entities.Enums.Category;
-import org.ilias.influapp.entities.Enums.InfluencerType;
-import org.ilias.influapp.entities.Enums.PostSentiment;
+import org.ilias.influapp.entities.Enums.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -40,6 +38,15 @@ public class Influencer extends User {
 
     @Enumerated(EnumType.STRING)
     private InfluencerType influencerType;
+
+    @Enumerated(EnumType.STRING)
+    private AgeGroup ageGroup;
+
+    @Enumerated(EnumType.STRING)
+    private GenderGroup gender;
+
+    @Enumerated(EnumType.STRING)
+    private GenderGroup genderTarget;
 
     private Integer totalFollowers;
 

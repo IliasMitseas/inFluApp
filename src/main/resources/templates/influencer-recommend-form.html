@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Recommend influencers</title>
+    <style>
+        :root{--card:#fff;--text:#0f172a;--muted:#64748b;--primary:#2563eb}
+        body{font-family:Arial,Helvetica,sans-serif;background:#f6f8fb;padding:24px;color:var(--text)}
+        .card{max-width:900px;margin:0 auto;background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(0,0,0,0.06)}
+        label{display:block;margin-bottom:6px;color:var(--muted)}
+        input,select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef;margin-bottom:12px}
+        .actions{display:flex;gap:8px}
+        .btn{padding:10px 12px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);background:#fff;cursor:pointer}
+        .btn-primary{background:var(--primary);color:#fff;border-color:transparent}
+        .hint{color:var(--muted);font-size:0.9rem}
+
+        /* Collapsible Form Styles */
+        .form-section{transition:all 0.3s ease}
+        .form-section.collapsed{display:none}
+        .toggle-form-btn{background:rgba(37, 99, 235, 0.1);color:var(--primary);border:1px solid rgba(37, 99, 235, 0.3)!important;cursor:pointer;margin-bottom:12px}
+        .toggle-form-btn:hover{background:rgba(37, 99, 235, 0.2)}
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>Recommended influencers</h2>
+    <div class="hint">Fill the fields below to get recommended influencers tailored to your campaign.</div>
+
+    <!-- Toggle Button (visible only when results exist) -->
+    <button th:if="${recommendations != null}" id="toggleFormBtn" class="btn toggle-form-btn" type="button" style="width:auto;margin-bottom:12px;margin-top:12px;">
+        ⚙️ Adjust filters
+    </button>
+
+    <!-- Collapsible Form Section -->
+    <div id="formSection" class="form-section" th:classappend="${recommendations != null} ? 'collapsed' : ''">
+        <form th:action="@{/influencers/recommend-form}" method="get" th:object="${searchDto}" style="margin-top:14px;">
+            <div>
+                <label>Keyword</label>
+                <input type="text" th:field="*{keyword}" placeholder="e.g. 'sunscreen' or 'travel'" />
+            </div>
+
+            <div>
+                <label>Location (optional, strict)</label>
+                <input type="text" th:field="*{location}" placeholder="City or country" />
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                    <label>Target age group</label>
+                    <select th:field="*{ageGroup}">
+                        <option value="">Any</option>
+                        <option th:each="a : ${T(org.ilias.influapp.entities.Enums.AgeGroup).values()}" th:value="${a}" th:text="${a}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label>Target gender</label>
+                    <select th:field="*{genderTarget}">
+                        <option value="">Any</option>
+                        <option th:each="g : ${T(org.ilias.influapp.entities.Enums.GenderGroup).values()}" th:value="${g}" th:text="${g}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;">
+                <div>
+                    <label>Min engagement (%) (optional)</label>
+                    <input type="number" step="0.01" th:field="*{minEngagement}" placeholder="e.g. 1.5" />
+                </div>
+                <div>
+                    <label>Min influencer score (optional)</label>
+                    <input type="number" step="0.01" th:field="*{minScore}" placeholder="e.g. 60" />
+                </div>
+            </div>
+
+            <div style="margin-top:10px;display:flex;gap:8px;align-items:center;">
+                <label style="margin:0;">Results limit</label>
+                <select name="limit">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                </select>
+            </div>
+
+            <div class="actions" style="margin-top:14px;">
+                <button class="btn btn-primary" type="submit">Get recommendations</button>
+                <a th:href="@{/influencers/search}" class="btn">Back to search</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Recommendations rendered inline below the form when present -->
+    <div class="results" style="margin-top:18px;" th:if="${recommendations != null}">
+        <div th:if="${recommendationCount == null or recommendationCount == 0}" class="muted">No recommendations found — try widening your filters.</div>
+
+        <div th:each="rec : ${recommendations}" class="result-item" style="display:flex;gap:12px;align-items:center;padding:12px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);background:rgba(15,23,42,0.02);margin-top:8px;">
+            <div class="avatar" style="width:64px;height:64px;border-radius:10px;overflow:hidden;background:#fff;display:grid;place-items:center;">
+                <img th:if="${rec.influencer.imageUrl != null}" th:src="${rec.influencer.imageUrl}" alt="avatar" style="width:64px;height:64px;object-fit:cover;" />
+                <img th:if="${rec.influencer.imageUrl == null}" th:src="@{/brand-logo.svg}" alt="placeholder" style="width:64px;height:64px;object-fit:contain;" />
+            </div>
+            <div style="flex:1;">
+                <div style="font-weight:700;" th:text="${rec.influencer.name}">Name</div>
+                <div class="muted">
+                    <span th:text="${rec.influencer.username}">username</span>
+                    <span> • </span>
+                    <span th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(rec.influencer.totalFollowers)}">0</span>
+                    <span> followers</span>
+                </div>
+                <div class="muted" th:text="${rec.influencer.bio}">bio</div>
+                <div style="margin-top:6px;"><strong>Score:</strong> <span th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).twoDecimals(rec.score)}">0.00</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;">
+                <a th:href="@{/influencers/{id}(id=${rec.influencer.id})}" class="btn">View</a>
+                <a th:href="@{/collaborations/request(influencerId=${rec.influencer.id})}" class="btn btn-primary">Request</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.getElementById('toggleFormBtn');
+    const formSection = document.getElementById('formSection');
+
+    if (toggleBtn && formSection) {
+        toggleBtn.addEventListener('click', function() {
+            formSection.classList.toggle('collapsed');
+            toggleBtn.textContent = formSection.classList.contains('collapsed') ? '⚙️ Show filters' : '⚙️ Hide filters';
+        });
+    }
+});
+</script>
+</body>
+</html>
+

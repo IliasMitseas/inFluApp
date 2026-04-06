@@ -56,6 +56,10 @@ public class InfluencerServiceImpl implements InfluencerService {
         influencer.setBio(updateInfluencer.getBio());
         influencer.setIsAvailable(updateInfluencer.getIsAvailable());
         influencer.setMinCollaborationBudget(updateInfluencer.getMinCollaborationBudget());
+        influencer.setAgeGroup(updateInfluencer.getAgeGroup());
+        influencer.setGender(updateInfluencer.getGender());
+        // Save the influencer's audience target gender separately from their personal gender
+        influencer.setGenderTarget(updateInfluencer.getGenderTarget());
         influencer.setCategory(updateInfluencer.getCategory());
         influencer.setInfluencerType(updateInfluencer.getInfluencerType());
         influencer.updateTotalFollowers();

@@ -246,6 +246,36 @@
             </div>
         </div>
 
+        <div class="grid two">
+            <div>
+                <label for="ageGroup">Age group</label>
+                <select id="ageGroup" th:field="*{ageGroup}">
+                    <option value="">-- Select age group --</option>
+                    <option th:each="a : ${T(org.ilias.influapp.entities.Enums.AgeGroup).values()}" th:value="${a}" th:text="${a}"></option>
+                </select>
+            </div>
+            <div>
+                <label for="gender">Gender (your personal gender)</label>
+                <select id="gender" th:field="*{gender}">
+                    <option value="">-- Select gender --</option>
+                    <option th:each="g : ${T(org.ilias.influapp.entities.Enums.GenderGroup).values()}" th:value="${g}" th:text="${g}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid two" style="margin-top:6px;">
+            <div>
+                <label for="genderTarget">Audience target gender</label>
+                <select id="genderTarget" th:field="*{genderTarget}">
+                    <option value="">-- Select audience gender target --</option>
+                    <option th:each="g : ${T(org.ilias.influapp.entities.Enums.GenderGroup).values()}" th:value="${g}" th:text="${g}"></option>
+                </select>
+            </div>
+            <div style="display:flex;align-items:center;">
+                <div class="muted">Choose the primary gender of your audience (used to improve brand recommendations).</div>
+            </div>
+        </div>
+
         <div class="grid">
             <div>
                 <label for="bio">About me</label>

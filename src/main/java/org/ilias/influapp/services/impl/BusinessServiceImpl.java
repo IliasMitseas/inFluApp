@@ -36,6 +36,13 @@ public class BusinessServiceImpl implements BusinessService {
         business.setInstagramUrl(updatedBusiness.getInstagramUrl());
         business.setTwitterUrl(updatedBusiness.getTwitterUrl());
 
+        // Brand Fit Criteria fields
+        business.setTargetCategory(updatedBusiness.getTargetCategory());
+        business.setTargetAgeGroup(updatedBusiness.getTargetAgeGroup());
+        business.setTargetGenderGroup(updatedBusiness.getTargetGenderGroup());
+        business.setPreferredInfluencerType(updatedBusiness.getPreferredInfluencerType());
+        business.setMaxBudgetPerCollaboration(updatedBusiness.getMaxBudgetPerCollaboration());
+
         businessRepository.save(business);
 
         return business;
