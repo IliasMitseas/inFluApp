@@ -1,0 +1,83 @@
+[
+  {
+    "businessUsername": "biz1",
+    "title": "Summer Promo",
+    "description": "Summer Promo for ACME Corp",
+    "status": "ACTIVE",
+    "targetCategory": "BUSINESS",
+    "budget": 1500.0,
+    "goals": "10 posts"
+  },
+  {
+    "businessUsername": "biz1",
+    "title": "Holiday Sale",
+    "description": "Holiday Sale for ACME Corp",
+    "status": "COMPLETED",
+    "targetCategory": "FASHION",
+    "budget": 2000.0,
+    "goals": "5 posts with videos"
+  },
+  {
+    "businessUsername": "biz2",
+    "title": "New Product Launch",
+    "description": "New Product Launch for Beta LLC",
+    "status": "ACTIVE",
+    "targetCategory": "FOOD",
+    "budget": 3000.0,
+    "goals": "20 posts with unboxing"
+  },
+  {
+    "businessUsername": "biz2",
+    "title": "Q2 Marketing",
+    "description": "Q2 Marketing for Beta LLC",
+    "status": "DRAFT",
+    "targetCategory": "LIFESTYLE",
+    "budget": 2500.0,
+    "goals": "15 posts with reviews"
+  },
+  {
+    "businessUsername": "biz3",
+    "title": "Brand Awareness",
+    "description": "Brand Awareness for Gamma Co",
+    "status": "CANCELLED",
+    "targetCategory": "TECHNOLOGY",
+    "budget": 1200.0,
+    "goals": "5 posts with videos"
+  },
+  {
+    "businessUsername": "biz3",
+    "title": "Product Demo",
+    "description": "Product Demo for Gamma Co",
+    "status": "COMPLETED",
+    "targetCategory": "TECHNOLOGY",
+    "budget": 1800.0,
+    "goals": "20 posts with demos"
+  }
+
+  ,
+  {
+    "businessUsername": "biz9",
+    "title": "Handmade Spotlight",
+    "description": "Promote EcoGoods' new summer collection",
+    "status": "ACTIVE",
+    "targetCategory": "ART",
+    "budget": 2500.0,
+    "goals": "10 posts, 5 stories",
+    "targetAgeGroup": "ADULTS",
+    "preferredInfluencerType": "MICRO",
+    "maxBudgetPerCollaboration": 800
+  },
+  {
+    "businessUsername": "biz10",
+    "title": "Explore Greece",
+    "description": "AdventureCo summer packages promotion",
+    "status": "DRAFT",
+    "targetCategory": "TRAVEL",
+    "budget": 12000.0,
+    "goals": "5 video collaborations",
+    "targetAgeGroup": "YOUNG_ADULTS",
+    "preferredInfluencerType": "MID_TIER",
+    "maxBudgetPerCollaboration": 6000
+  }
+]
+

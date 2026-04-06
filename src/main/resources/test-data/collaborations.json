@@ -1,0 +1,395 @@
+[
+  {
+    "campaignTitle": "Summer Promo",
+    "influencerUsername": "inf1",
+    "status": "ACCEPTED",
+    "paymentAmount": 350.0,
+    "deliverables": "3 posts with vids and photos about the super promo with a discount code",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Check out ACME's Summer Promo! Amazing deals for the season 🌞",
+        "reach": 25000,
+        "impressions": 75000,
+        "shares": 300,
+        "comments": ["❤️ Love it!", "😍 Great products!", "🛒 Where can I buy?", "⭐ Amazing quality!", "🇬🇷 Φανταστικό!", "👍 Μου αρέσει"],
+        "reactions": {
+          "LIKE": 1200,
+          "LOVE": 300,
+          "WOW": 50,
+          "HAHA": 25
+        },
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Holiday Sale",
+    "influencerUsername": "inf2",
+    "status": "ACCEPTED",
+    "paymentAmount": 400.0,
+    "deliverables": "posts promoting holiday deals",
+    "posts": [
+      {
+        "platform": "TIKTOK",
+        "content": "Holiday deals are LIVE! 🎄✨ Don't miss these incredible offers!",
+        "reach": 15000,
+        "impressions": 45000,
+        "shares": 120,
+        "comments": ["✨ Nice deals!", "🤔 Where to buy?", "😍 Love this!", "🎉 Must have!"],
+        "reactions": {
+          "LIKE": 800,
+          "LOVE": 120,
+          "HAHA": 40,
+          "ANGRY": 10
+        },
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "New Product Launch",
+    "influencerUsername": "inf3",
+    "status": "ACCEPTED",
+    "paymentAmount": 500.0,
+    "deliverables": "10 Posts promoting the new beta product",
+    "posts": [
+      {
+        "platform": "TIKTOK",
+        "content": "Launching the new Beta product! 🚀 This is CRAZY good. Check it out!",
+        "reach": 40000,
+        "impressions": 120000,
+        "shares": 800,
+        "comments": ["Congrats!", "Can't wait to try it!", "Tell us more please!", "Looks awesome!"],
+        "reactions": {
+          "LIKE": 2000,
+          "WOW": 500,
+          "LOVE": 300,
+          "SAD": 5
+        },
+        "manualLabel": "LOVE"
+      },
+      {
+        "platform": "TIKTOK",
+        "content": "Absolutely terrible product — complete scam. Do NOT buy! 😡",
+        "reach": 150,
+        "impressions": 420,
+        "shares": 0,
+        "comments": ["Worst product ever. Terrible quality and customer support.", "Do not buy this. Completely broken and useless.", "Refund please, total scam.", "Χάλια προϊόν, απαράδεκτο. Μην το αγοράσετε! 😡", "Απαίσιο, κακή ποιότητα και εξυπηρέτηση."],
+        "reactions": {
+          "ANGRY": 450,
+          "SAD": 120,
+          "LIKE": 3
+        },
+        "manualLabel": "TERRIBLE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Brand Awareness",
+    "influencerUsername": "inf4",
+    "status": "ACCEPTED",
+    "paymentAmount": 250.0,
+    "deliverables": "5 post promoting brand awareness",
+    "posts": [
+      {
+        "platform": "YOUTUBE",
+        "content": "Talking about Gamma Co today - their solutions are game-changing for the tech industry",
+        "reach": 8000,
+        "impressions": 22000,
+        "shares": 40,
+        "comments": ["📊 Informative review!", "💡 Good overview!", "🎬 Nice video production!", "📝 Very detailed!"],
+        "reactions": {
+          "LIKE": 300,
+          "LOVE": 20,
+          "WOW": 10,
+          "SAD": 2
+        },
+        "manualLabel": "LIKE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "New Product Launch",
+    "influencerUsername": "inf5",
+    "status": "ACCEPTED",
+    "paymentAmount": 320.0,
+    "deliverables": "3 Post for product honest review",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Beta launch first impressions! 📸 This product is really impressive",
+        "reach": 32000,
+        "impressions": 95000,
+        "shares": 220,
+        "comments": ["Cool features!", "Looks good to me!", "Where to buy?", "Love the design!"],
+        "reactions": {
+          "LIKE": 1500,
+          "LOVE": 200,
+          "WOW": 150,
+          "ANGRY": 15
+        },
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Product Demo",
+    "influencerUsername": "inf6",
+    "status": "ACCEPTED",
+    "paymentAmount": 280.0,
+    "deliverables": "5 reviews of the product",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Featuring Gamma Co's latest products 👨‍🍳 Quality you can taste and see!",
+        "reach": 28000,
+        "impressions": 85000,
+        "shares": 180,
+        "comments": ["🤤 Mouth-watering!", "😋 Need this now!", "🎨 Beautiful presentation!", "✅ Definitely interested!"],
+        "reactions": {
+          "LIKE": 1800,
+          "LOVE": 450,
+          "WOW": 80,
+          "HAHA": 30
+        },
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Q2 Marketing",
+    "influencerUsername": "inf2",
+    "status": "PENDING",
+    "paymentAmount": 275.0,
+    "deliverables": "10 posts with reviews",
+    "posts": []
+  },
+  {
+    "campaignTitle": "Summer Promo",
+    "influencerUsername": "inf7",
+    "status": "ACCEPTED",
+    "paymentAmount": 150.0,
+    "deliverables": "4 videos promoting the summer offers",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Summer promo post from ACME Corp. Check it out!",
+        "reach": 120,
+        "impressions": 300,
+        "shares": 1,
+        "comments": ["❓ Spam?", "👎 Not interested", "❓ Σπαμ;", "😞 Δεν με ενδιαφέρει", "😤 Χάλια, δεν το προτείνω"],
+        "reactions": {
+          "LIKE": 5,
+          "SAD": 2,
+          "ANGRY": 3
+        },
+        "manualLabel": "DISLIKE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Q2 Marketing",
+    "influencerUsername": "inf8",
+    "status": "ACCEPTED",
+    "paymentAmount": 100.0,
+    "deliverables": "2 posts with text about the product",
+    "posts": [
+      {
+        "platform": "TIKTOK",
+        "content": "Beta LLC Q2 Marketing content. New product available now.",
+        "reach": 50,
+        "impressions": 150,
+        "shares": 0,
+        "comments": ["😞 Δεν με ενδιαφέρει", "❌ Δεν αξίζει", "🙅 Όχι ευχαριστώ"],
+        "reactions": {
+          "LIKE": 2,
+          "HAHA": 1
+        },
+        "manualLabel": "NEUTRAL"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Holiday Sale",
+    "influencerUsername": "inf9",
+    "status": "ACCEPTED",
+    "paymentAmount": 200.0,
+    "deliverables": "5 posts promoting holiday sales",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Holiday Sale from ACME! Limited time offer inside!",
+        "reach": 300,
+        "impressions": 800,
+        "shares": 5,
+        "comments": ["🤔 Obvious promotion", "⚠️ Untrustworthy", "🚩 Fake engagement", "🇬🇷 Ψεύτικο", "😤 Απάτη", "👎 Χάλια προσφορές"],
+        "reactions": {
+          "LIKE": 8,
+          "ANGRY": 15,
+          "SAD": 5,
+          "WOW": 2
+        },
+        "manualLabel": "DISLIKE"
+      },
+      {
+        "platform": "INSTAGRAM",
+        "content": "Misleading offer, horrible service. Terrible experience. 😡🤬",
+        "reach": 90,
+        "impressions": 200,
+        "shares": 0,
+        "comments": ["😡 This is disgusting, worst service I've encountered.", "👎 Terrible, do not trust this company.", "❌ Απάτη, δεν ανταποκρίνεται στις προσδοκίες.", "💢 Σοβαρό πρόβλημα, κακή εμπειρία, απαράδεκτο."],
+        "reactions": {
+          "ANGRY": 380,
+          "SAD": 90,
+          "LIKE": 2
+        },
+        "manualLabel": "TERRIBLE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Brand Awareness",
+    "influencerUsername": "inf10",
+    "status": "ACCEPTED",
+    "paymentAmount": 120.0,
+    "deliverables": "10 videos and photos promoting the brand",
+    "posts": [
+      {
+        "platform": "YOUTUBE",
+        "content": "Gamma Co brand awareness video. Check this out.",
+        "reach": 40,
+        "impressions": 120,
+        "shares": 0,
+        "comments": [],
+        "reactions": {
+          "LIKE": 1
+        },
+        "manualLabel": "NEUTRAL"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "New Product Launch",
+    "influencerUsername": "inf11",
+    "status": "ACCEPTED",
+    "paymentAmount": 180.0,
+    "deliverables": "3 posts with reviews of the product",
+    "posts": [
+      {
+        "platform": "TIKTOK",
+        "content": "Beta product launch. What do you think about this?",
+        "reach": 400,
+        "impressions": 1200,
+        "shares": 8,
+        "comments": ["❌ Bad quality", "💔 Not worth it", "😠 Horrible experience", "💸 Waste of money", "😞 Disappointed", "🇬🇷 Χάλια ποιότητα", "😤 Απαίσιο", "👎 Δεν το προτείνω"],
+        "reactions": {
+          "ANGRY": 45,
+          "SAD": 20,
+          "LIKE": 15,
+          "HAHA": 5,
+          "WOW": 3
+        },
+        "manualLabel": "DISLIKE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Product Demo",
+    "influencerUsername": "inf12",
+    "status": "ACCEPTED",
+    "paymentAmount": 110.0,
+    "deliverables": "20 posts with demos",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Gamma Co product demo with more details.",
+        "reach": 25,
+        "impressions": 80,
+        "shares": 0,
+        "comments": [],
+        "reactions": {
+          "LIKE": 1,
+          "SAD": 1
+        },
+        "manualLabel": "NEUTRAL"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Summer Promo",
+    "influencerUsername": "inf1",
+    "status": "ACCEPTED",
+    "paymentAmount": 350.0,
+    "deliverables": "5 Posts promoting the offers",
+    "posts": [
+      {
+        "platform": "YOUTUBE",
+        "content": "Summer deals roundup! Here's what ACME Corp is offering this season.",
+        "reach": 5000,
+        "impressions": 15000,
+        "shares": 25,
+        "comments": ["📊 Good info", "👍 Helpful post"],
+        "reactions": {
+          "LIKE": 150,
+          "LOVE": 30,
+          "WOW": 10
+        },
+        "manualLabel": "LIKE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Q2 Marketing",
+    "influencerUsername": "inf3",
+    "status": "ACCEPTED",
+    "paymentAmount": 300.0,
+    "deliverables": "10 posts for Q2 marketing",
+    "posts": [
+      {
+        "platform": "FACEBOOK",
+        "content": "Beta LLC Q2 marketing update. New strategies ahead!",
+        "reach": 2000,
+        "impressions": 6000,
+        "shares": 30,
+        "comments": ["🤔 Interesting", "😕 Not convinced", "💬 Tell us more", "🙂 Okay I guess"],
+        "reactions": {
+          "LIKE": 120,
+          "LOVE": 20,
+          "SAD": 15,
+          "ANGRY": 8
+        },
+        "manualLabel": "NEUTRAL"
+      }
+    ]
+  }
+  ,
+  {
+    "campaignTitle": "Handmade Spotlight",
+    "influencerUsername": "inf14",
+    "status": "ACCEPTED",
+    "paymentAmount": 150.0,
+    "deliverables": "2 posts + 3 stories highlighting EcoGoods summer collection",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Loving these sustainable pieces from EcoGoods — check the limited drop! 🌿",
+        "reach": 9000,
+        "impressions": 27000,
+        "shares": 45,
+        "comments": ["Beautiful!", "Where can I buy?", "Love the colours"],
+        "reactions": { "LIKE": 600, "LOVE": 120, "WOW": 20 },
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Explore Greece",
+    "influencerUsername": "inf13",
+    "status": "PENDING",
+    "paymentAmount": 1200.0,
+    "deliverables": "3 video posts showcasing AdventureCo itineraries",
+    "posts": []
+  }
+]
+

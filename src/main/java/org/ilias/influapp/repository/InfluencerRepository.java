@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InfluencerRepository extends JpaRepository<Influencer, Long>, JpaSpecificationExecutor<Influencer> {
+    Influencer findByUsername(String username);
 }

@@ -1,0 +1,489 @@
+[
+  {
+    "email": "inf1@example.com",
+    "username": "inf1",
+    "name": "Inf One",
+    "password": "pass",
+    "available": true,
+    "age": 29,
+    "location": "Athens, GR",
+    "bio": "✈️ Travel & lifestyle content creator. Loves coffee and photography. ☕📸",
+    "category": "TRAVEL",
+    "influencerType": "MACRO",
+    "totalFollowers": 65000,
+    "minCollaborationBudget": 300,
+    "ageGroup": "ADULTS",
+    "gender": "FEMALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "INSTAGRAM",
+        "username": "@inf1",
+        "accountUrl": "https://instagram.com/inf1",
+        "followers": 45000
+      },
+      {
+        "platform": "YOUTUBE",
+        "username": "InfOneChannel",
+        "accountUrl": "https://youtube.com/inf1",
+        "followers": 25000
+      }
+    ]
+  },
+  {
+    "email": "inf2@example.com",
+    "username": "inf2",
+    "name": "Inf Two",
+    "password": "pass",
+    "available": true,
+    "age": 24,
+    "location": "Thessaloniki, GR",
+    "bio": "👗 Fashion and beauty influencer focusing on sustainable brands. 💚✨",
+    "category": "FASHION",
+    "influencerType": "MICRO",
+    "totalFollowers": 45000,
+    "minCollaborationBudget": 250,
+    "ageGroup": "YOUNG_ADULTS",
+    "gender": "FEMALE",
+    "genderTarget": "FEMALE",
+    "socialMediaAccounts": [
+      {
+        "platform": "INSTAGRAM",
+        "username": "@inf2",
+        "accountUrl": "https://instagram.com/inf2",
+        "followers": 35000
+      },
+      {
+        "platform": "TIKTOK",
+        "username": "@inf2t",
+        "accountUrl": "https://tiktok.com/@inf2",
+        "followers": 55000
+      }
+    ]
+  },
+  {
+    "email": "inf3@example.com",
+    "username": "inf3",
+    "name": "Inf Three",
+    "password": "pass",
+    "available": false,
+    "age": 31,
+    "location": "London, UK",
+    "bio": "😂 Short-form comedy and sketches. Making people laugh every day! 🎭",
+    "category": "ENTERTAINMENT",
+    "influencerType": "MACRO",
+    "totalFollowers": 120000,
+    "minCollaborationBudget": 400,
+    "ageGroup": "ADULTS",
+    "gender": "MALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "TIKTOK",
+        "username": "@inf3",
+        "accountUrl": "https://tiktok.com/@inf3",
+        "followers": 85000
+      },
+      {
+        "platform": "FACEBOOK",
+        "username": "Inf3FB",
+        "accountUrl": "https://facebook.com/inf3",
+        "followers": 35000
+      }
+    ]
+  },
+  {
+    "email": "inf4@example.com",
+    "username": "inf4",
+    "name": "Inf Four",
+    "password": "pass",
+    "available": true,
+    "age": 27,
+    "location": "Berlin, DE",
+    "bio": "💻 Tech reviewer and educator. Reviews gadgets and apps with depth. 🔧📱",
+    "category": "TECHNOLOGY",
+    "influencerType": "MID_TIER",
+    "totalFollowers": 95000,
+    "minCollaborationBudget": 350,
+    "ageGroup": "YOUNG_ADULTS",
+    "gender": "MALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "YOUTUBE",
+        "username": "InfFourYT",
+        "accountUrl": "https://youtube.com/inf4",
+        "followers": 75000
+      },
+      {
+        "platform": "INSTAGRAM",
+        "username": "@inf4",
+        "accountUrl": "https://instagram.com/inf4",
+        "followers": 28000
+      }
+    ]
+  },
+  {
+    "email": "inf5@example.com",
+    "username": "inf5",
+    "name": "Inf Five",
+    "password": "pass",
+    "available": true,
+    "age": 22,
+    "location": "Athens, GR",
+    "bio": "📚 Student & lifestyle vlogger, sharing study tips and daily routines. ✏️😊",
+    "category": "EDUCATION",
+    "influencerType": "MICRO",
+    "totalFollowers": 38000,
+    "minCollaborationBudget": 200,
+    "ageGroup": "YOUNG_ADULTS",
+    "gender": "FEMALE",
+    "genderTarget": "FEMALE",
+    "socialMediaAccounts": [
+      {
+        "platform": "INSTAGRAM",
+        "username": "@inf5",
+        "accountUrl": "https://instagram.com/inf5",
+        "followers": 32000
+      },
+      {
+        "platform": "FACEBOOK",
+        "username": "Inf5FB",
+        "accountUrl": "https://facebook.com/inf5",
+        "followers": 18000
+      }
+    ]
+  },
+  {
+    "email": "inf6@example.com",
+    "username": "inf6",
+    "name": "Inf Six",
+    "password": "pass",
+    "available": false,
+    "age": 35,
+    "location": "New York, US",
+    "bio": "🍳 Food photographer and recipe creator with culinary background. 👨‍🍳💕",
+    "category": "FOOD",
+    "influencerType": "MID_TIER",
+    "totalFollowers": 78000,
+    "minCollaborationBudget": 380,
+    "ageGroup": "MIDDLE_AGED",
+    "gender": "FEMALE",
+    "genderTarget": "FEMALE",
+    "socialMediaAccounts": [
+      {
+        "platform": "INSTAGRAM",
+        "username": "@inf6",
+        "accountUrl": "https://instagram.com/inf6",
+        "followers": 65000
+      },
+      {
+        "platform": "TIKTOK",
+        "username": "@inf6t",
+        "accountUrl": "https://tiktok.com/@inf6",
+        "followers": 42000
+      }
+    ]
+  },
+  {
+    "email": "inf7@example.com",
+    "username": "inf7",
+    "name": "Poor Performer One",
+    "password": "pass",
+    "available": true,
+    "age": 26,
+    "location": "Athens, GR",
+    "bio": "⚠️ Amateur content creator with low engagement.",
+    "category": "LIFESTYLE",
+    "influencerType": "NANO",
+    "totalFollowers": 5000,
+    "minCollaborationBudget": 50,
+    "ageGroup": "YOUNG_ADULTS",
+    "gender": "MALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "INSTAGRAM",
+        "username": "@inf7",
+        "accountUrl": "https://instagram.com/inf7",
+        "followers": 5000
+      }
+    ]
+  },
+  {
+    "email": "inf8@example.com",
+    "username": "inf8",
+    "name": "Low Engagement Two",
+    "password": "pass",
+    "available": true,
+    "age": 23,
+    "location": "Thessaloniki, GR",
+    "bio": "😴 Inactive influencer account.",
+    "category": "LIFESTYLE",
+    "influencerType": "NANO",
+    "totalFollowers": 8000,
+    "minCollaborationBudget": 40,
+    "ageGroup": "TEENS",
+    "gender": "FEMALE",
+    "genderTarget": "FEMALE",
+    "socialMediaAccounts": [
+      {
+        "platform": "TIKTOK",
+        "username": "@inf8",
+        "accountUrl": "https://tiktok.com/@inf8",
+        "followers": 8000
+      }
+    ]
+  },
+  {
+    "email": "inf9@example.com",
+    "username": "inf9",
+    "name": "Fake Followers Three",
+    "password": "pass",
+    "available": false,
+    "age": 28,
+    "location": "Berlin, DE",
+    "bio": "🚨 Account with suspicious engagement patterns.",
+    "category": "GAMING",
+    "influencerType": "MICRO",
+    "totalFollowers": 25000,
+    "minCollaborationBudget": 100,
+    "ageGroup": "ADULTS",
+    "gender": "MALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "INSTAGRAM",
+        "username": "@inf9",
+        "accountUrl": "https://instagram.com/inf9",
+        "followers": 25000
+      }
+    ]
+  },
+  {
+    "email": "inf10@example.com",
+    "username": "inf10",
+    "name": "Inactive Four",
+    "password": "pass",
+    "available": true,
+    "age": 30,
+    "location": "London, UK",
+    "bio": "🛌 Dormant account with minimal activity.",
+    "category": "EDUCATION",
+    "influencerType": "NANO",
+    "totalFollowers": 3000,
+    "minCollaborationBudget": 30,
+    "ageGroup": "ADULTS",
+    "gender": "MALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "YOUTUBE",
+        "username": "InfTenYT",
+        "accountUrl": "https://youtube.com/inf10",
+        "followers": 3000
+      }
+    ]
+  },
+  {
+    "email": "inf11@example.com",
+    "username": "inf11",
+    "name": "Controversial Five",
+    "password": "pass",
+    "available": true,
+    "age": 25,
+    "location": "New York, US",
+    "bio": "💬 Account with controversial engagement and negative sentiment.",
+    "category": "ENTERTAINMENT",
+    "influencerType": "MID_TIER",
+    "totalFollowers": 12000,
+    "minCollaborationBudget": 80,
+    "ageGroup": "TEENS",
+    "gender": "MALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "TIKTOK",
+        "username": "@inf11",
+        "accountUrl": "https://tiktok.com/@inf11",
+        "followers": 12000
+      }
+    ]
+  },
+  {
+    "email": "inf12@example.com",
+    "username": "inf12",
+    "name": "Shadow Banned Six",
+    "password": "pass",
+    "available": false,
+    "age": 32,
+    "location": "Berlin, DE",
+    "bio": "⛔ Account with minimal reach due to platform restrictions.",
+    "category": "HEALTH",
+    "influencerType": "NANO",
+    "totalFollowers": 2000,
+    "minCollaborationBudget": 25,
+    "ageGroup": "ALL_AGES",
+    "gender": "FEMALE",
+    "genderTarget": "FEMALE",
+    "socialMediaAccounts": [
+      {
+        "platform": "INSTAGRAM",
+        "username": "@inf12",
+        "accountUrl": "https://instagram.com/inf12",
+        "followers": 2000
+      }
+    ]
+  }
+  ,
+  {
+    "email": "inf13@example.com",
+    "username": "inf13",
+    "name": "Sporty Star",
+    "password": "pass",
+    "available": true,
+    "age": 33,
+    "location": "Athens, GR",
+    "bio": "🏃‍♂️ Sports coach and fitness motivator. Training tips and gear reviews.",
+    "category": "SPORTS",
+    "influencerType": "MID_TIER",
+    "totalFollowers": 54000,
+    "minCollaborationBudget": 400,
+    "ageGroup": "ADULTS",
+    "gender": "MALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "INSTAGRAM",
+        "username": "@inf13",
+        "accountUrl": "https://instagram.com/inf13",
+        "followers": 36000
+      },
+      {
+        "platform": "YOUTUBE",
+        "username": "SportyStarYT",
+        "accountUrl": "https://youtube.com/sportystar",
+        "followers": 18000
+      }
+    ]
+  },
+  {
+    "email": "inf14@example.com",
+    "username": "inf14",
+    "name": "Artsy Amy",
+    "password": "pass",
+    "available": true,
+    "age": 41,
+    "location": "Thessaloniki, GR",
+    "bio": "🎨 Visual artist sharing process videos and prints for sale.",
+    "category": "ART",
+    "influencerType": "MICRO",
+    "totalFollowers": 18000,
+    "minCollaborationBudget": 120,
+    "ageGroup": "MIDDLE_AGED",
+    "gender": "FEMALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "INSTAGRAM",
+        "username": "@inf14",
+        "accountUrl": "https://instagram.com/inf14",
+        "followers": 12000
+      }
+    ]
+  },
+  {
+    "email": "inf15@example.com",
+    "username": "inf15",
+    "name": "Mel Music",
+    "password": "pass",
+    "available": true,
+    "age": 19,
+    "location": "Patras, GR",
+    "bio": "🎵 Singer-songwriter uploading original tracks and covers.",
+    "category": "MUSIC",
+    "influencerType": "NANO",
+    "totalFollowers": 9000,
+    "minCollaborationBudget": 60,
+    "ageGroup": "TEENS",
+    "gender": "FEMALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "TIKTOK",
+        "username": "@inf15",
+        "accountUrl": "https://tiktok.com/@inf15",
+        "followers": 7000
+      },
+      {
+        "platform": "YOUTUBE",
+        "username": "MelMusicYT",
+        "accountUrl": "https://youtube.com/melmusic",
+        "followers": 2000
+      }
+    ]
+  },
+  {
+    "email": "inf16@example.com",
+    "username": "inf16",
+    "name": "Beauty Boss",
+    "password": "pass",
+    "available": true,
+    "age": 38,
+    "location": "Athens, GR",
+    "bio": "💄 Skincare scientist turned influencer. Reviews and tutorials.",
+    "category": "BEAUTY",
+    "influencerType": "MACRO",
+    "totalFollowers": 220000,
+    "minCollaborationBudget": 800,
+    "ageGroup": "ADULTS",
+    "gender": "FEMALE",
+    "genderTarget": "FEMALE",
+    "socialMediaAccounts": [
+      {
+        "platform": "INSTAGRAM",
+        "username": "@inf16",
+        "accountUrl": "https://instagram.com/inf16",
+        "followers": 150000
+      },
+      {
+        "platform": "YOUTUBE",
+        "username": "BeautyBossYT",
+        "accountUrl": "https://youtube.com/beautyboss",
+        "followers": 70000
+      }
+    ]
+  },
+  {
+    "email": "inf17@example.com",
+    "username": "inf17",
+    "name": "Biz Consultant",
+    "password": "pass",
+    "available": true,
+    "age": 45,
+    "location": "Athens, GR",
+    "bio": "📈 Business strategist sharing tips for startups and SMBs.",
+    "category": "BUSINESS",
+    "influencerType": "MID_TIER",
+    "totalFollowers": 47000,
+    "minCollaborationBudget": 600,
+    "ageGroup": "MIDDLE_AGED",
+    "gender": "MALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "LINKEDIN",
+        "username": "BizConsultInf",
+        "accountUrl": "https://linkedin.com/in/inf17",
+        "followers": 35000
+      },
+      {
+        "platform": "TWITTER",
+        "username": "@inf17",
+        "accountUrl": "https://twitter.com/inf17",
+        "followers": 12000
+      }
+    ]
+  }
+]
+
