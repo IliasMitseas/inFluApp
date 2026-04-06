@@ -27,8 +27,26 @@
 </head>
 <body>
 <div class="card">
-    <h1 th:text="${collaboration.campaign.title}">Campaign</h1>
-    <div class="muted" th:text="'Business: ' + ${collaboration.campaign.business.companyName}">Business</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+        <div>
+            <h1 th:text="${collaboration.campaign.title}">Campaign</h1>
+            <div class="muted" th:text="'Business: ' + ${collaboration.campaign.business.companyName}">Business</div>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+            <a th:if="${isInfluencer}" th:href="@{'/collaborations/' + ${collaboration.id} + '/posts/new'}" class="btn btn-primary">Add Post</a>
+            <a th:if="${isInfluencer}" th:href="@{/influencer/collaborations/active}" class="btn">Back</a>
+            <a th:if="${isInfluencer}" th:href="@{/influencer/home}" class="btn">Home</a>
+
+            <a th:if="${!isInfluencer}" th:href="@{/business/collaborations}" class="btn">Back</a>
+            <a th:if="${!isInfluencer}" th:href="@{/business/home}" class="btn">Home</a>
+
+            <form th:action="@{'/collaborations/' + ${collaboration.id} + '/delete'}" method="post" style="display:inline;">
+                <button type="submit" class="btn" style="color:#b91c1c;border-color:rgba(239,68,68,0.3);"
+                        onclick="return confirm('Delete this collaboration and all its posts?')">🗑 Delete collaboration</button>
+            </form>
+        </div>
+    </div>
 
     <div class="info-grid">
         <div class="info-box">
@@ -75,18 +93,6 @@
                 </form>
             </div>
         </div>
-    </div>
-
-    <div style="margin-top:16px;display:flex;gap:10px;align-items:center;">
-        <a th:if="${isInfluencer}" th:href="@{'/collaborations/' + ${collaboration.id} + '/posts/new'}" class="btn btn-primary">Add Post</a>
-        <a th:if="${isInfluencer}" th:href="@{/influencer/collaborations/active}" class="btn">Back</a>
-        <a th:if="${isInfluencer}" th:href="@{/influencer/home}" class="btn">Home</a>
-        <a th:if="${!isInfluencer}" th:href="@{/business/collaborations}" class="btn">Back</a>
-        <a th:if="${!isInfluencer}" th:href="@{/business/home}" class="btn">Home</a>
-        <form th:action="@{'/collaborations/' + ${collaboration.id} + '/delete'}" method="post" style="display:inline;margin-left:auto;">
-            <button type="submit" class="btn" style="color:#b91c1c;border-color:rgba(239,68,68,0.3);"
-                    onclick="return confirm('Delete this collaboration and all its posts?')">🗑 Delete collaboration</button>
-        </form>
     </div>
 </div>
 </body>

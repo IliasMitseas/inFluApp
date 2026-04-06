@@ -126,12 +126,12 @@
         </div>
         <div class="actions">
             <div class="actions-row">
+                <a class="btn" th:href="@{/business/profile}">Edit profile</a>
                 <a class="btn" th:href="@{/business/collaborations}">My collaborations</a>
                 <a class="btn" th:href="@{/business/campaigns}">My campaigns</a>
                 <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
             </div>
             <div class="actions-row">
-                <a class="btn" th:href="@{/business/profile}">Edit profile</a>
                 <a class="btn" th:href="@{/business/dashboard}">Dashboard</a>
                 <a class="btn" th:href="@{/influencers/search}">Find influencers</a>
                 <a class="btn" th:href="@{/influencers/recommend-form(businessId=${business.id})}">Recommended influencers</a>

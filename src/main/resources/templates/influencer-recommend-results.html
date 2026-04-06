@@ -1,48 +1,127 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8" />
-	<title>Recommended influencers</title>
-	<style>
-		body { font-family: Arial, Helvetica, sans-serif; margin: 20px; }
-		.card { border: 1px solid #ddd; padding: 12px; margin-bottom: 12px; border-radius: 6px; }
-		.muted { color: #666; }
-		.score { float: right; font-weight: bold; }
-		.back { margin-bottom: 16px; display:inline-block; }
-		.breakdown { font-size: 0.9em; color: #444; margin-top: 8px; }
-	</style>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Recommended influencers</title>
+    <style>
+        :root {
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: rgba(15, 23, 42, 0.12);
+            --shadow: 0 18px 40px rgba(2, 6, 23, 0.18);
+            --primary: #2563eb;
+            --primaryHover: #1d4ed8;
+            --success: #22c55e;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            color: var(--text);
+            background:
+                linear-gradient(135deg, rgba(14,165,233,0.10), rgba(99,102,241,0.08)),
+                url('/auth-bg.svg');
+            background-size: cover;
+            background-position: center;
+            padding: 24px;
+        }
+
+        .card {
+            max-width: 980px;
+            margin: 0 auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        h1 { margin: 0 0 6px; font-size: 1.45rem; letter-spacing: -0.01em; }
+        .muted { color: var(--muted); }
+
+        .top { display:flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .brand { display:flex; align-items:center; gap: 12px; }
+        .logo { width: 52px; height: 52px; border-radius: 12px; overflow: hidden; background: rgba(37, 99, 235, 0.06); border: 1px solid rgba(15, 23, 42, 0.10); display: grid; place-items: center; }
+        .logo img { width: 36px; height: 36px; object-fit: contain; }
+
+        .btn { display:inline-block; padding: 8px 12px; border-radius: 10px; border: 1px solid rgba(15,23,42,0.12); background: #fff; color: var(--text); font-weight:600; text-decoration:none; }
+        .btn:hover { background: rgba(37,99,235,0.06); }
+        .btn-primary { background: var(--primary); border-color: transparent; color: #fff; }
+        .btn-primary:hover { background: var(--primaryHover); }
+
+        .results { margin-top: 18px; }
+        .result-item { display:flex; gap: 12px; align-items:center; padding: 12px; border-radius: 10px; border: 1px solid rgba(15,23,42,0.06); background: rgba(15,23,42,0.02); }
+        .result-item + .result-item { margin-top: 8px; }
+        .avatar { width: 64px; height: 64px; border-radius: 10px; overflow:hidden; background: #fff; display:grid; place-items:center; }
+        .avatar img { width:64px; height:64px; object-fit:cover; }
+
+        .meta { display:flex; flex-direction:column; }
+        .meta .title { font-weight:700; font-size:1rem; }
+        .meta .sub { color:var(--muted); font-size:0.9rem; }
+
+        .result-details { margin-top: 6px; }
+        .result-details span { display: inline-block; margin-right: 16px; font-size: 0.9rem; color: var(--muted); }
+
+        @media (max-width: 420px) { body { padding: 16px; } .card { padding: 14px; } }
+    </style>
 </head>
 <body>
+<div class="card">
+    <div class="top">
+        <div class="brand">
+            <div class="logo" aria-hidden="true">
+                <img th:src="@{/brand-logo.svg}" alt="inFluApp" />
+            </div>
+            <div>
+                <h1>Recommended influencers</h1>
+                <div class="muted">Tailored recommendations for your campaign</div>
+            </div>
+        </div>
 
-<a class="back" th:href="@{/influencers/search}">← Back to search</a>
-<h1>Recommended influencers</h1>
+        <div>
+            <a th:href="@{/business/home}" class="btn">Back</a>
+            <a th:href="@{/influencers/search}" class="btn">Find influencers</a>
+        </div>
+    </div>
 
-<div th:if="${recommendationCount == null or recommendationCount == 0}">
-	<div class="muted">No recommendations found — try widening your filters (remove location or lower minimums).</div>
-</div>
+    <div class="results">
+        <div th:if="${recommendationCount == null or recommendationCount == 0}" class="muted" style="margin-top:12px;">No recommendations found — try widening your filters (remove location or lower minimums).</div>
 
-<div th:if="${recommendationCount != null and recommendationCount > 0}">
-	<div class="muted">Found <strong th:text="${recommendationCount}">0</strong> recommendation(s).</div>
+        <div th:if="${recommendationCount != null and recommendationCount > 0}" style="margin-top:12px;">
+            <div class="muted" th:text="'Found ' + ${recommendationCount} + ' recommendation(s).'"></div>
 
-	<div th:each="rec,iterStat : ${recommendations}">
-		<div class="card">
-			<div>
-				<a th:href="@{'/influencers/' + ${rec.influencer.id}}" th:text="${rec.influencer.displayName}">Influencer Name</a>
-				<span class="score" th:text="${#numbers.formatDecimal(rec.score, 1, 'POINT', 2, 'NONE')} + ' pts'">0.00 pts</span>
-			</div>
-			<div class="muted" th:text="${rec.influencer.location != null ? rec.influencer.location : 'Location not set'}">Location</div>
+            <div th:each="rec : ${recommendations}" class="result-item" style="margin-top:12px;">
+                <div class="avatar">
+                    <img th:if="${rec.influencer.imageUrl != null}" th:src="${rec.influencer.imageUrl}" alt="avatar" />
+                    <img th:if="${rec.influencer.imageUrl == null}" th:src="@{/brand-logo.svg}" alt="placeholder" />
+                </div>
 
-			<div class="breakdown">
-				<div>Keyword score: <strong th:text="${#numbers.formatDecimal(rec.keywordScore, 1, 'POINT', 2, 'NONE')}">0.00</strong></div>
-				<div>Aspect sentiment score: <strong th:text="${#numbers.formatDecimal(rec.aspectSentimentScore, 1, 'POINT', 2, 'NONE')}">0.00</strong></div>
-				<div>Engagement score: <strong th:text="${#numbers.formatDecimal(rec.engagementScore, 1, 'POINT', 2, 'NONE')}">0.00</strong></div>
-				<div>Activity score: <strong th:text="${#numbers.formatDecimal(rec.activityScore, 1, 'POINT', 2, 'NONE')}">0.00</strong></div>
-				<div>Influencer score: <strong th:text="${#numbers.formatDecimal(rec.influencerScore, 1, 'POINT', 2, 'NONE')}">0.00</strong></div>
-				<div>Age match: <strong th:text="${#numbers.formatDecimal(rec.ageMatchScore, 1, 'POINT', 2, 'NONE')}">0.00</strong></div>
-				<div>Gender match: <strong th:text="${#numbers.formatDecimal(rec.genderMatchScore, 1, 'POINT', 2, 'NONE')}">0.00</strong></div>
-			</div>
-		</div>
-	</div>
+                <div class="meta">
+                    <div class="title" th:text="${rec.influencer.name}">Name</div>
+                    <div class="sub">
+                        <span th:text="${rec.influencer.username}">username</span>
+                        &nbsp;•&nbsp;
+                        <span th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).compact(rec.influencer.totalFollowers)}">0</span>
+                        &nbsp;followers • <span th:text="${rec.influencer.influencerType}">TYPE</span>
+                    </div>
+                    <div class="muted" th:text="${rec.influencer.bio}"></div>
+                    <div class="result-details">
+                        <span><strong>Score:</strong>&nbsp;<span th:text="${T(org.ilias.influapp.utils.NumberFormatUtils).twoDecimals(rec.score)}">0.00</span></span>
+                        <span><strong>Sentiment:</strong>&nbsp;<span th:text="${rec.influencer.avgPostSentimentLabel != null ? rec.influencer.avgPostSentimentLabel : 'N/A'}">N/A</span></span>
+                    </div>
+                </div>
+
+                <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
+                    <a th:href="@{/influencers/{id}(id=${rec.influencer.id})}" class="btn">View</a>
+                    <a th:href="@{/collaborations/request(influencerId=${rec.influencer.id})}" class="btn btn-primary">Request</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

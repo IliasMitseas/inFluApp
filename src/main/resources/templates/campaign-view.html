@@ -31,7 +31,18 @@
 </head>
 <body>
 <div class="card">
-    <h1 th:text="${campaign.title}">Campaign</h1>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+        <h1 th:text="${campaign.title}" style="margin:0;">Campaign</h1>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+            <a th:href="@{'/business/campaigns/' + ${campaign.id} + '/edit'}" class="btn btn-primary">Edit</a>
+            <a th:href="@{/business/campaigns}" class="btn">Back</a>
+            <a th:href="@{/business/home}" class="btn">Home</a>
+            <form th:action="@{'/business/campaigns/' + ${campaign.id} + '/delete'}" method="post" style="display:inline;">
+                <button type="submit" class="btn" style="color:#b91c1c;border-color:rgba(239,68,68,0.3);"
+                        onclick="return confirm('Delete this campaign and all its collaborations?')">🗑 Delete</button>
+            </form>
+        </div>
+    </div>
     <div style="margin-top:4px;">
         <span class="status-badge"
               th:classappend="'status-' + ${campaign.status.name().toLowerCase()}"
@@ -92,16 +103,6 @@
                 <a th:href="@{'/collaborations/' + ${c.id}}" class="btn">View</a>
             </div>
         </div>
-    </div>
-
-    <div style="margin-top:16px;display:flex;gap:10px;align-items:center;">
-        <a th:href="@{'/business/campaigns/' + ${campaign.id} + '/edit'}" class="btn btn-primary">Edit</a>
-        <a th:href="@{/business/campaigns}" class="btn">Back</a>
-        <a th:href="@{/business/home}" class="btn">Home</a>
-        <form th:action="@{'/business/campaigns/' + ${campaign.id} + '/delete'}" method="post" style="display:inline;margin-left:auto;">
-            <button type="submit" class="btn" style="color:#b91c1c;border-color:rgba(239,68,68,0.3);"
-                    onclick="return confirm('Delete this campaign and all its collaborations?')">🗑 Delete</button>
-        </form>
     </div>
 </div>
 </body>
