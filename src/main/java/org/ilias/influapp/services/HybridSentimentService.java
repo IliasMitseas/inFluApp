@@ -141,6 +141,7 @@ public class HybridSentimentService {
                 .post(post)
                 .polarity(round3(finalPolarity))
                 .label(sentimentToLabel(sentiment))
+                .sentimentLabel(sentiment)
                 .confidence(round3(confidence))
                 .modelVersion("Hybrid-v1.0 (" + CoreNlpSentimentService.MODEL_VERSION + ")")
                 .method(methodDesc)
@@ -148,6 +149,9 @@ public class HybridSentimentService {
                 .coreNlpScore(round3(coreNlpScore))
                 .emojiScore(round3(emojiScore))
                 .reactionScore(round3(reactionScore))
+                .language(detectLanguage(comments, post.getContent()))
+                .source("HYBRID")
+                .notes("Signals=CoreNLP+Emoji+Reactions")
                 .build();
 
         post.setSentimentAnalysis(analysis);
@@ -233,5 +237,25 @@ public class HybridSentimentService {
         }
         // clamp bias to [-1,1]
         return clamp(bias);
+    }
+
+    private String detectLanguage(List<String> comments, String content) {
+        String text = "";
+        if (content != null && !content.isBlank()) {
+            text = content;
+        } else if (comments != null && !comments.isEmpty() && comments.get(0) != null) {
+            text = comments.get(0);
+        }
+
+        if (text.isBlank()) {
+            return "UNKNOWN";
+        }
+
+        String lower = text.toLowerCase(Locale.ROOT);
+        // Light heuristic for Greek-script detection for provenance.
+        if (lower.matches(".*[\u0370-\u03FF].*")) {
+            return "EL";
+        }
+        return "EN";
     }
 }

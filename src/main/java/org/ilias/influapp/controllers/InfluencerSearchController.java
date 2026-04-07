@@ -62,6 +62,7 @@ public class InfluencerSearchController {
     @GetMapping("/influencers/recommend-form")
     public String recommendForm(@ModelAttribute("searchDto") SearchDto searchDto,
                                 @RequestParam(required = false, value = "businessId") Long businessId,
+                                @RequestParam(required = false, value = "campaignId") Long campaignId,
                                 @RequestParam(required = false, value = "keyword") String keyword,
                                 @RequestParam(required = false, value = "location") String location,
                                 @RequestParam(required = false, value = "ageGroup") org.ilias.influapp.entities.Enums.AgeGroup ageGroup,
@@ -73,12 +74,11 @@ public class InfluencerSearchController {
         model.addAttribute("allTypes", InfluencerType.values());
 
         // If the form provided any recommendation parameters, run the recommender and render results below the form
-        boolean hasParams = (keyword != null && !keyword.isBlank()) || (location != null && !location.isBlank()) || 
-                           ageGroup != null || genderTarget != null || limit > 0 || businessId != null;
+        boolean hasParams = (keyword != null && !keyword.isBlank()) || (location != null && !location.isBlank()) ||
+                           ageGroup != null || genderTarget != null || limit > 0 || businessId != null || campaignId != null;
         if (hasParams) {
-            // Use enhanced recommendation with business profile if businessId provided
-            var recs = businessId != null 
-                ? recommendationService.recommendForBusiness(businessId, keyword, location, ageGroup, genderTarget, limit)
+            var recs = businessId != null
+                ? recommendationService.recommendForBusiness(businessId, campaignId, keyword, location, ageGroup, genderTarget, limit)
                 : recommendationService.recommend(keyword, location, ageGroup, genderTarget, limit);
             model.addAttribute("recommendations", recs);
             model.addAttribute("recommendationCount", recs != null ? recs.size() : 0);

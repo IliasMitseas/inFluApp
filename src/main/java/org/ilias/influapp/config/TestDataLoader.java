@@ -633,9 +633,14 @@ public class TestDataLoader implements CommandLineRunner {
             if (reactionCounts != null && !reactionCounts.isEmpty()) {
                 List<Reaction> reactions = new ArrayList<>();
                 for (var entry : reactionCounts.entrySet()) {
+                    ReactionType parsedType = parseReactionType(entry.getKey());
+                    if (parsedType == null) {
+                        log.warn("Unknown reaction type '{}' in post '{}'; skipping it", entry.getKey(), content);
+                        continue;
+                    }
                     Reaction r = new Reaction();
                     r.setPost(p);
-                    r.setType(ReactionType.valueOf(entry.getKey()));
+                    r.setType(parsedType);
                     r.setCount(entry.getValue());
                     reactions.add(r);
                 }
@@ -866,6 +871,17 @@ public class TestDataLoader implements CommandLineRunner {
             }
         } catch (Throwable ex) {
             log.warn("Failed to update profile_views: {}", ex.getMessage());
+        }
+    }
+
+    private ReactionType parseReactionType(String rawType) {
+        if (rawType == null) {
+            return null;
+        }
+        try {
+            return ReactionType.valueOf(rawType.trim().toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            return null;
         }
     }
 }

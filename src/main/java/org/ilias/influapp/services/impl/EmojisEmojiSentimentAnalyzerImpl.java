@@ -57,14 +57,7 @@ public class EmojisEmojiSentimentAnalyzerImpl implements EmojiSentimentAnalyzer 
             int count = reaction.getCount();
             totalReactions += count;
 
-            double weight = switch (reaction.getType()) {
-                case LOVE -> 0.8;
-                case LIKE -> 0.6;
-                case WOW -> 0.2;
-                case HAHA -> 0.2;
-                case SAD -> -0.7;
-                case ANGRY -> -0.7;
-            };
+            double weight = reactionWeight(reaction);
             weightedSum += count * weight;
         }
 
@@ -75,6 +68,21 @@ public class EmojisEmojiSentimentAnalyzerImpl implements EmojiSentimentAnalyzer 
         // Normalize to [-1, 1] and apply smoothing curve
         double normalized = weightedSum / totalReactions;
         return Math.tanh(normalized * 1.2);
+    }
+
+    private double reactionWeight(Reaction reaction) {
+        if (reaction == null || reaction.getType() == null) {
+            return 0.0;
+        }
+
+        String type = reaction.getType().name();
+        return switch (type) {
+            case "LOVE" -> 0.8;
+            case "LIKE" -> 0.6;
+            case "WOW", "HAHA", "NEUTRAL" -> 0.2;
+            case "SAD", "ANGRY", "DISLIKE", "TERRIBLE" -> -0.7;
+            default -> 0.0;
+        };
     }
 
     @Override

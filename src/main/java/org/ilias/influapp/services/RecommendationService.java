@@ -5,10 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ilias.influapp.dto.RecommendedInfluencerDto;
 import org.ilias.influapp.entities.Business;
+import org.ilias.influapp.entities.Campaign;
 import org.ilias.influapp.entities.Enums.AgeGroup;
 import org.ilias.influapp.entities.Enums.GenderGroup;
 import org.ilias.influapp.entities.Influencer;
 import org.ilias.influapp.repository.BusinessRepository;
+import org.ilias.influapp.repository.CampaignRepository;
 import org.ilias.influapp.repository.InfluencerRepository;
 import org.ilias.influapp.repository.PostRepository;
 import org.ilias.influapp.repository.SentimentAnalysisRepository;
@@ -24,10 +26,23 @@ import java.util.List;
 public class RecommendationService {
     private static final Logger log = LoggerFactory.getLogger(RecommendationService.class);
 
+    // Versioned scoring contract for reproducibility in evaluations.
+    private static final String SCORE_POLICY_VERSION = "v2.1-strict-fit";
+
+    // Centralized weights (must sum to 1.0)
+    private static final double W_CATEGORY_MATCH = 0.35;
+    private static final double W_AUDIENCE_FIT = 0.20;
+    private static final double W_ENGAGEMENT = 0.12;
+    private static final double W_INFLUENCER_TYPE = 0.12;
+    private static final double W_AVAILABILITY = 0.10;
+    private static final double W_BUDGET_COMPATIBILITY = 0.08;
+    private static final double W_LOCATION_MATCH = 0.03;
+
     private final InfluencerRepository influencerRepository;
     private final PostRepository postRepository;
     private final SentimentAnalysisRepository sentimentAnalysisRepository;
     private final BusinessRepository businessRepository;
+    private final CampaignRepository campaignRepository;
 
 
     /**
@@ -35,22 +50,19 @@ public class RecommendationService {
      * Recommend influencers based on keyword, location, age group, and gender target.
      */
     public List<RecommendedInfluencerDto> recommend(String keyword, String location, AgeGroup ageGroup, GenderGroup genderTarget, int limit) {
-        return recommendForBusiness(null, keyword, location, ageGroup, genderTarget, limit);
+        return recommendForBusiness(null, null, keyword, location, ageGroup, genderTarget, limit);
+    }
+
+    public List<RecommendedInfluencerDto> recommendForBusiness(Long businessId, String keyword, String location,
+                                                               AgeGroup ageGroup, GenderGroup genderTarget, int limit) {
+        return recommendForBusiness(businessId, null, keyword, location, ageGroup, genderTarget, limit);
     }
 
     /**
-     * Enhanced recommendation method with Business profile awareness for brand fit.
-     * Takes Business profile preferences into account for better matching.
-     *
-     * @param businessId ID of the business looking for influencers (nullable for backward compat)
-     * @param keyword Search keyword for content matching
-     * @param location Geographic location filter
-     * @param ageGroup Target age group
-     * @param genderTarget Target gender group
-     * @param limit Maximum number of recommendations
-     * @return List of recommended influencers with enhanced scoring
+     * Campaign-aware recommendation method.
+     * If campaignId is provided and belongs to the business, campaign context is used in matching.
      */
-    public List<RecommendedInfluencerDto> recommendForBusiness(Long businessId, String keyword, String location,
+    public List<RecommendedInfluencerDto> recommendForBusiness(Long businessId, Long campaignId, String keyword, String location,
                                                                AgeGroup ageGroup, GenderGroup genderTarget, int limit) {
         // Fetch business profile if provided
         Business business = null;
@@ -58,10 +70,39 @@ public class RecommendationService {
             business = businessRepository.findById(businessId).orElse(null);
         }
 
+        Campaign campaign = null;
+        if (campaignId != null && businessId != null) {
+            campaign = campaignRepository.findById(campaignId)
+                    .filter(c -> c.getBusiness() != null && businessId.equals(c.getBusiness().getId()))
+                    .orElse(null);
+            if (campaign == null) {
+                log.warn("Campaign {} not found for business {} - falling back to business-only scoring", campaignId, businessId);
+            }
+        }
+
+        Integer budgetCap = resolveBudgetCap(business, campaign);
+
+        if (business != null) {
+            log.info("Business context loaded: id={}, targetCategory={}, targetAgeGroup={}, targetGenderGroup={}, preferredInfluencerType={}, maxBudgetPerCollaboration={}",
+                    business.getId(),
+                    business.getTargetCategory(),
+                    business.getTargetAgeGroup(),
+                    business.getTargetGenderGroup(),
+                    business.getPreferredInfluencerType(),
+                    business.getMaxBudgetPerCollaboration());
+        }
+
+        if (campaign != null) {
+            log.info("Campaign context loaded: id={}, title='{}', targetCategory={}, budget={} (effectiveBudgetCap={})",
+                    campaign.getId(), campaign.getTitle(), campaign.getTargetCategory(), campaign.getBudget(), budgetCap);
+        } else {
+            log.info("No campaign context applied (effectiveBudgetCap={})", budgetCap);
+        }
+
         // Fetch candidates
         List<Influencer> candidates = influencerRepository.findAll(PageRequest.of(0, 200)).getContent();
-        log.info("Recommendation requested: businessId={}, keyword='{}', location='{}', ageGroup={}, genderTarget={}, limit='{}'",
-                 businessId, keyword, location, ageGroup, genderTarget, limit);
+        log.info("Recommendation requested: businessId={}, campaignId={}, keyword='{}', location='{}', ageGroup={}, genderTarget={}, limit='{}'",
+                 businessId, campaignId, keyword, location, ageGroup, genderTarget, limit);
         log.info("Loaded {} candidate influencers (pre-filter)", candidates.size());
 
         // Hard filters: must be available, and budget must be compatible
@@ -74,20 +115,21 @@ public class RecommendationService {
             }
 
             // Hard filter 2: Budget compatibility (if business has max budget)
-            if (business != null && business.getMaxBudgetPerCollaboration() != null) {
-                if (inf.getMinCollaborationBudget() != null &&
-                    inf.getMinCollaborationBudget() > business.getMaxBudgetPerCollaboration()) {
+            if (budgetCap != null) {
+                if (inf.getMinCollaborationBudget() != null && inf.getMinCollaborationBudget() > budgetCap) {
                     log.debug("Filtering out influencer {} - budget incompatible ({} > {})",
-                              inf.getId(), inf.getMinCollaborationBudget(), business.getMaxBudgetPerCollaboration());
+                              inf.getId(), inf.getMinCollaborationBudget(), budgetCap);
                     continue;
                 }
             }
 
             // Soft filter: Location (can pass but will affect scoring)
             if (location != null && !location.isBlank()) {
-                if (inf.getLocation() == null || !inf.getLocation().toLowerCase().contains(location.toLowerCase())) {
-                    // Location doesn't match - could skip or continue with lower score
-                    // For now, we continue but will score lower
+                boolean locationMatchesSoftFilter = inf.getLocation() != null
+                        && inf.getLocation().toLowerCase().contains(location.toLowerCase());
+                // Keep candidate either way; mismatch is penalized in scoring later.
+                if (!locationMatchesSoftFilter) {
+                    log.debug("Soft location mismatch for influencer {}", inf.getId());
                 }
             }
 
@@ -146,6 +188,10 @@ public class RecommendationService {
                 categoryMatchScore = (inf.getCategory() == business.getTargetCategory()) ? 1.0 : 0.0;
                 if (categoryMatchScore == 1.0) reasons.append("✓ Perfect category match | ");
             }
+            if (campaign != null && campaign.getTargetCategory() != null && inf.getCategory() != null) {
+                categoryMatchScore = (inf.getCategory() == campaign.getTargetCategory()) ? 1.0 : 0.0;
+                if (categoryMatchScore == 1.0) reasons.append("✓ Campaign category match | ");
+            }
 
             // 2. Audience Fit (20%) - combine age and gender
             double ageAudienceFit = 0.5;
@@ -156,7 +202,7 @@ public class RecommendationService {
                 if (inf.getAgeGroup() == targetAge) {
                     ageAudienceFit = 1.0;
                 } else if (inf.getAgeGroup() == AgeGroup.ALL_AGES) {
-                    ageAudienceFit = 0.9;
+                    ageAudienceFit = 0.75;
                 } else {
                     ageAudienceFit = 0.1;
                 }
@@ -167,18 +213,25 @@ public class RecommendationService {
                 if (inf.getGenderTarget() == targetGender) {
                     genderAudienceFit = 1.0;
                 } else if (inf.getGenderTarget() == GenderGroup.ANY) {
-                    genderAudienceFit = 0.9;
+                    genderAudienceFit = 0.7;
                 } else {
                     genderAudienceFit = 0.1;
                 }
             }
 
             double audienceFitScore = (ageAudienceFit + genderAudienceFit) / 2.0;
+            if (targetAge != null) {
+                reasons.append(ageAudienceFit >= 0.9 ? "✓ Age fit | " : "✗ Age mismatch | ");
+            }
+            if (targetGender != null) {
+                reasons.append(genderAudienceFit >= 0.9 ? "✓ Gender audience fit | " : "✗ Gender audience mismatch | ");
+            }
 
             // 3. Influencer Type Match (12%)
             double influencerTypeMatchScore = 0.5;
             if (business != null && business.getPreferredInfluencerType() != null && inf.getInfluencerType() != null) {
-                influencerTypeMatchScore = (inf.getInfluencerType() == business.getPreferredInfluencerType()) ? 1.0 : 0.4;
+                influencerTypeMatchScore = (inf.getInfluencerType() == business.getPreferredInfluencerType()) ? 1.0 : 0.2;
+                reasons.append(influencerTypeMatchScore == 1.0 ? "✓ Influencer type fit | " : "✗ Influencer type mismatch | ");
             }
 
             // 4. Availability Score (10%) - should always be high since we hard-filtered
@@ -187,9 +240,8 @@ public class RecommendationService {
             // 5. Budget Compatibility (10%)
             boolean budgetCompatible = true;
             double budgetCompatibilityScore = 0.5;
-            if (business != null && business.getMaxBudgetPerCollaboration() != null) {
-                if (inf.getMinCollaborationBudget() != null &&
-                    inf.getMinCollaborationBudget() <= business.getMaxBudgetPerCollaboration()) {
+            if (budgetCap != null) {
+                if (inf.getMinCollaborationBudget() != null && inf.getMinCollaborationBudget() <= budgetCap) {
                     budgetCompatibilityScore = 1.0;
                     reasons.append("✓ Budget compatible | ");
                 } else {
@@ -209,18 +261,37 @@ public class RecommendationService {
             }
 
             // ===== FINAL SCORE CALCULATION =====
-            // NEW weights: brand-fit focused
-            double finalScore = 0.25 * categoryMatchScore
-                    + 0.20 * audienceFitScore
-                    + 0.18 * engagementScore
-                    + 0.12 * influencerTypeMatchScore
-                    + 0.10 * availabilityScore
-                    + 0.10 * budgetCompatibilityScore
-                    + 0.05 * locationMatchScore;
+            double finalScore = calculateFinalScore(
+                    categoryMatchScore,
+                    audienceFitScore,
+                    engagementScore,
+                    influencerTypeMatchScore,
+                    availabilityScore,
+                    budgetCompatibilityScore,
+                    locationMatchScore
+            );
+
+            // Cap score if business has explicit category target and influencer mismatches it.
+            if (business != null && business.getTargetCategory() != null && inf.getCategory() != null
+                    && inf.getCategory() != business.getTargetCategory()) {
+                finalScore = Math.min(finalScore, 0.55);
+                reasons.append("✗ Category mismatch cap applied | ");
+            }
 
             // Add default reason if none collected
-            if (reasons.length() == 0) {
+            if (reasons.isEmpty()) {
                 reasons.append("Good engagement & overall fit");
+            }
+            reasons.append(" | policy=").append(SCORE_POLICY_VERSION);
+            reasons.append(String.format(" | components[c=%.2f,a=%.2f,e=%.2f,t=%.2f,b=%.2f,l=%.2f]",
+                    categoryMatchScore,
+                    audienceFitScore,
+                    engagementScore,
+                    influencerTypeMatchScore,
+                    budgetCompatibilityScore,
+                    locationMatchScore));
+            if (campaign != null) {
+                reasons.append(" | campaign=").append(campaign.getTitle());
             }
 
             // Build DTO with all scores
@@ -253,12 +324,56 @@ public class RecommendationService {
             var out = results.subList(0, limit);
             log.info("Returning {} recommendations (trimmed to limit={})", out.size(), limit);
             log.info("Top recommendation ids={}", out.stream().map(r -> r.getInfluencer().getId()).toList());
+            logTopRecommendations(out, businessId, campaignId);
             return out;
         }
 
         log.info("Returning {} recommendations", results.size());
         log.info("Recommendation ids={}", results.stream().map(r -> r.getInfluencer().getId()).toList());
+        logTopRecommendations(results, businessId, campaignId);
         return results;
+    }
+
+    private void logTopRecommendations(List<RecommendedInfluencerDto> recs, Long businessId, Long campaignId) {
+        int previewSize = Math.min(5, recs.size());
+        if (previewSize == 0) {
+            return;
+        }
+
+        log.info("Top {} recommendations preview (businessId={}, campaignId={}):", previewSize, businessId, campaignId);
+        for (int i = 0; i < previewSize; i++) {
+            var r = recs.get(i);
+            log.info("  #{} id={} user={} score={} [category={}, audience={}, engagement={}, type={}, budget={}, location={}] reason={}",
+                    i + 1,
+                    r.getInfluencer().getId(),
+                    r.getInfluencer().getUsername(),
+                    r.getScore(),
+                    r.getCategoryMatchScore(),
+                    r.getAudienceFitScore(),
+                    r.getEngagementScore(),
+                    r.getInfluencerTypeMatchScore(),
+                    r.getBudgetCompatibilityScore(),
+                    r.getLocationMatchScore(),
+                    r.getRecommendationReason());
+        }
+    }
+
+    private double calculateFinalScore(double categoryMatchScore,
+                                       double audienceFitScore,
+                                       double engagementScore,
+                                       double influencerTypeMatchScore,
+                                       double availabilityScore,
+                                       double budgetCompatibilityScore,
+                                       double locationMatchScore) {
+        double weighted = W_CATEGORY_MATCH * categoryMatchScore
+                + W_AUDIENCE_FIT * audienceFitScore
+                + W_ENGAGEMENT * engagementScore
+                + W_INFLUENCER_TYPE * influencerTypeMatchScore
+                + W_AVAILABILITY * availabilityScore
+                + W_BUDGET_COMPATIBILITY * budgetCompatibilityScore
+                + W_LOCATION_MATCH * locationMatchScore;
+
+        return Math.max(0.0, Math.min(1.0, weighted));
     }
 
     private static class CandidateFeatures {
@@ -272,5 +387,15 @@ public class RecommendationService {
             this.postCount = (int) postCount;
         }
     }
-}
 
+    private Integer resolveBudgetCap(Business business, Campaign campaign) {
+        Integer businessCap = business != null ? business.getMaxBudgetPerCollaboration() : null;
+        Integer campaignCap = (campaign != null && campaign.getBudget() != null)
+                ? (int) Math.floor(campaign.getBudget())
+                : null;
+
+        if (businessCap == null) return campaignCap;
+        if (campaignCap == null) return businessCap;
+        return Math.min(businessCap, campaignCap);
+    }
+}
