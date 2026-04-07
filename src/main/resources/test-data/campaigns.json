@@ -79,5 +79,43 @@
     "preferredInfluencerType": "MID_TIER",
     "maxBudgetPerCollaboration": 6000
   }
+
+  ,
+  {
+    "businessUsername": "biz11",
+    "title": "Cafe Launch",
+    "description": "UrbanCafe grand opening promotion",
+    "status": "ACTIVE",
+    "targetCategory": "FOOD",
+    "budget": 4000.0,
+    "goals": "Local influencers coverage and 10 IG stories",
+    "targetAgeGroup": "YOUNG_ADULTS",
+    "preferredInfluencerType": "MICRO",
+    "maxBudgetPerCollaboration": 700
+  },
+  {
+    "businessUsername": "biz12",
+    "title": "Gizmo Release",
+    "description": "TechNova new gadget launch campaign",
+    "status": "ACTIVE",
+    "targetCategory": "TECHNOLOGY",
+    "budget": 50000.0,
+    "goals": "10 tech reviews and 5 long-form tutorials",
+    "targetAgeGroup": "ADULTS",
+    "preferredInfluencerType": "MID_TIER",
+    "maxBudgetPerCollaboration": 10000
+  },
+  {
+    "businessUsername": "biz5",
+    "title": "Summer Trips",
+    "description": "Wanderlust seasonal trip promotions",
+    "status": "ACTIVE",
+    "targetCategory": "TRAVEL",
+    "budget": 18000.0,
+    "goals": "10 video features",
+    "targetAgeGroup": "YOUNG_ADULTS",
+    "preferredInfluencerType": "MID_TIER",
+    "maxBudgetPerCollaboration": 8000
+  }
 ]
 

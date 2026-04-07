@@ -89,6 +89,53 @@
     "campaignTitle": "Brand Awareness",
     "influencerUsername": "inf4",
     "status": "ACCEPTED",
+                  ,
+                  {
+                    "campaignTitle": "Cafe Launch",
+                    "influencerUsername": "inf18",
+                    "status": "ACCEPTED",
+                    "paymentAmount": 180.0,
+                    "deliverables": "2 posts and 3 stories featuring UrbanCafe",
+                    "posts": [
+                      {
+                        "platform": "INSTAGRAM",
+                        "content": "UrbanCafe grand opening — the best brunch in town! ☕🥐",
+                        "reach": 8000,
+                        "impressions": 24000,
+                        "shares": 60,
+                        "comments": ["Wow looks tasty!", "When is the opening?"],
+                        "reactions": { "LIKE": 900, "LOVE": 150 },
+                        "manualLabel": "LOVE"
+                      }
+                    ]
+                  },
+                  {
+                    "campaignTitle": "Gizmo Release",
+                    "influencerUsername": "inf4",
+                    "status": "PENDING",
+                    "paymentAmount": 1200.0,
+                    "deliverables": "5 video reviews and an unboxing",
+                    "posts": []
+                  },
+                  {
+                    "campaignTitle": "Summer Trips",
+                    "influencerUsername": "inf13",
+                    "status": "ACCEPTED",
+                    "paymentAmount": 4200.0,
+                    "deliverables": "3 long-form travel videos",
+                    "posts": [
+                      {
+                        "platform": "YOUTUBE",
+                        "content": "Exploring the hidden gems with Wanderlust — episode 1",
+                        "reach": 30000,
+                        "impressions": 90000,
+                        "shares": 500,
+                        "comments": ["Amazing itinerary!", "Can't wait to go"],
+                        "reactions": { "LIKE": 4000, "LOVE": 600 },
+                        "manualLabel": "LOVE"
+                      }
+                    ]
+                  }
     "paymentAmount": 250.0,
     "deliverables": "5 post promoting brand awareness",
     "posts": [

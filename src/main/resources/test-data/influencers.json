@@ -485,5 +485,87 @@
       }
     ]
   }
+  ,
+  {
+    "email": "inf18@example.com",
+    "username": "inf18",
+    "name": "Green Chef",
+    "password": "pass",
+    "available": true,
+    "age": 34,
+    "location": "Heraklion, GR",
+    "bio": "🌱 Plant-based chef sharing healthy recipes and cooking tips.",
+    "category": "FOOD",
+    "influencerType": "MICRO",
+    "totalFollowers": 22000,
+    "minCollaborationBudget": 150,
+    "ageGroup": "ADULTS",
+    "gender": "MALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "INSTAGRAM",
+        "username": "@inf18",
+        "accountUrl": "https://instagram.com/inf18",
+        "followers": 18000
+      }
+    ]
+  },
+  {
+    "email": "inf19@example.com",
+    "username": "inf19",
+    "name": "GamerGal",
+    "password": "pass",
+    "available": true,
+    "age": 21,
+    "location": "Athens, GR",
+    "bio": "🎮 Pro gamer and streamer focusing on FPS and indie titles.",
+    "category": "GAMING",
+    "influencerType": "MID_TIER",
+    "totalFollowers": 98000,
+    "minCollaborationBudget": 500,
+    "ageGroup": "YOUNG_ADULTS",
+    "gender": "FEMALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "TWITCH",
+        "username": "GamerGalLive",
+        "accountUrl": "https://twitch.tv/gamergallive",
+        "followers": 72000
+      },
+      {
+        "platform": "YOUTUBE",
+        "username": "GamerGalYT",
+        "accountUrl": "https://youtube.com/gamergal",
+        "followers": 26000
+      }
+    ]
+  },
+  {
+    "email": "inf20@example.com",
+    "username": "inf20",
+    "name": "NanoCreator",
+    "password": "pass",
+    "available": true,
+    "age": 28,
+    "location": "Ioannina, GR",
+    "bio": "📷 Small but engaged audience sharing daily lifestyle and mini-vlogs.",
+    "category": "LIFESTYLE",
+    "influencerType": "NANO",
+    "totalFollowers": 4200,
+    "minCollaborationBudget": 40,
+    "ageGroup": "YOUNG_ADULTS",
+    "gender": "MALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "INSTAGRAM",
+        "username": "@inf20",
+        "accountUrl": "https://instagram.com/inf20",
+        "followers": 4200
+      }
+    ]
+  }
 ]
 

@@ -291,5 +291,64 @@
       "contentTypes": ["VIDEOS", "BLOGS"]
     }
   }
+  ,
+  {
+    "email": "biz11@example.com",
+    "username": "biz11",
+    "companyName": "UrbanCafe",
+    "password": "pass",
+    "category": "FOOD",
+    "companySize": "SMALL",
+    "establishedYear": "2018",
+    "description": "UrbanCafe - specialty coffee and brunch spot",
+    "phone": "+30-210-9270000",
+    "contactEmail": "biz11@example.com",
+    "address": "23 Plateia, Athens, 104 34",
+    "website": "https://www.urbancafe.gr",
+    "imageUrl": "https://cdn.example.com/images/urbancafe.png",
+    "linkedinUrl": "https://www.linkedin.com/company/urbancafe",
+    "facebookUrl": "https://www.facebook.com/urbancafe",
+    "instagramUrl": "https://www.instagram.com/urbancafe",
+    "twitterUrl": "https://twitter.com/urbancafe",
+    "targetCategory": "FOOD",
+    "targetAgeGroup": "YOUNG_ADULTS",
+    "targetGenderGroup": "ANY",
+    "preferredInfluencerType": "MICRO",
+    "maxBudgetPerCollaboration": 700,
+    "annualMarketingBudget": 12000,
+    "preferences": {
+      "preferredPlatforms": ["INSTAGRAM", "TIKTOK"],
+      "contentTypes": ["PHOTOS", "REELS"]
+    }
+  },
+  {
+    "email": "biz12@example.com",
+    "username": "biz12",
+    "companyName": "TechNova",
+    "password": "pass",
+    "category": "TECHNOLOGY",
+    "companySize": "LARGE",
+    "establishedYear": "2016",
+    "description": "TechNova - consumer electronics and smart devices",
+    "phone": "+30-210-9280000",
+    "contactEmail": "biz12@example.com",
+    "address": "90 Syngrou Ave, Athens, 117 45",
+    "website": "https://www.technova.gr",
+    "imageUrl": "https://cdn.example.com/images/technova.png",
+    "linkedinUrl": "https://www.linkedin.com/company/technova",
+    "facebookUrl": "https://www.facebook.com/technova",
+    "instagramUrl": "https://www.instagram.com/technova",
+    "twitterUrl": "https://twitter.com/technova",
+    "targetCategory": "TECHNOLOGY",
+    "targetAgeGroup": "ADULTS",
+    "targetGenderGroup": "ANY",
+    "preferredInfluencerType": "MID_TIER",
+    "maxBudgetPerCollaboration": 10000,
+    "annualMarketingBudget": 300000,
+    "preferences": {
+      "preferredPlatforms": ["YOUTUBE", "INSTAGRAM"],
+      "contentTypes": ["TUTORIALS", "REVIEWS", "UNBOXING"]
+    }
+  }
 ]
 
