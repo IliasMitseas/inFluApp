@@ -27,7 +27,7 @@ public class RecommendationService {
     private static final Logger log = LoggerFactory.getLogger(RecommendationService.class);
 
     // Versioned scoring contract for reproducibility in evaluations.
-    private static final String SCORE_POLICY_VERSION = "v2.1-strict-fit";
+    private static final String SCORE_POLICY_VERSION = "v2.2-balanced-fit";
 
     // Centralized weights (must sum to 1.0)
     private static final double W_CATEGORY_MATCH = 0.35;
@@ -43,6 +43,9 @@ public class RecommendationService {
     private final SentimentAnalysisRepository sentimentAnalysisRepository;
     private final BusinessRepository businessRepository;
     private final CampaignRepository campaignRepository;
+
+    private static final int DEFAULT_LIMIT = 5;
+    private static final int MAX_LIMIT = 5;
 
 
     /**
@@ -64,6 +67,8 @@ public class RecommendationService {
      */
     public List<RecommendedInfluencerDto> recommendForBusiness(Long businessId, Long campaignId, String keyword, String location,
                                                                AgeGroup ageGroup, GenderGroup genderTarget, int limit) {
+        int effectiveLimit = normalizeLimit(limit);
+
         // Fetch business profile if provided
         Business business = null;
         if (businessId != null) {
@@ -102,40 +107,50 @@ public class RecommendationService {
         // Fetch candidates
         List<Influencer> candidates = influencerRepository.findAll(PageRequest.of(0, 200)).getContent();
         log.info("Recommendation requested: businessId={}, campaignId={}, keyword='{}', location='{}', ageGroup={}, genderTarget={}, limit='{}'",
-                 businessId, campaignId, keyword, location, ageGroup, genderTarget, limit);
+                 businessId, campaignId, keyword, location, ageGroup, genderTarget, effectiveLimit);
         log.info("Loaded {} candidate influencers (pre-filter)", candidates.size());
 
-        // Hard filters: must be available, and budget must be compatible
-        List<Influencer> filtered = new ArrayList<>();
+        // Keep hard filters minimal to avoid empty recommendations.
+        List<Influencer> available = new ArrayList<>();
         for (Influencer inf : candidates) {
-            // Hard filter 1: Must be available
-            if (!Boolean.TRUE.equals(inf.getIsAvailable())) {
-                log.debug("Filtering out influencer {} - not available", inf.getId());
-                continue;
+            if (Boolean.TRUE.equals(inf.getIsAvailable())) {
+                available.add(inf);
             }
-
-            // Hard filter 2: Budget compatibility (if business has max budget)
-            if (budgetCap != null) {
-                if (inf.getMinCollaborationBudget() != null && inf.getMinCollaborationBudget() > budgetCap) {
-                    log.debug("Filtering out influencer {} - budget incompatible ({} > {})",
-                              inf.getId(), inf.getMinCollaborationBudget(), budgetCap);
-                    continue;
-                }
-            }
-
-            // Soft filter: Location (can pass but will affect scoring)
-            if (location != null && !location.isBlank()) {
-                boolean locationMatchesSoftFilter = inf.getLocation() != null
-                        && inf.getLocation().toLowerCase().contains(location.toLowerCase());
-                // Keep candidate either way; mismatch is penalized in scoring later.
-                if (!locationMatchesSoftFilter) {
-                    log.debug("Soft location mismatch for influencer {}", inf.getId());
-                }
-            }
-
-            filtered.add(inf);
         }
-        log.info("{} candidates remain after hard filters", filtered.size());
+
+        List<Influencer> budgetCompatible = new ArrayList<>();
+        if (budgetCap != null) {
+            for (Influencer inf : available) {
+                if (inf.getMinCollaborationBudget() == null || inf.getMinCollaborationBudget() <= budgetCap) {
+                    budgetCompatible.add(inf);
+                }
+            }
+        }
+
+        List<Influencer> budgetStage = (budgetCap != null && !budgetCompatible.isEmpty()) ? budgetCompatible : available;
+        if (budgetCap != null && budgetCompatible.isEmpty()) {
+            log.warn("No candidates satisfy strict budget cap={} - falling back to available influencers with budget penalty scoring", budgetCap);
+        }
+
+        List<Influencer> locationCompatible = new ArrayList<>();
+        if (location != null && !location.isBlank()) {
+            for (Influencer inf : budgetStage) {
+                boolean locationMatches = inf.getLocation() != null
+                        && inf.getLocation().toLowerCase().contains(location.toLowerCase());
+                if (locationMatches) {
+                    locationCompatible.add(inf);
+                }
+            }
+        }
+
+        List<Influencer> filtered = (location != null && !location.isBlank() && !locationCompatible.isEmpty())
+                ? locationCompatible
+                : budgetStage;
+        if (location != null && !location.isBlank() && locationCompatible.isEmpty()) {
+            log.warn("No candidates match strict location='{}' - falling back to broader geography with location penalty scoring", location);
+        }
+
+        log.info("{} candidates remain after adaptive hard filters", filtered.size());
 
         // Compute raw features for scoring
         List<CandidateFeatures> feats = new ArrayList<>();
@@ -238,14 +253,14 @@ public class RecommendationService {
             double availabilityScore = Boolean.TRUE.equals(inf.getIsAvailable()) ? 1.0 : 0.0;
 
             // 5. Budget Compatibility (10%)
-            boolean budgetCompatible = true;
+            boolean isBudgetCompatible = true;
             double budgetCompatibilityScore = 0.5;
             if (budgetCap != null) {
                 if (inf.getMinCollaborationBudget() != null && inf.getMinCollaborationBudget() <= budgetCap) {
                     budgetCompatibilityScore = 1.0;
                     reasons.append("✓ Budget compatible | ");
                 } else {
-                    budgetCompatible = false;
+                    isBudgetCompatible = false;
                 }
             }
 
@@ -311,7 +326,7 @@ public class RecommendationService {
                     .availabilityScore(availabilityScore)
                     .budgetCompatibilityScore(Math.round(budgetCompatibilityScore * 10000.0) / 10000.0)
                     .locationMatchScore(Math.round(locationMatchScore * 10000.0) / 10000.0)
-                    .budgetCompatible(budgetCompatible)
+                    .budgetCompatible(isBudgetCompatible)
                     .recommendationReason(reasons.toString())
                     .build();
 
@@ -320,9 +335,9 @@ public class RecommendationService {
 
         results.sort(Comparator.comparingDouble(RecommendedInfluencerDto::getScore).reversed());
 
-        if (results.size() > limit) {
-            var out = results.subList(0, limit);
-            log.info("Returning {} recommendations (trimmed to limit={})", out.size(), limit);
+        if (results.size() > effectiveLimit) {
+            var out = results.subList(0, effectiveLimit);
+            log.info("Returning {} recommendations (trimmed to limit={})", out.size(), effectiveLimit);
             log.info("Top recommendation ids={}", out.stream().map(r -> r.getInfluencer().getId()).toList());
             logTopRecommendations(out, businessId, campaignId);
             return out;
@@ -397,5 +412,12 @@ public class RecommendationService {
         if (businessCap == null) return campaignCap;
         if (campaignCap == null) return businessCap;
         return Math.min(businessCap, campaignCap);
+    }
+
+    private int normalizeLimit(int requestedLimit) {
+        if (requestedLimit <= 0) {
+            return DEFAULT_LIMIT;
+        }
+        return Math.min(requestedLimit, MAX_LIMIT);
     }
 }

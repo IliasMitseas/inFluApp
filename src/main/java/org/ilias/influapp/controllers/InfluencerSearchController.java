@@ -67,7 +67,7 @@ public class InfluencerSearchController {
                                 @RequestParam(required = false, value = "location") String location,
                                 @RequestParam(required = false, value = "ageGroup") org.ilias.influapp.entities.Enums.AgeGroup ageGroup,
                                 @RequestParam(required = false, value = "genderTarget") org.ilias.influapp.entities.Enums.GenderGroup genderTarget,
-                                @RequestParam(required = false, value = "limit", defaultValue = "10") int limit,
+                                @RequestParam(required = false, value = "limit", defaultValue = "5") int limit,
                                 Model model) {
         // provide enums if template needs them
         model.addAttribute("allCategories", Category.values());
@@ -96,7 +96,7 @@ public class InfluencerSearchController {
                             @RequestParam(required = false, value = "location") String location,
                             @RequestParam(required = false, value = "ageGroup") org.ilias.influapp.entities.Enums.AgeGroup ageGroup,
                             @RequestParam(required = false, value = "genderTarget") org.ilias.influapp.entities.Enums.GenderGroup genderTarget,
-                            @RequestParam(required = false, value = "limit", defaultValue = "10") int limit,
+                            @RequestParam(required = false, value = "limit", defaultValue = "5") int limit,
                             Model model) {
 
         var recs = recommendationService.recommend(keyword, location, ageGroup, genderTarget, limit);
