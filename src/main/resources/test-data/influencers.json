@@ -593,7 +593,7 @@
     "minCollaborationBudget": 320,
     "ageGroup": "YOUNG_ADULTS",
     "gender": "FEMALE",
-    "genderTarget": "ANY",
+    "genderTarget": "FEMALE",
     "socialMediaAccounts": [
       {
         "platform": "INSTAGRAM",
@@ -667,7 +667,7 @@
     "minCollaborationBudget": 5000,
     "ageGroup": "YOUNG_ADULTS",
     "gender": "MALE",
-    "genderTarget": "ANY",
+    "genderTarget": "MALE",
     "socialMediaAccounts": [
       {"platform": "INSTAGRAM", "username": "PeakGamingLive", "accountUrl": "https://twitch.tv/peakgaminglive", "followers": 260000},
       {"platform": "YOUTUBE", "username": "PeakGamingYT", "accountUrl": "https://youtube.com/peakgaming", "followers": 120000},
@@ -694,6 +694,91 @@
       {"platform": "INSTAGRAM", "username": "@globalgrace", "accountUrl": "https://instagram.com/globalgrace", "followers": 900000},
       {"platform": "YOUTUBE", "username": "GlobalGraceTV", "accountUrl": "https://youtube.com/globalgrace", "followers": 500000},
       {"platform": "FACEBOOK", "username": "GlobalGraceFB", "accountUrl": "https://facebook.com/globalgrace", "followers": 450000}
+    ]
+  }
+  ,
+  {
+    "email": "inf26@example.com",
+    "username": "inf26",
+    "name": "CodeNikos",
+    "password": "pass",
+    "available": true,
+    "age": 31,
+    "location": "Athens, GR",
+    "bio": "💼 Startup mentor sharing practical business systems for small teams.",
+    "category": "BUSINESS",
+    "influencerType": "MID_TIER",
+    "totalFollowers": 56000,
+    "minCollaborationBudget": 550,
+    "ageGroup": "ADULTS",
+    "gender": "MALE",
+    "genderTarget": "MALE",
+    "socialMediaAccounts": [
+      {"platform": "LINKEDIN", "username": "code-nikos", "accountUrl": "https://linkedin.com/in/code-nikos", "followers": 21000},
+      {"platform": "INSTAGRAM", "username": "@codenikos", "accountUrl": "https://instagram.com/codenikos", "followers": 35000}
+    ]
+  },
+  {
+    "email": "inf27@example.com",
+    "username": "inf27",
+    "name": "FitEleni",
+    "password": "pass",
+    "available": true,
+    "age": 29,
+    "location": "Thessaloniki, GR",
+    "bio": "🏃 Running coach with beginner-friendly plans and race-day prep tips.",
+    "category": "SPORTS",
+    "influencerType": "MICRO",
+    "totalFollowers": 34000,
+    "minCollaborationBudget": 260,
+    "ageGroup": "YOUNG_ADULTS",
+    "gender": "FEMALE",
+    "genderTarget": "MALE",
+    "socialMediaAccounts": [
+      {"platform": "INSTAGRAM", "username": "@fiteleni", "accountUrl": "https://instagram.com/fiteleni", "followers": 23000},
+      {"platform": "YOUTUBE", "username": "FitEleniYT", "accountUrl": "https://youtube.com/fiteleni", "followers": 11000}
+    ]
+  },
+  {
+    "email": "inf28@example.com",
+    "username": "inf28",
+    "name": "VeganDimitra",
+    "password": "pass",
+    "available": true,
+    "age": 33,
+    "location": "Patras, GR",
+    "bio": "🥗 Plant-based meal prep creator focused on simple family recipes.",
+    "category": "FOOD",
+    "influencerType": "MICRO",
+    "totalFollowers": 39000,
+    "minCollaborationBudget": 300,
+    "ageGroup": "ADULTS",
+    "gender": "FEMALE",
+    "genderTarget": "FEMALE",
+    "socialMediaAccounts": [
+      {"platform": "INSTAGRAM", "username": "@vegandimitra", "accountUrl": "https://instagram.com/vegandimitra", "followers": 27000},
+      {"platform": "TIKTOK", "username": "@vegandimitra_tk", "accountUrl": "https://tiktok.com/@vegandimitra_tk", "followers": 12000}
+    ]
+  },
+  {
+    "email": "inf29@example.com",
+    "username": "inf29",
+    "name": "TravelPanos",
+    "password": "pass",
+    "available": true,
+    "age": 36,
+    "location": "Heraklion, GR",
+    "bio": "🧭 Family-friendly travel guides, itineraries and budget hacks.",
+    "category": "TRAVEL",
+    "influencerType": "MID_TIER",
+    "totalFollowers": 88000,
+    "minCollaborationBudget": 650,
+    "ageGroup": "MIDDLE_AGED",
+    "gender": "MALE",
+    "genderTarget": "MALE",
+    "socialMediaAccounts": [
+      {"platform": "YOUTUBE", "username": "TravelPanosTV", "accountUrl": "https://youtube.com/travelpanos", "followers": 62000},
+      {"platform": "INSTAGRAM", "username": "@travelpanos", "accountUrl": "https://instagram.com/travelpanos", "followers": 26000}
     ]
   }
 ]

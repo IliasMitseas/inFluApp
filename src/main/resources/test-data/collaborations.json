@@ -1083,5 +1083,139 @@
       }
     ]
   }
+  ,
+  {
+    "campaignTitle": "Brand Awareness",
+    "influencerUsername": "inf26",
+    "status": "ACCEPTED",
+    "paymentAmount": 600.0,
+    "deliverables": "LinkedIn + Instagram explainer content",
+    "posts": [
+      {
+        "platform": "LINKEDIN",
+        "content": "3 practical customer-retention frameworks every small business should test this quarter.",
+        "reach": 21000,
+        "impressions": 63000,
+        "shares": 410,
+        "comments": ["Very practical", "Shared with our sales lead", "Clear examples", "Great framework", "Θα το δοκιμάσουμε στην ομάδα"],
+        "reactions": {"LIKE": 1800, "LOVE": 220, "WOW": 40},
+        "manualLabel": "LIKE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Green Run Series",
+    "influencerUsername": "inf27",
+    "status": "IN_PROGRESS",
+    "paymentAmount": 480.0,
+    "deliverables": "Weekly running challenge and progress stories",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Week 1 green run challenge: 5k easy pace + mobility routine 🏃",
+        "reach": 14000,
+        "impressions": 42000,
+        "shares": 360,
+        "comments": ["Starting today!", "Great pacing advice", "Love this challenge", "Can beginners join?", "Πολύ motivating"],
+        "reactions": {"LIKE": 2400, "LOVE": 420, "WOW": 80},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Bakery Week",
+    "influencerUsername": "inf28",
+    "status": "ACCEPTED",
+    "paymentAmount": 320.0,
+    "deliverables": "Recipe reel and local bakery spotlight",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Vegan cinnamon rolls with 6 ingredients — soft, quick and family-approved 🥐",
+        "reach": 17000,
+        "impressions": 51000,
+        "shares": 520,
+        "comments": ["Looks delicious", "Can I swap oat milk?", "Saved this", "Trying on Sunday", "Απίστευτη συνταγή"],
+        "reactions": {"LIKE": 3200, "LOVE": 650, "WOW": 120},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Explore Greece",
+    "influencerUsername": "inf29",
+    "status": "ACCEPTED",
+    "paymentAmount": 900.0,
+    "deliverables": "Family itinerary vlog and map guide",
+    "posts": [
+      {
+        "platform": "YOUTUBE",
+        "content": "3-day Crete family itinerary: routes, costs, and kid-friendly stops.",
+        "reach": 74000,
+        "impressions": 222000,
+        "shares": 2900,
+        "comments": ["Perfect for our trip", "Great budget tips", "Very detailed guide", "Bookmarking this", "Helped a lot"],
+        "reactions": {"LIKE": 13600, "LOVE": 2100, "WOW": 520},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Healthy Living Awareness",
+    "influencerUsername": "inf27",
+    "status": "PENDING",
+    "paymentAmount": 350.0,
+    "deliverables": "Recovery and sleep mini-series",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Runner recovery checklist: hydration, sleep, and easy mobility after training.",
+        "reach": 9800,
+        "impressions": 29400,
+        "shares": 180,
+        "comments": ["Needed this reminder", "Simple and useful", "I skip recovery too often", "Great tips"],
+        "reactions": {"LIKE": 1400, "LOVE": 240, "WOW": 30},
+        "manualLabel": "LIKE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Study Hacks Launch",
+    "influencerUsername": "inf26",
+    "status": "REJECTED",
+    "paymentAmount": 180.0,
+    "deliverables": "Rejected pilot post due to tone mismatch",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Study sprint tactic for founders and students: 25 minutes deep focus, 5 minutes reset.",
+        "reach": 6200,
+        "impressions": 18600,
+        "shares": 70,
+        "comments": ["Useful but too corporate", "Good tip", "Not for younger audience", "Interesting approach"],
+        "reactions": {"LIKE": 520, "LOVE": 60, "SAD": 12},
+        "manualLabel": "NEUTRAL"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Summer Trips",
+    "influencerUsername": "inf29",
+    "status": "ACCEPTED",
+    "paymentAmount": 880.0,
+    "deliverables": "Short travel clips and destination comparison",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Beach vs mountain weekend in Greece: budget, transport and family fit.",
+        "reach": 26000,
+        "impressions": 78000,
+        "shares": 760,
+        "comments": ["Loved this comparison", "Super clear", "Beach wins for us", "Mountain looked amazing", "Great breakdown"],
+        "reactions": {"LIKE": 4300, "LOVE": 720, "WOW": 110},
+        "manualLabel": "LOVE"
+      }
+    ]
+  }
 ]
 
