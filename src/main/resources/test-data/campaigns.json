@@ -117,5 +117,78 @@
     "preferredInfluencerType": "MID_TIER",
     "maxBudgetPerCollaboration": 8000
   }
+  ,
+  {
+    "businessUsername": "biz13",
+    "title": "Bakery Week",
+    "description": "LocalBakery promotional week with recipe posts and local outreach",
+    "status": "ACTIVE",
+    "targetCategory": "FOOD",
+    "budget": 2000.0,
+    "goals": "10 local posts and 5 story features",
+    "targetAgeGroup": "ADULTS",
+    "preferredInfluencerType": "MICRO",
+    "maxBudgetPerCollaboration": 500
+  },
+  {
+    "businessUsername": "biz14",
+    "title": "Green Run Series",
+    "description": "GreenGear sponsorship for community running events",
+    "status": "DRAFT",
+    "targetCategory": "SPORTS",
+    "budget": 8000.0,
+    "goals": "5 event collaborations and 10 posts",
+    "targetAgeGroup": "YOUNG_ADULTS",
+    "preferredInfluencerType": "MID_TIER",
+    "maxBudgetPerCollaboration": 3000
+  },
+  {
+    "businessUsername": "biz15",
+    "title": "Healthy Living Awareness",
+    "description": "Health education campaign with evidence-based content and Q&A sessions",
+    "status": "ACTIVE",
+    "targetCategory": "HEALTH",
+    "budget": 12000.0,
+    "goals": "5 educational posts, 2 short videos, 1 live Q&A",
+    "targetAgeGroup": "ADULTS",
+    "preferredInfluencerType": "MICRO",
+    "maxBudgetPerCollaboration": 1500
+  },
+  {
+    "businessUsername": "biz16",
+    "title": "Study Hacks Launch",
+    "description": "Teen-focused study skills and micro-learning campaign",
+    "status": "DRAFT",
+    "targetCategory": "EDUCATION",
+    "budget": 6000.0,
+    "goals": "Intro post, carousel tips and short-form study clip",
+    "targetAgeGroup": "TEENS",
+    "preferredInfluencerType": "NANO",
+    "maxBudgetPerCollaboration": 900
+  },
+  {
+    "businessUsername": "biz17",
+    "title": "Esports Finals Weekend",
+    "description": "Gaming event coverage and tournament hype content",
+    "status": "COMPLETED",
+    "targetCategory": "GAMING",
+    "budget": 80000.0,
+    "goals": "Live streams, highlight clips and recap videos",
+    "targetAgeGroup": "YOUNG_ADULTS",
+    "preferredInfluencerType": "MACRO",
+    "maxBudgetPerCollaboration": 20000
+  },
+  {
+    "businessUsername": "biz18",
+    "title": "Worldwide Lifestyle Hub",
+    "description": "Premium lifestyle media campaign with elite influencer partnerships",
+    "status": "CANCELLED",
+    "targetCategory": "LIFESTYLE",
+    "budget": 250000.0,
+    "goals": "Brand story content, interviews and global social pushes",
+    "targetAgeGroup": "MIDDLE_AGED",
+    "preferredInfluencerType": "MEGA",
+    "maxBudgetPerCollaboration": 50000
+  }
 ]
 

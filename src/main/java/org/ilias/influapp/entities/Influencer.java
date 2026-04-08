@@ -19,6 +19,13 @@ import jakarta.persistence.Transient;
 @SuperBuilder
 public class Influencer extends User {
 
+    private static final String INFLUENCER_SCORE_POLICY_VERSION = "v2.0-intrinsic";
+    private static final double W_ENGAGEMENT = 0.35;
+    private static final double W_FOLLOWERS = 0.25;
+    private static final double W_POST_VOLUME = 0.20;
+    private static final double W_SENTIMENT = 0.15;
+    private static final double W_AVAILABILITY = 0.05;
+
     private String name;
 
     private String age;
@@ -132,23 +139,9 @@ public class Influencer extends User {
 
 
     public void updateInfluencerScore() {
-        double score = 0.0;
+        double engagementComponent = normalizeEngagementRate();
+        double followersComponent = normalizeFollowersByType();
 
-        // Engagement component 35%
-        if (this.engagementRate != null) {
-            double engVal = Math.min(this.engagementRate.doubleValue(), 20.0);
-            score += (engVal / 20.0) * 35.0;
-        }
-
-        // Followers component 25%
-        int followers = this.totalFollowers != null ? this.totalFollowers : 0;
-        if (followers > 0) {
-            double logFollowers = Math.log10(followers);
-            double logMax = Math.log10(1_000_000);
-            score += (Math.min(logFollowers, logMax) / logMax) * 25.0;
-        }
-
-        // Posts component 20%
         int postCount = 0;
         if (socialMediaAccounts != null) {
             for (SocialMedia sm : socialMediaAccounts) {
@@ -157,7 +150,7 @@ public class Influencer extends User {
                 }
             }
         }
-        score += (Math.min(postCount, 100.0) / 100.0) * 20.0;
+        double postVolumeComponent = normalizePostVolume(postCount);
 
         double sentimentSum = 0.0;
         int sentimentCount = 0;
@@ -174,21 +167,64 @@ public class Influencer extends User {
                 }
             }
         }
-        double avgSentiment = 0.0;
+        double sentimentComponent = 0.0;
         if (sentimentCount > 0) {
-            avgSentiment = sentimentSum / sentimentCount;
-            score += ((avgSentiment + 1.0) / 2.0) * 15.0;
+            double avgSentiment = sentimentSum / sentimentCount;
+            sentimentComponent = normalizeSentiment(avgSentiment);
             this.avgPostSentiment = Math.round(avgSentiment * 10000.0) / 10000.0; // keep a small scale
         } else {
             this.avgPostSentiment = null;
         }
 
-        // Availability bonus 5%
-        if (Boolean.TRUE.equals(this.isAvailable)) {
-            score += 5.0;
-        }
+        double availabilityComponent = Boolean.TRUE.equals(this.isAvailable) ? 1.0 : 0.0;
+
+        double normalizedScore = engagementComponent * W_ENGAGEMENT
+                + followersComponent * W_FOLLOWERS
+                + postVolumeComponent * W_POST_VOLUME
+                + sentimentComponent * W_SENTIMENT
+                + availabilityComponent * W_AVAILABILITY;
+
+        double score = Math.max(0.0, Math.min(1.0, normalizedScore)) * 100.0;
 
         this.influencerScore = Math.round(score * 100.0) / 100.0;
+    }
+
+    private double normalizeEngagementRate() {
+        if (this.engagementRate == null) {
+            return 0.0;
+        }
+        double engVal = Math.min(this.engagementRate.doubleValue(), 20.0);
+        return Math.max(0.0, engVal / 20.0);
+    }
+
+    private double normalizeFollowersByType() {
+        int followers = this.totalFollowers != null ? this.totalFollowers : 0;
+        if (followers <= 0) {
+            return 0.0;
+        }
+
+        int typeMaxFollowers = switch (this.influencerType) {
+            case NANO -> 10_000;
+            case MICRO -> 100_000;
+            case MID_TIER -> 500_000;
+            case MACRO -> 1_000_000;
+            case MEGA -> 5_000_000;
+            default -> 1_000_000;
+        };
+
+        double ratio = (double) followers / typeMaxFollowers;
+        return Math.max(0.0, Math.min(1.0, ratio));
+    }
+
+    private double normalizePostVolume(int postCount) {
+        if (postCount <= 0) {
+            return 0.0;
+        }
+        return Math.min(postCount, 100.0) / 100.0;
+    }
+
+    private double normalizeSentiment(double avgSentiment) {
+        return Math.max(0.0, Math.min(1.0, (avgSentiment + 1.0) / 2.0));
     }
 
     private double sentimentToScore(PostSentiment sentiment) {
@@ -211,5 +247,10 @@ public class Influencer extends User {
         if (v > -0.2) return PostSentiment.NEUTRAL;
         if (v >= -0.5) return PostSentiment.DISLIKE;
         return PostSentiment.TERRIBLE;
+    }
+
+    @Transient
+    public String getInfluencerScorePolicyVersion() {
+        return INFLUENCER_SCORE_POLICY_VERSION;
     }
 }

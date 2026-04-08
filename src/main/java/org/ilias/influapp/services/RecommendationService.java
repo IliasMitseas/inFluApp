@@ -30,13 +30,14 @@ public class RecommendationService {
     private static final String SCORE_POLICY_VERSION = "v2.2-balanced-fit";
 
     // Centralized weights (must sum to 1.0)
-    private static final double W_CATEGORY_MATCH = 0.35;
-    private static final double W_AUDIENCE_FIT = 0.20;
+    private static final double W_CATEGORY_MATCH = 0.30;
+    private static final double W_AUDIENCE_FIT = 0.18;
     private static final double W_ENGAGEMENT = 0.12;
-    private static final double W_INFLUENCER_TYPE = 0.12;
-    private static final double W_AVAILABILITY = 0.10;
+    private static final double W_CREATOR_QUALITY = 0.10;
+    private static final double W_INFLUENCER_TYPE = 0.10;
+    private static final double W_AVAILABILITY = 0.08;
     private static final double W_BUDGET_COMPATIBILITY = 0.08;
-    private static final double W_LOCATION_MATCH = 0.03;
+    private static final double W_LOCATION_MATCH = 0.04;
 
     private final InfluencerRepository influencerRepository;
     private final PostRepository postRepository;
@@ -280,6 +281,7 @@ public class RecommendationService {
                     categoryMatchScore,
                     audienceFitScore,
                     engagementScore,
+                    influencerScore,
                     influencerTypeMatchScore,
                     availabilityScore,
                     budgetCompatibilityScore,
@@ -298,10 +300,11 @@ public class RecommendationService {
                 reasons.append("Good engagement & overall fit");
             }
             reasons.append(" | policy=").append(SCORE_POLICY_VERSION);
-            reasons.append(String.format(" | components[c=%.2f,a=%.2f,e=%.2f,t=%.2f,b=%.2f,l=%.2f]",
+            reasons.append(String.format(" | components[c=%.2f,a=%.2f,e=%.2f,q=%.2f,t=%.2f,b=%.2f,l=%.2f]",
                     categoryMatchScore,
                     audienceFitScore,
                     engagementScore,
+                    influencerScore,
                     influencerTypeMatchScore,
                     budgetCompatibilityScore,
                     locationMatchScore));
@@ -376,6 +379,7 @@ public class RecommendationService {
     private double calculateFinalScore(double categoryMatchScore,
                                        double audienceFitScore,
                                        double engagementScore,
+                                       double influencerScore,
                                        double influencerTypeMatchScore,
                                        double availabilityScore,
                                        double budgetCompatibilityScore,
@@ -383,6 +387,7 @@ public class RecommendationService {
         double weighted = W_CATEGORY_MATCH * categoryMatchScore
                 + W_AUDIENCE_FIT * audienceFitScore
                 + W_ENGAGEMENT * engagementScore
+                + W_CREATOR_QUALITY * influencerScore
                 + W_INFLUENCER_TYPE * influencerTypeMatchScore
                 + W_AVAILABILITY * availabilityScore
                 + W_BUDGET_COMPATIBILITY * budgetCompatibilityScore

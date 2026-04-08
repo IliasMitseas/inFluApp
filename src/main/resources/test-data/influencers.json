@@ -391,181 +391,309 @@
         "followers": 12000
       }
     ]
-  },
-  {
-    "email": "inf15@example.com",
+   },
+   {
+     "email": "inf15@example.com",
     "username": "inf15",
-    "name": "Mel Music",
+    "name": "StyleSophia",
     "password": "pass",
     "available": true,
-    "age": 19,
-    "location": "Patras, GR",
-    "bio": "🎵 Singer-songwriter uploading original tracks and covers.",
-    "category": "MUSIC",
-    "influencerType": "NANO",
-    "totalFollowers": 9000,
-    "minCollaborationBudget": 60,
-    "ageGroup": "TEENS",
+    "age": 26,
+    "location": "Athens, GR",
+    "bio": "👗 Fashion & lifestyle influencer. Sustainable trends & daily outfit inspiration.",
+    "category": "FASHION",
+    "influencerType": "MICRO",
+    "totalFollowers": 52000,
+    "minCollaborationBudget": 400,
+    "ageGroup": "YOUNG_ADULTS",
     "gender": "FEMALE",
-    "genderTarget": "ANY",
+    "genderTarget": "FEMALE",
     "socialMediaAccounts": [
       {
-        "platform": "TIKTOK",
-        "username": "@inf15",
-        "accountUrl": "https://tiktok.com/@inf15",
-        "followers": 7000
+        "platform": "INSTAGRAM",
+        "username": "@stylesophia",
+        "accountUrl": "https://instagram.com/stylesophia",
+        "followers": 38000
       },
       {
-        "platform": "YOUTUBE",
-        "username": "MelMusicYT",
-        "accountUrl": "https://youtube.com/melmusic",
-        "followers": 2000
+        "platform": "TIKTOK",
+        "username": "@stylesophia_tk",
+        "accountUrl": "https://tiktok.com/@stylesophia_tk",
+        "followers": 14000
       }
     ]
   },
   {
     "email": "inf16@example.com",
     "username": "inf16",
-    "name": "Beauty Boss",
+    "name": "TechReviewer",
     "password": "pass",
     "available": true,
-    "age": 38,
-    "location": "Athens, GR",
-    "bio": "💄 Skincare scientist turned influencer. Reviews and tutorials.",
-    "category": "BEAUTY",
-    "influencerType": "MACRO",
-    "totalFollowers": 220000,
-    "minCollaborationBudget": 800,
+    "age": 32,
+    "location": "Thessaloniki, GR",
+    "bio": "🎮 Gaming & tech reviews. Streaming daily on Twitch.",
+    "category": "TECHNOLOGY",
+    "influencerType": "MID_TIER",
+    "totalFollowers": 87000,
+    "minCollaborationBudget": 600,
     "ageGroup": "ADULTS",
-    "gender": "FEMALE",
-    "genderTarget": "FEMALE",
+    "gender": "MALE",
+    "genderTarget": "ANY",
     "socialMediaAccounts": [
       {
         "platform": "INSTAGRAM",
-        "username": "@inf16",
-        "accountUrl": "https://instagram.com/inf16",
-        "followers": 150000
+        "username": "TechReviewerLive",
+        "accountUrl": "https://twitch.tv/techreviewerlive",
+        "followers": 62000
       },
       {
         "platform": "YOUTUBE",
-        "username": "BeautyBossYT",
-        "accountUrl": "https://youtube.com/beautyboss",
-        "followers": 70000
+        "username": "TechReviewerYT",
+        "accountUrl": "https://youtube.com/techreviewer",
+        "followers": 25000
       }
     ]
   },
   {
     "email": "inf17@example.com",
     "username": "inf17",
-    "name": "Biz Consultant",
+    "name": "WellnessJourney",
     "password": "pass",
     "available": true,
-    "age": 45,
-    "location": "Athens, GR",
-    "bio": "📈 Business strategist sharing tips for startups and SMBs.",
-    "category": "BUSINESS",
-    "influencerType": "MID_TIER",
-    "totalFollowers": 47000,
-    "minCollaborationBudget": 600,
-    "ageGroup": "MIDDLE_AGED",
-    "gender": "MALE",
-    "genderTarget": "ANY",
+    "age": 28,
+    "location": "Heraklion, GR",
+    "bio": "💪 Health & wellness coach. Yoga, nutrition & mindfulness content.",
+    "category": "HEALTH",
+    "influencerType": "MICRO",
+    "totalFollowers": 38000,
+    "minCollaborationBudget": 300,
+    "ageGroup": "YOUNG_ADULTS",
+    "gender": "FEMALE",
+    "genderTarget": "FEMALE",
     "socialMediaAccounts": [
       {
-        "platform": "LINKEDIN",
-        "username": "BizConsultInf",
-        "accountUrl": "https://linkedin.com/in/inf17",
-        "followers": 35000
+        "platform": "INSTAGRAM",
+        "username": "@wellnessjourney",
+        "accountUrl": "https://instagram.com/wellnessjourney",
+        "followers": 28000
       },
       {
-        "platform": "TWITTER",
-        "username": "@inf17",
-        "accountUrl": "https://twitter.com/inf17",
-        "followers": 12000
+        "platform": "TIKTOK",
+        "username": "@wellnessjourney_tk",
+        "accountUrl": "https://tiktok.com/@wellnessjourney_tk",
+        "followers": 10000
       }
     ]
-  }
-  ,
+  },
   {
     "email": "inf18@example.com",
     "username": "inf18",
-    "name": "Green Chef",
+    "name": "AdventureAlex",
     "password": "pass",
     "available": true,
-    "age": 34,
-    "location": "Heraklion, GR",
-    "bio": "🌱 Plant-based chef sharing healthy recipes and cooking tips.",
-    "category": "FOOD",
-    "influencerType": "MICRO",
-    "totalFollowers": 22000,
-    "minCollaborationBudget": 150,
+    "age": 31,
+    "location": "Patras, GR",
+    "bio": "✈️ Travel vlogger exploring hidden gems worldwide.",
+    "category": "TRAVEL",
+    "influencerType": "MID_TIER",
+    "totalFollowers": 76000,
+    "minCollaborationBudget": 500,
     "ageGroup": "ADULTS",
     "gender": "MALE",
     "genderTarget": "ANY",
     "socialMediaAccounts": [
       {
+        "platform": "YOUTUBE",
+        "username": "AdventureAlexYT",
+        "accountUrl": "https://youtube.com/adventurealex",
+        "followers": 56000
+      },
+      {
         "platform": "INSTAGRAM",
-        "username": "@inf18",
-        "accountUrl": "https://instagram.com/inf18",
-        "followers": 18000
+        "username": "@adventurealex",
+        "accountUrl": "https://instagram.com/adventurealex",
+        "followers": 20000
       }
     ]
   },
   {
     "email": "inf19@example.com",
     "username": "inf19",
-    "name": "GamerGal",
+    "name": "FoodieChef",
     "password": "pass",
     "available": true,
-    "age": 21,
+    "age": 35,
     "location": "Athens, GR",
-    "bio": "🎮 Pro gamer and streamer focusing on FPS and indie titles.",
-    "category": "GAMING",
-    "influencerType": "MID_TIER",
-    "totalFollowers": 98000,
-    "minCollaborationBudget": 500,
-    "ageGroup": "YOUNG_ADULTS",
-    "gender": "FEMALE",
+    "bio": "🍳 Chef & recipe creator. Mediterranean & international cuisine.",
+    "category": "FOOD",
+    "influencerType": "MICRO",
+    "totalFollowers": 64000,
+    "minCollaborationBudget": 350,
+    "ageGroup": "MIDDLE_AGED",
+    "gender": "MALE",
     "genderTarget": "ANY",
     "socialMediaAccounts": [
       {
-        "platform": "TWITCH",
-        "username": "GamerGalLive",
-        "accountUrl": "https://twitch.tv/gamergallive",
-        "followers": 72000
+        "platform": "INSTAGRAM",
+        "username": "@foodiechef",
+        "accountUrl": "https://instagram.com/foodiechef",
+        "followers": 42000
       },
       {
-        "platform": "YOUTUBE",
-        "username": "GamerGalYT",
-        "accountUrl": "https://youtube.com/gamergal",
-        "followers": 26000
+        "platform": "TIKTOK",
+        "username": "@foodiechef_tk",
+        "accountUrl": "https://tiktok.com/@foodiechef_tk",
+        "followers": 22000
       }
     ]
   },
   {
     "email": "inf20@example.com",
     "username": "inf20",
-    "name": "NanoCreator",
+    "name": "FitnessCoach",
     "password": "pass",
     "available": true,
-    "age": 28,
-    "location": "Ioannina, GR",
-    "bio": "📷 Small but engaged audience sharing daily lifestyle and mini-vlogs.",
-    "category": "LIFESTYLE",
-    "influencerType": "NANO",
-    "totalFollowers": 4200,
-    "minCollaborationBudget": 40,
+    "age": 27,
+    "location": "Thessaloniki, GR",
+    "bio": "🏋️ Personal fitness trainer. Workout plans & motivation.",
+    "category": "SPORTS",
+    "influencerType": "MICRO",
+    "totalFollowers": 48000,
+    "minCollaborationBudget": 280,
     "ageGroup": "YOUNG_ADULTS",
     "gender": "MALE",
     "genderTarget": "ANY",
     "socialMediaAccounts": [
       {
         "platform": "INSTAGRAM",
-        "username": "@inf20",
-        "accountUrl": "https://instagram.com/inf20",
-        "followers": 4200
+        "username": "@fitnesscoach",
+        "accountUrl": "https://instagram.com/fitnesscoach",
+        "followers": 38000
+      },
+      {
+        "platform": "YOUTUBE",
+        "username": "FitnessCoachYT",
+        "accountUrl": "https://youtube.com/fitnesscoach",
+        "followers": 10000
       }
+    ]
+  },
+  {
+    "email": "inf21@example.com",
+    "username": "inf21",
+    "name": "DesignMinds",
+    "password": "pass",
+    "available": true,
+    "age": 29,
+    "location": "Athens, GR",
+    "bio": "🎨 UI/UX Designer & Creative Director. Design tips & inspiration.",
+    "category": "ART",
+    "influencerType": "MICRO",
+    "totalFollowers": 43000,
+    "minCollaborationBudget": 320,
+    "ageGroup": "YOUNG_ADULTS",
+    "gender": "FEMALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {
+        "platform": "INSTAGRAM",
+        "username": "@designminds",
+        "accountUrl": "https://instagram.com/designminds",
+        "followers": 31000
+      },
+      {
+        "platform": "TIKTOK",
+        "username": "@designminds_tk",
+        "accountUrl": "https://tiktok.com/@designminds_tk",
+        "followers": 12000
+      }
+    ]
+  },
+  {
+    "email": "inf22@example.com",
+    "username": "inf22",
+    "name": "MiraHealth",
+    "password": "pass",
+    "available": true,
+    "age": 36,
+    "location": "Athens, GR",
+    "bio": "🩺 Doctor and health educator sharing evidence-based wellness tips.",
+    "category": "HEALTH",
+    "influencerType": "MID_TIER",
+    "totalFollowers": 91000,
+    "minCollaborationBudget": 700,
+    "ageGroup": "ADULTS",
+    "gender": "FEMALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {"platform": "INSTAGRAM", "username": "@mirahealth", "accountUrl": "https://instagram.com/mirahealth", "followers": 52000},
+      {"platform": "YOUTUBE", "username": "MiraHealthYT", "accountUrl": "https://youtube.com/mirahealth", "followers": 30000},
+      {"platform": "LINKEDIN", "username": "mira-health-md", "accountUrl": "https://linkedin.com/in/mira-health", "followers": 9000}
+    ]
+  },
+  {
+    "email": "inf23@example.com",
+    "username": "inf23",
+    "name": "TinyTales",
+    "password": "pass",
+    "available": true,
+    "age": 20,
+    "location": "Patras, GR",
+    "bio": "📱 NANO creator sharing daily study hacks, day-in-the-life clips and local city spots.",
+    "category": "EDUCATION",
+    "influencerType": "NANO",
+    "totalFollowers": 3400,
+    "minCollaborationBudget": 45,
+    "ageGroup": "TEENS",
+    "gender": "NON_BINARY",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {"platform": "TIKTOK", "username": "@tinytales", "accountUrl": "https://tiktok.com/@tinytales", "followers": 2400},
+      {"platform": "INSTAGRAM", "username": "@tinytales.daily", "accountUrl": "https://instagram.com/tinytales.daily", "followers": 1000}
+    ]
+  },
+  {
+    "email": "inf24@example.com",
+    "username": "inf24",
+    "name": "PeakGaming",
+    "password": "pass",
+    "available": false,
+    "age": 24,
+    "location": "Berlin, DE",
+    "bio": "🎮 Competitive gamer, live-streamer and esports reviewer.",
+    "category": "GAMING",
+    "influencerType": "MACRO",
+    "totalFollowers": 420000,
+    "minCollaborationBudget": 5000,
+    "ageGroup": "YOUNG_ADULTS",
+    "gender": "MALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {"platform": "INSTAGRAM", "username": "PeakGamingLive", "accountUrl": "https://twitch.tv/peakgaminglive", "followers": 260000},
+      {"platform": "YOUTUBE", "username": "PeakGamingYT", "accountUrl": "https://youtube.com/peakgaming", "followers": 120000},
+      {"platform": "TIKTOK", "username": "@peakgaming", "accountUrl": "https://tiktok.com/@peakgaming", "followers": 40000}
+    ]
+  },
+  {
+    "email": "inf25@example.com",
+    "username": "inf25",
+    "name": "GlobalGrace",
+    "password": "pass",
+    "available": true,
+    "age": 42,
+    "location": "London, UK",
+    "bio": "🌍 Lifestyle, travel and business inspiration for a wide adult audience.",
+    "category": "LIFESTYLE",
+    "influencerType": "MEGA",
+    "totalFollowers": 1850000,
+    "minCollaborationBudget": 15000,
+    "ageGroup": "MIDDLE_AGED",
+    "gender": "FEMALE",
+    "genderTarget": "ANY",
+    "socialMediaAccounts": [
+      {"platform": "INSTAGRAM", "username": "@globalgrace", "accountUrl": "https://instagram.com/globalgrace", "followers": 900000},
+      {"platform": "YOUTUBE", "username": "GlobalGraceTV", "accountUrl": "https://youtube.com/globalgrace", "followers": 500000},
+      {"platform": "FACEBOOK", "username": "GlobalGraceFB", "accountUrl": "https://facebook.com/globalgrace", "followers": 450000}
     ]
   }
 ]
-

@@ -12,13 +12,8 @@
         "reach": 25000,
         "impressions": 75000,
         "shares": 300,
-        "comments": ["❤️ Love it!", "😍 Great products!", "🛒 Where can I buy?", "⭐ Amazing quality!", "🇬🇷 Φανταστικό!", "👍 Μου αρέσει"],
-        "reactions": {
-          "LIKE": 1200,
-          "LOVE": 300,
-          "WOW": 50,
-          "HAHA": 25
-        },
+        "comments": ["❤️ Love it!", "😍 Great products!", "🛒 Where can I buy?", "⭐ Amazing quality!", "🇬🇷 Φανταστικό!", "👍 Μου αρέσει", "Worth every penny!", "Exactly what I needed!", "Perfect quality", "Highly recommend", "Best purchase ever", "Amazing service", "Will buy again", "Cannot wait to use this", "Fantastic deals!", "This is gold", "Love the color", "Great customer service", "Super fast shipping", "5 stars for this!"],
+        "reactions": {"LIKE": 1200, "LOVE": 300, "WOW": 50, "HAHA": 25},
         "manualLabel": "LOVE"
       }
     ]
@@ -36,13 +31,8 @@
         "reach": 15000,
         "impressions": 45000,
         "shares": 120,
-        "comments": ["✨ Nice deals!", "🤔 Where to buy?", "😍 Love this!", "🎉 Must have!"],
-        "reactions": {
-          "LIKE": 800,
-          "LOVE": 120,
-          "HAHA": 40,
-          "ANGRY": 10
-        },
+        "comments": ["✨ Nice deals!", "🤔 Where to buy?", "😍 Love this!", "🎉 Must have!", "Can't believe the prices", "Best holiday sale ever", "Finally affordable luxury", "Adding to cart now", "This is perfect timing", "Quality is top notch", "Shipping was so fast", "Better than expected", "Exact match to photo", "Great value for money", "Already recommended to friends", "This never happens", "Too good to be true!", "Absolutely obsessed", "Worth the hype"],
+        "reactions": {"LIKE": 800, "LOVE": 120, "HAHA": 40, "ANGRY": 10},
         "manualLabel": "LOVE"
       }
     ]
@@ -60,13 +50,8 @@
         "reach": 40000,
         "impressions": 120000,
         "shares": 800,
-        "comments": ["Congrats!", "Can't wait to try it!", "Tell us more please!", "Looks awesome!"],
-        "reactions": {
-          "LIKE": 2000,
-          "WOW": 500,
-          "LOVE": 300,
-          "SAD": 5
-        },
+        "comments": ["Congrats!", "Can't wait to try it!", "Tell us more please!", "Looks awesome!", "Finally! Been waiting for this", "Game changer product", "Will definitely buy", "The hype is real", "Revolutionary design", "So innovative", "This changes everything", "Where do I sign up?", "Instant purchase", "Already pre-ordered", "Best launch ever", "My dream product", "Exactly what the world needed", "Cannot wait anymore", "This is genius"],
+        "reactions": {"LIKE": 2000, "WOW": 500, "LOVE": 300, "SAD": 5},
         "manualLabel": "LOVE"
       },
       {
@@ -75,12 +60,8 @@
         "reach": 150,
         "impressions": 420,
         "shares": 0,
-        "comments": ["Worst product ever. Terrible quality and customer support.", "Do not buy this. Completely broken and useless.", "Refund please, total scam.", "Χάλια προϊόν, απαράδεκτο. Μην το αγοράσετε! 😡", "Απαίσιο, κακή ποιότητα και εξυπηρέτηση."],
-        "reactions": {
-          "ANGRY": 450,
-          "SAD": 120,
-          "LIKE": 3
-        },
+        "comments": ["Worst product ever. Terrible quality and customer support.", "Do not buy this. Completely broken and useless.", "Refund please, total scam.", "Χάλια προϊόν, απαράδεκτο. Μην το αγοράσετε! 😡", "Απαίσιο, κακή ποιότητα και εξυπηρέτηση.", "Total waste of money", "Broke after one week", "False advertising", "Nothing like the pictures", "Customer service is non-existent", "Overpriced garbage", "Regret this purchase", "Never again", "Worst investment", "Disappointing quality", "Defective from day one", "Shipping took forever", "Not worth the hype", "Save your money"],
+        "reactions": {"ANGRY": 450, "SAD": 120, "LIKE": 3},
         "manualLabel": "TERRIBLE"
       }
     ]
@@ -98,13 +79,8 @@
         "reach": 8000,
         "impressions": 22000,
         "shares": 40,
-        "comments": ["📊 Informative review!", "💡 Good overview!", "🎬 Nice video production!", "📝 Very detailed!"],
-        "reactions": {
-          "LIKE": 300,
-          "LOVE": 20,
-          "WOW": 10,
-          "SAD": 2
-        },
+        "comments": ["📊 Informative review!", "💡 Good overview!", "🎬 Nice video production!", "📝 Very detailed!", "Learned so much", "Great insights", "Professional analysis", "Well presented", "Easy to understand", "Clear explanations", "Thorough breakdown", "Exactly what I needed to know", "Great work!", "Love this content", "More videos like this please", "Educational and entertaining", "Finally a real review", "No fluff, all facts"],
+        "reactions": {"LIKE": 300, "LOVE": 20, "WOW": 10, "SAD": 2},
         "manualLabel": "LIKE"
       }
     ]
@@ -122,8 +98,8 @@
         "reach": 8000,
         "impressions": 24000,
         "shares": 60,
-        "comments": ["Wow looks tasty!", "When is the opening?"],
-        "reactions": { "LIKE": 900, "LOVE": 150 },
+        "comments": ["Wow looks tasty!", "When is the opening?", "Can't wait to visit!", "Looks like heaven", "Perfect brunch spot", "Need to try this", "Love the aesthetic", "That food looks incredible", "Saving for opening day", "Already booking a table", "Food goals", "This place looks amazing"],
+        "reactions": {"LIKE": 900, "LOVE": 150},
         "manualLabel": "LOVE"
       }
     ]
@@ -149,8 +125,8 @@
         "reach": 30000,
         "impressions": 90000,
         "shares": 500,
-        "comments": ["Amazing itinerary!", "Can't wait to go"],
-        "reactions": { "LIKE": 4000, "LOVE": 600 },
+        "comments": ["Amazing itinerary!", "Can't wait to go", "Bucket list item", "This looks incredible", "Need to add this to plans", "Best travel content ever", "Dream destination unlocked", "Inspiring travel vlog", "Already booking flights", "This is the motivation I needed", "Absolutely stunning visuals", "Can't stop watching", "Share more destinations!"],
+        "reactions": {"LIKE": 4000, "LOVE": 600},
         "manualLabel": "LOVE"
       }
     ]
@@ -168,13 +144,8 @@
         "reach": 32000,
         "impressions": 95000,
         "shares": 220,
-        "comments": ["Cool features!", "Looks good to me!", "Where to buy?", "Love the design!"],
-        "reactions": {
-          "LIKE": 1500,
-          "LOVE": 200,
-          "WOW": 150,
-          "ANGRY": 15
-        },
+        "comments": ["Cool features!", "Looks good to me!", "Where to buy?", "Love the design!", "This is exactly what I need", "Finally a quality product", "Modern and sleek", "Great innovation", "Worth the investment", "Already added to cart", "Best tech purchase", "Highly impressed", "Recommend to everyone", "Game-changing features", "Can't live without this now"],
+        "reactions": {"LIKE": 1500, "LOVE": 200, "WOW": 150, "ANGRY": 15},
         "manualLabel": "LOVE"
       }
     ]
@@ -192,13 +163,8 @@
         "reach": 28000,
         "impressions": 85000,
         "shares": 180,
-        "comments": ["🤤 Mouth-watering!", "😋 Need this now!", "🎨 Beautiful presentation!", "✅ Definitely interested!"],
-        "reactions": {
-          "LIKE": 1800,
-          "LOVE": 450,
-          "WOW": 80,
-          "HAHA": 30
-        },
+        "comments": ["🤤 Mouth-watering!", "😋 Need this now!", "🎨 Beautiful presentation!", "✅ Definitely interested!", "This is food porn", "Making this tonight", "Saved this recipe", "Can't stop drooling", "Best food content", "Professional quality", "So appetizing", "Instant favorite", "Showing my partner this", "Restaurant quality at home", "Adding ingredients to list"],
+        "reactions": {"LIKE": 1800, "LOVE": 450, "WOW": 80, "HAHA": 30},
         "manualLabel": "LOVE"
       }
     ]
@@ -224,12 +190,8 @@
         "reach": 120,
         "impressions": 300,
         "shares": 1,
-        "comments": ["❓ Spam?", "👎 Not interested", "❓ Σπαμ;", "😞 Δεν με ενδιαφέρει", "😤 Χάλια, δεν το προτείνω"],
-        "reactions": {
-          "LIKE": 5,
-          "SAD": 2,
-          "ANGRY": 3
-        },
+        "comments": ["❓ Spam?", "👎 Not interested", "❓ Σπαμ;", "😞 Δεν με ενδιαφέρει", "😤 Χάλια, δεν το προτείνω", "Another promo account", "Hard pass", "Not my cup of tea", "Meh, seen better", "Boring content", "Unoriginal", "Not convincing", "Skip", "Pass on this one"],
+        "reactions": {"LIKE": 5, "SAD": 2, "ANGRY": 3},
         "manualLabel": "DISLIKE"
       }
     ]
@@ -247,11 +209,8 @@
         "reach": 50,
         "impressions": 150,
         "shares": 0,
-        "comments": ["😞 Δεν με ενδιαφέρει", "❌ Δεν αξίζει", "🙅 Όχι ευχαριστώ"],
-        "reactions": {
-          "LIKE": 2,
-          "HAHA": 1
-        },
+        "comments": ["😞 Δεν με ενδιαφέρει", "❌ Δεν αξίζει", "🙅 Όχι ευχαριστώ", "Not for me", "Can't relate", "Boring", "Meh", "Nothing special", "Already have better options"],
+        "reactions": {"LIKE": 2, "HAHA": 1},
         "manualLabel": "NEUTRAL"
       }
     ]
@@ -269,13 +228,8 @@
         "reach": 300,
         "impressions": 800,
         "shares": 5,
-        "comments": ["🤔 Obvious promotion", "⚠️ Untrustworthy", "🚩 Fake engagement", "🇬🇷 Ψεύτικο", "😤 Απάτη", "👎 Χάλια προσφορές"],
-        "reactions": {
-          "LIKE": 8,
-          "ANGRY": 15,
-          "SAD": 5,
-          "WOW": 2
-        },
+        "comments": ["🤔 Obvious promotion", "⚠️ Untrustworthy", "🚩 Fake engagement", "🇬🇷 Ψεύτικο", "😤 Απάτη", "👎 Χάλια προσφορές", "Paid promotion", "Not authentic", "Too good to be true", "Suspicious engagement", "Feels forced", "Not genuine", "Questionable quality"],
+        "reactions": {"LIKE": 8, "ANGRY": 15, "SAD": 5, "WOW": 2},
         "manualLabel": "DISLIKE"
       },
       {
@@ -284,12 +238,8 @@
         "reach": 90,
         "impressions": 200,
         "shares": 0,
-        "comments": ["😡 This is disgusting, worst service I've encountered.", "👎 Terrible, do not trust this company.", "❌ Απάτη, δεν ανταποκρίνεται στις προσδοκίες.", "💢 Σοβαρό πρόβλημα, κακή εμπειρία, απαράδεκτο."],
-        "reactions": {
-          "ANGRY": 380,
-          "SAD": 90,
-          "LIKE": 2
-        },
+        "comments": ["😡 This is disgusting, worst service I've encountered.", "👎 Terrible, do not trust this company.", "❌ Απάτη, δεν ανταποκρίνεται στις προσδοκίες.", "💢 Σοβαρό πρόβλημα, κακή εμπειρία, απαράδεκτο.", "Absolutely horrible", "Ruined my day", "Never returning", "Fraud", "Complete disaster", "Unbelievable incompetence", "Stay away from this", "Worst experience ever"],
+        "reactions": {"ANGRY": 380, "SAD": 90, "LIKE": 2},
         "manualLabel": "TERRIBLE"
       }
     ]
@@ -308,9 +258,7 @@
         "impressions": 120,
         "shares": 0,
         "comments": [],
-        "reactions": {
-          "LIKE": 1
-        },
+        "reactions": {"LIKE": 1},
         "manualLabel": "NEUTRAL"
       }
     ]
@@ -328,14 +276,8 @@
         "reach": 400,
         "impressions": 1200,
         "shares": 8,
-        "comments": ["❌ Bad quality", "💔 Not worth it", "😠 Horrible experience", "💸 Waste of money", "😞 Disappointed", "🇬🇷 Χάλια ποιότητα", "😤 Απαίσιο", "👎 Δεν το προτείνω"],
-        "reactions": {
-          "ANGRY": 45,
-          "SAD": 20,
-          "LIKE": 15,
-          "HAHA": 5,
-          "WOW": 3
-        },
+        "comments": ["❌ Bad quality", "💔 Not worth it", "😠 Horrible experience", "💸 Waste of money", "😞 Disappointed", "🇬🇷 Χάλια ποιότητα", "😤 Απαίσιο", "👎 Δεν το προτείνω", "Regretful purchase", "Defective product", "False claims", "Overpriced", "Not recommended", "Save your money", "Better alternatives exist"],
+        "reactions": {"ANGRY": 45, "SAD": 20, "LIKE": 15, "HAHA": 5, "WOW": 3},
         "manualLabel": "DISLIKE"
       }
     ]
@@ -354,10 +296,7 @@
         "impressions": 80,
         "shares": 0,
         "comments": [],
-        "reactions": {
-          "LIKE": 1,
-          "SAD": 1
-        },
+        "reactions": {"LIKE": 1, "SAD": 1},
         "manualLabel": "NEUTRAL"
       }
     ]
@@ -375,12 +314,8 @@
         "reach": 5000,
         "impressions": 15000,
         "shares": 25,
-        "comments": ["📊 Good info", "👍 Helpful post"],
-        "reactions": {
-          "LIKE": 150,
-          "LOVE": 30,
-          "WOW": 10
-        },
+        "comments": ["📊 Good info", "👍 Helpful post", "Thanks for this", "Very useful", "Appreciate this content", "Good resource", "Will reference this"],
+        "reactions": {"LIKE": 150, "LOVE": 30, "WOW": 10},
         "manualLabel": "LIKE"
       }
     ]
@@ -398,13 +333,8 @@
         "reach": 2000,
         "impressions": 6000,
         "shares": 30,
-        "comments": ["🤔 Interesting", "😕 Not convinced", "💬 Tell us more", "🙂 Okay I guess"],
-        "reactions": {
-          "LIKE": 120,
-          "LOVE": 20,
-          "SAD": 15,
-          "ANGRY": 8
-        },
+        "comments": ["🤔 Interesting", "😕 Not convinced", "💬 Tell us more", "🙂 Okay I guess", "Could be better", "Neutral opinion", "It's okay", "Nothing groundbreaking", "Average", "Decent attempt"],
+        "reactions": {"LIKE": 120, "LOVE": 20, "SAD": 15, "ANGRY": 8},
         "manualLabel": "NEUTRAL"
       }
     ]
@@ -422,8 +352,8 @@
         "reach": 9000,
         "impressions": 27000,
         "shares": 45,
-        "comments": ["Beautiful!", "Where can I buy?", "Love the colours"],
-        "reactions": { "LIKE": 600, "LOVE": 120, "WOW": 20 },
+        "comments": ["Beautiful!", "Where can I buy?", "Love the colours", "Stunning work", "So creative", "Want this", "Amazing design", "Perfect aesthetic", "Art goals"],
+        "reactions": {"LIKE": 600, "LOVE": 120, "WOW": 20},
         "manualLabel": "LOVE"
       }
     ]
@@ -435,6 +365,723 @@
     "paymentAmount": 1200.0,
     "deliverables": "3 video posts showcasing AdventureCo itineraries",
     "posts": []
+  },
+  {
+    "campaignTitle": "Viral Backlash",
+    "influencerUsername": "inf3",
+    "status": "ACCEPTED",
+    "paymentAmount": 600.0,
+    "deliverables": "1 viral video with negative sentiment",
+    "posts": [
+      {
+        "platform": "TIKTOK",
+        "content": "This product is TERRIBLE.",
+        "reach": 900000,
+        "impressions": 2700000,
+        "shares": 50000,
+        "comments": ["Terrible!", "Scam!", "Don't buy!", "Ruined my life", "Worst decision", "Avoid at all costs", "Total fraud", "Never again"],
+        "reactions": {"ANGRY": 40000, "SAD": 8000, "LIKE": 1000},
+        "manualLabel": "TERRIBLE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "NoReacts",
+    "influencerUsername": "inf12",
+    "status": "ACCEPTED",
+    "paymentAmount": 80.0,
+    "deliverables": "Text post with missing reactions",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Short update — no reactions recorded",
+        "reach": 50,
+        "impressions": 150,
+        "shares": 0,
+        "comments": ["Hello"],
+        "manualLabel": "NEUTRAL"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Shadow Reach Test",
+    "influencerUsername": "inf9",
+    "status": "ACCEPTED",
+    "paymentAmount": 90.0,
+    "deliverables": "Post with low reach but many followers",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Low reach test post",
+        "reach": 20,
+        "impressions": 60,
+        "shares": 0,
+        "comments": ["I barely see this"],
+        "reactions": {"LIKE": 2},
+        "manualLabel": "NEUTRAL"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Fashion Week Spotlight",
+    "influencerUsername": "inf15",
+    "status": "ACCEPTED",
+    "paymentAmount": 450.0,
+    "deliverables": "3 outfit posts + behind-the-scenes TikTok series",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Spring collection essentials ✨ Sustainable fashion at its best! 🌿",
+        "reach": 28000,
+        "impressions": 84000,
+        "shares": 720,
+        "comments": ["Love these pieces!", "Where are they from?", "Sustainable fashion ftw!", "Adding to my cart!", "The styling is immaculate"],
+        "reactions": {"LIKE": 3400, "LOVE": 680, "WOW": 120},
+        "manualLabel": "LOVE"
+      },
+      {
+        "platform": "TIKTOK",
+        "content": "Get ready with me for fashion week 💄✨ Outfit transformation in 60 seconds!",
+        "reach": 45000,
+        "impressions": 135000,
+        "shares": 2600,
+        "comments": ["Your makeup is flawless!", "This outfit is FIRE 🔥", "Tutorial please!", "Following for fashion inspo"],
+        "reactions": {"LIKE": 8900, "LOVE": 1800, "WOW": 340},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Gaming Gear Review",
+    "influencerUsername": "inf16",
+    "status": "ACCEPTED",
+    "paymentAmount": 700.0,
+    "deliverables": "2 detailed gaming reviews + Twitch streaming highlights",
+    "posts": [
+      {
+        "platform": "YOUTUBE",
+        "content": "Pro-level gaming setup review - everything you need for competitive gaming 🎮",
+        "reach": 52000,
+        "impressions": 156000,
+        "shares": 1800,
+        "comments": ["Best setup video ever!", "Can you recommend affordable alternatives?", "Your gameplay is insane", "Buying all of this now"],
+        "reactions": {"LIKE": 12400, "LOVE": 1600, "WOW": 420},
+        "manualLabel": "LOVE"
+      },
+      {
+        "platform": "INSTAGRAM",
+        "content": "24-hour streaming marathon - testing new gear while playing FPS tournaments 🏆",
+        "reach": 35000,
+        "impressions": 105000,
+        "shares": 800,
+        "comments": ["This is insane!", "You're too good!", "Gaming legend", "Following!"],
+        "reactions": {"LIKE": 7800, "LOVE": 1200, "WOW": 280},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Wellness Challenge",
+    "influencerUsername": "inf17",
+    "status": "ACCEPTED",
+    "paymentAmount": 500.0,
+    "deliverables": "30-day yoga challenge posts + nutrition tips",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Day 1 of the 30-day yoga challenge 🧘‍♀️ Join me for better health & mindfulness! 💪",
+        "reach": 18000,
+        "impressions": 54000,
+        "shares": 480,
+        "comments": ["Signing up!", "Need this energy", "Show me the routine", "Yoga queen!", "This inspires me"],
+        "reactions": {"LIKE": 2800, "LOVE": 540, "WOW": 90},
+        "manualLabel": "LOVE"
+      },
+      {
+        "platform": "TIKTOK",
+        "content": "5-minute morning yoga routine that will change your day ✨ No equipment needed!",
+        "reach": 32000,
+        "impressions": 96000,
+        "shares": 1400,
+        "comments": ["Doing this every morning now!", "Your flexibility is insane", "Felt amazing after this!"],
+        "reactions": {"LIKE": 6200, "LOVE": 1400, "WOW": 240},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Travel Documentary Series",
+    "influencerUsername": "inf18",
+    "status": "ACCEPTED",
+    "paymentAmount": 900.0,
+    "deliverables": "4 travel vlogs exploring hidden destinations",
+    "posts": [
+      {
+        "platform": "YOUTUBE",
+        "content": "Secret island paradise nobody knows about! 🏝️ Full vlog + travel tips inside!",
+        "reach": 68000,
+        "impressions": 204000,
+        "shares": 3200,
+        "comments": ["Adding to bucket list!", "How do you find these places?", "Absolutely stunning!", "Best travel vlog ever"],
+        "reactions": {"LIKE": 15600, "LOVE": 2400, "WOW": 680},
+        "manualLabel": "LOVE"
+      },
+      {
+        "platform": "INSTAGRAM",
+        "content": "Travel guide: Best 3 days in Greece you'll never forget 🇬🇷✨",
+        "reach": 24000,
+        "impressions": 72000,
+        "shares": 520,
+        "comments": ["Saving this for my trip!", "Alex is the best guide!", "Breathtaking views", "Must visit!"],
+        "reactions": {"LIKE": 3600, "LOVE": 720, "WOW": 140},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Culinary Masterclass",
+    "influencerUsername": "inf19",
+    "status": "ACCEPTED",
+    "paymentAmount": 600.0,
+    "deliverables": "3 recipe videos + cooking tips series",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Mediterranean seafood feast 🦐 Restaurant-quality recipes you can make at home!",
+        "reach": 31000,
+        "impressions": 93000,
+        "shares": 840,
+        "comments": ["This looks so delicious!", "Recipe please!", "Making this tonight", "Chef's kiss!", "You make it look so easy"],
+        "reactions": {"LIKE": 4800, "LOVE": 960, "WOW": 180},
+        "manualLabel": "LOVE"
+      },
+      {
+        "platform": "TIKTOK",
+        "content": "90-second pasta masterclass 🍝 Learn the secrets from a real chef!",
+        "reach": 48000,
+        "impressions": 144000,
+        "shares": 2200,
+        "comments": ["This technique is mind-blowing!", "My pasta changed after this", "Saved for later!"],
+        "reactions": {"LIKE": 9600, "LOVE": 2100, "WOW": 420},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Fitness Transformation",
+    "influencerUsername": "inf20",
+    "status": "ACCEPTED",
+    "paymentAmount": 550.0,
+    "deliverables": "4-week transformation guide + workout plans",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "4-week transformation results 💪 Full workout plan in bio! 🏋️‍♂️",
+        "reach": 26000,
+        "impressions": 78000,
+        "shares": 620,
+        "comments": ["Motivation unlocked!", "Starting today!", "Abs goals", "Need this energy"],
+        "reactions": {"LIKE": 4200, "LOVE": 840, "WOW": 140},
+        "manualLabel": "LOVE"
+      },
+      {
+        "platform": "YOUTUBE",
+        "content": "Complete home gym workout routine - No equipment needed! 💯",
+        "reach": 19000,
+        "impressions": 57000,
+        "shares": 380,
+        "comments": ["Finally a workout I can do at home!", "This is exactly what I needed", "Results guaranteed!"],
+        "reactions": {"LIKE": 2800, "LOVE": 520, "WOW": 100},
+        "manualLabel": "LIKE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Design Trends & Inspiration",
+    "influencerUsername": "inf21",
+    "status": "ACCEPTED",
+    "paymentAmount": 480.0,
+    "deliverables": "3 design inspiration posts + tutorial series",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "2024 Design Trends: Bold colors, minimalism, and creativity 🎨✨",
+        "reach": 22000,
+        "impressions": 66000,
+        "shares": 560,
+        "comments": ["Love these trends!", "You're so creative", "Design inspo 💯", "Following for more!"],
+        "reactions": {"LIKE": 3200, "LOVE": 620, "WOW": 110},
+        "manualLabel": "LOVE"
+      },
+      {
+        "platform": "TIKTOK",
+        "content": "How to create viral social media designs in 5 minutes ✨ UI/UX shortcuts included!",
+        "reach": 38000,
+        "impressions": 114000,
+        "shares": 1600,
+        "comments": ["This shortcut saves hours!", "Game changer", "Instant designer now!"],
+        "reactions": {"LIKE": 7200, "LOVE": 1400, "WOW": 280},
+        "manualLabel": "LOVE"
+      },
+      {
+        "platform": "TIKTOK",
+        "content": "Love these pieces! ✨ Sustainable fashion at its best! 🌿",
+        "reach": 35000,
+        "impressions": 105000,
+        "shares": 1200,
+        "comments": ["Amazing!", "Beautiful colors", "Need this outfit", "Where do you get your style?", "Love the vibe", "Perfect aesthetic", "Saving this look", "So inspiring", "Fashion goals", "You're so stylish", "This is goals", "Where can I buy?", "Love your taste"],
+        "reactions": {"LIKE": 4200, "LOVE": 890, "WOW": 160},
+        "manualLabel": "LOVE"
+      },
+      {
+        "platform": "INSTAGRAM",
+        "content": "Thrifting haul 👜 Found these gems for amazing prices!",
+        "reach": 22000,
+        "impressions": 66000,
+        "shares": 540,
+        "comments": ["The best!", "Where did you find these?", "Budget friendly and stylish", "Love thrifting", "Amazing finds", "How do you find such good deals?", "This is sustainable", "Your taste is impeccable", "Jealous!", "This is the content we need", "So cool"],
+        "reactions": {"LIKE": 3100, "LOVE": 620, "WOW": 90},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Travel Vlog Extended",
+    "influencerUsername": "inf18",
+    "status": "ACCEPTED",
+    "paymentAmount": 650.0,
+    "deliverables": "Additional travel content and local guides",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Local market tour 🏪 Best souvenirs and authentic experiences!",
+        "reach": 18000,
+        "impressions": 54000,
+        "shares": 360,
+        "comments": ["Love local markets", "Need to visit", "Cultural experience", "So authentic", "Beautiful photography", "Added to my list", "Your travel content is amazing", "These are real experiences", "Not touristy", "Perfect guide", "Bookmarking this"],
+        "reactions": {"LIKE": 2400, "LOVE": 480, "WOW": 80},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Cooking Challenge",
+    "influencerUsername": "inf19",
+    "status": "ACCEPTED",
+    "paymentAmount": 520.0,
+    "deliverables": "Challenge videos and quick recipes",
+    "posts": [
+      {
+        "platform": "YOUTUBE",
+        "content": "Cook a 5-star meal in 30 minutes! Budget-friendly challenge 💰",
+        "reach": 42000,
+        "impressions": 126000,
+        "shares": 1600,
+        "comments": ["Impossible but you did it!", "My hero", "This is genius", "Trying this tonight", "Amazing skills", "Professional level", "The tips are gold", "Can't believe how good it looks", "Kitchen goals", "Following for more", "Already made this", "So satisfying to watch", "Your talent is unreal", "Best cooking channel"],
+        "reactions": {"LIKE": 8100, "LOVE": 1800, "WOW": 420},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Workout Challenge",
+    "influencerUsername": "inf20",
+    "status": "ACCEPTED",
+    "paymentAmount": 480.0,
+    "deliverables": "Extended workout series and progress tracking",
+    "posts": [
+      {
+        "platform": "TIKTOK",
+        "content": "7-day abs challenge 💪 No equipment needed! Who's in?",
+        "reach": 58000,
+        "impressions": 174000,
+        "shares": 3200,
+        "comments": ["Doing this!", "Day 1 today!", "Already feeling the burn", "Love the challenge format", "This actually works", "My abs hurt lol", "Best workout content", "Simple but effective", "No excuses now", "Recommending to everyone", "Results incoming", "This is motivating", "Keep the challenges coming", "You're a legend"],
+        "reactions": {"LIKE": 11200, "LOVE": 2400, "WOW": 680},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Design Workshop",
+    "influencerUsername": "inf21",
+    "status": "ACCEPTED",
+    "paymentAmount": 550.0,
+    "deliverables": "Design tutorials and workshop recordings",
+    "posts": [
+      {
+        "platform": "YOUTUBE",
+        "content": "Complete UI Design Course - From Zero to Pro 🎨",
+        "reach": 35000,
+        "impressions": 105000,
+        "shares": 1400,
+        "comments": ["Finally a comprehensive course!", "This is gold", "Learned so much already", "Why is this free?", "Professional quality", "Best design teacher", "Already using these techniques", "Game-changing content", "Worth way more than free", "Bookmarked for future ref", "Sharing with my team", "Life-changing knowledge", "Thank you for this"],
+         "reactions": {"LIKE": 5200, "LOVE": 980, "WOW": 240},
+         "manualLabel": "LOVE"
+       }
+     ]
+   },
+   {
+     "campaignTitle": "Fashion Week Extended",
+     "influencerUsername": "inf15",
+     "status": "ACCEPTED",
+     "paymentAmount": 320.0,
+     "deliverables": "Extended fashion week coverage",
+     "posts": [
+       {
+         "platform": "INSTAGRAM",
+         "content": "Get ready with me for fashion week 💄✨ Outfit transformation in 60 seconds!",
+        "reach": 45000,
+        "impressions": 135000,
+        "shares": 2600,
+        "comments": ["Your makeup is flawless!", "This outfit is FIRE 🔥", "Tutorial please!", "Following for fashion inspo", "So talented!", "How do you do this?", "Saving this video", "You inspire me", "Where are these clothes from?", "The transformation is insane", "Love this energy", "Need this in my life", "Absolute goals", "Showing my sister this", "Can you do more tutorials?", "Your creativity is unmatched"],
+        "reactions": {"LIKE": 8900, "LOVE": 1800, "WOW": 340},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Gaming Stream Marathon",
+    "influencerUsername": "inf16",
+    "status": "ACCEPTED",
+    "paymentAmount": 400.0,
+    "deliverables": "Extended streaming content and tutorials",
+    "posts": [
+      {
+        "platform": "YOUTUBE",
+        "content": "Ranked to Pro in 24 hours challenge! 🎮 Can I do it?",
+        "reach": 78000,
+        "impressions": 234000,
+        "shares": 4200,
+        "comments": ["This is insane!", "You're literally a pro", "How are you so good?", "Never stopping watching", "This is entertainment gold", "Best gaming content", "I learned so much", "Watching again", "Share more challenges please", "You're a legend", "Gaming goals", "Impossible made possible", "Already shared with friends", "This should be on TV", "More content like this!", "Your skills are unreal", "How many hours did you practice?", "Absolutely incredible"],
+        "reactions": {"LIKE": 15600, "LOVE": 2800, "WOW": 920},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Wellness Retreat",
+    "influencerUsername": "inf17",
+    "status": "ACCEPTED",
+    "paymentAmount": 520.0,
+    "deliverables": "Full wellness program documentation",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "7-day yoga & wellness retreat vlog 🧘‍♀️ Transformation inside!",
+        "reach": 32000,
+        "impressions": 96000,
+        "shares": 1440,
+        "comments": ["This looks heavenly!", "Saving for my next vacation", "Life changing content", "Need this so badly", "You look so peaceful", "Where is this location?", "Adding to bucket list", "Best wellness content", "This is self-care goals", "Looks so rejuvenating", "I need this in my life", "Amazing retreat", "The views are stunning", "Can I join next time?", "Your glow is real", "This inspired me"],
+        "reactions": {"LIKE": 4800, "LOVE": 1200, "WOW": 280},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Culinary World Tour",
+    "influencerUsername": "inf19",
+    "status": "ACCEPTED",
+    "paymentAmount": 700.0,
+    "deliverables": "International cuisine demonstrations",
+    "posts": [
+      {
+        "platform": "TIKTOK",
+        "content": "Making authentic Italian pasta from scratch 🍝 Nonnas would approve!",
+        "reach": 65000,
+        "impressions": 195000,
+        "shares": 3900,
+        "comments": ["This is art!", "My Italian grandmother is crying", "Perfect technique", "How did you learn this?", "Already making it", "Best food content on TikTok", "Saving for later", "Restaurant quality", "Can you teach me?", "This is so satisfying", "Nonna would be proud", "Beautiful execution", "Every step was perfect", "Bookmarking this", "Need this recipe card", "Your passion is contagious", "Absolute masterclass"],
+        "reactions": {"LIKE": 14200, "LOVE": 3600, "WOW": 780},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Beach Workout Series",
+    "influencerUsername": "inf20",
+    "status": "ACCEPTED",
+    "paymentAmount": 420.0,
+    "deliverables": "Beach fitness workouts and training tips",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Full body beach workout 💪 No gym, no excuses! Equipment: Just sand and water!",
+        "reach": 28000,
+        "impressions": 84000,
+        "shares": 1120,
+        "comments": ["Saving this for vacation", "This is genius!", "No more excuses", "Love outdoor fitness", "Already trying this", "Perfect workout length", "Beach body incoming", "This is fun fitness", "Can I do this anytime?", "Love the simplicity", "So effective", "Can't wait to try", "This is my new routine", "Thank you for this", "More beach workouts please", "You make it look easy"],
+        "reactions": {"LIKE": 5200, "LOVE": 1100, "WOW": 240},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Digital Art Showcase",
+    "influencerUsername": "inf21",
+    "status": "ACCEPTED",
+    "paymentAmount": 380.0,
+    "deliverables": "Digital art process videos and speedpaint",
+    "posts": [
+      {
+        "platform": "TIKTOK",
+        "content": "Creating digital art from zero to hero ✨ Time-lapse speedpaint!",
+        "reach": 52000,
+        "impressions": 156000,
+        "shares": 2340,
+        "comments": ["This is mesmerizing!", "How long did this take?", "Your talent is unreal", "Following immediately", "Art goals", "The process is fascinating", "So satisfying to watch", "Beautiful final product", "What software do you use?", "Can you teach us?", "This is professional level", "Already saved 10 times", "The colors are perfect", "So creative", "More content please", "You're so talented", "This made my day"],
+        "reactions": {"LIKE": 9200, "LOVE": 1800, "WOW": 480},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Negative Reviews Compilation",
+    "influencerUsername": "inf7",
+    "status": "ACCEPTED",
+    "paymentAmount": 200.0,
+    "deliverables": "Honest negative feedback posts",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Honest review: Why I don't recommend this brand anymore 😤",
+        "reach": 8000,
+        "impressions": 24000,
+        "shares": 120,
+        "comments": ["Finally someone said it", "I had the same experience", "Thanks for being honest", "Quality has declined", "Not worth the price anymore", "Glad I'm not the only one", "Their customer service is terrible", "I got a defective one too", "Save your money", "Better alternatives exist", "They don't care about quality", "Disappointed fan here", "Used to love this brand", "Not what it used to be", "Overpriced and overrated"],
+        "reactions": {"LIKE": 320, "ANGRY": 280, "SAD": 120},
+        "manualLabel": "DISLIKE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Fitness Transformation Part 2",
+    "influencerUsername": "inf20",
+    "status": "ACCEPTED",
+    "paymentAmount": 380.0,
+    "deliverables": "Advanced workout progressions",
+    "posts": [
+      {
+        "platform": "YOUTUBE",
+        "content": "Advanced home gym workouts - Build muscle without weights 💪",
+        "reach": 24000,
+        "impressions": 72000,
+        "shares": 960,
+        "comments": ["This actually works!", "My arms are sore lol", "Best no-equipment channel", "Finally quality content", "These are intense", "Love the variations", "Clear instructions", "Results are real", "Been doing this for 2 weeks", "Already seeing gains", "The progression is perfect", "Can't believe I don't need weights", "This deserves more views", "Sharing with everyone"],
+        "reactions": {"LIKE": 4100, "LOVE": 720, "WOW": 180},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Healthy Recipes Series",
+    "influencerUsername": "inf19",
+    "status": "ACCEPTED",
+    "paymentAmount": 480.0,
+    "deliverables": "Healthy meal prep and nutrition tips",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Meal prep Sunday: 5 high-protein meals under 500 calories each! 🥗",
+        "reach": 19000,
+        "impressions": 57000,
+        "shares": 380,
+        "comments": ["This is perfect!", "Saving for next week", "So healthy and delicious", "Finally meal prep I'll actually eat", "Great nutrition info", "Easy to follow", "Already made batch one", "Love the variety", "Can I substitute ingredients?", "This saves time and money", "The photos look amazing", "Already shared with friends", "This is my new routine"],
+        "reactions": {"LIKE": 3200, "LOVE": 640, "WOW": 120},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Travel Photography Workshop",
+    "influencerUsername": "inf18",
+    "status": "ACCEPTED",
+    "paymentAmount": 600.0,
+    "deliverables": "Photography tips and location guides",
+    "posts": [
+      {
+        "platform": "YOUTUBE",
+        "content": "Travel photography 101: Take better pictures on vacation! 📸",
+        "reach": 31000,
+        "impressions": 93000,
+        "shares": 1240,
+        "comments": ["Finally learned this!", "My photos are better already", "Love the tips", "So easy to understand", "Professional quality guidance", "Saving all your videos", "Can't wait to try these", "Already booking a trip", "The before/afters are insane", "Never realized these tricks", "Sharing with my travel friends", "This course quality", "Best photography channel", "More tips please", "You're a fantastic teacher"],
+        "reactions": {"LIKE": 4200, "LOVE": 840, "WOW": 280},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Design Inspiration Daily",
+    "influencerUsername": "inf21",
+    "status": "ACCEPTED",
+    "paymentAmount": 320.0,
+    "deliverables": "Daily design tips and inspiration",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Design principle of the day: Color Theory 🎨 How to use it effectively!",
+        "reach": 16000,
+        "impressions": 48000,
+        "shares": 240,
+        "comments": ["Learning so much!", "Finally understand color theory", "This is brilliant", "Can't wait for next post", "Sharing in my design class", "Love these breakdowns", "Implementing this today", "Game changer", "More please!", "So well explained", "Beautiful examples", "This is what I needed", "Following for daily inspo"],
+        "reactions": {"LIKE": 2800, "LOVE": 560, "WOW": 120},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Healthy Living Awareness",
+    "influencerUsername": "inf22",
+    "status": "IN_PROGRESS",
+    "paymentAmount": 900.0,
+    "deliverables": "Educational health posts, short videos and Q&A content",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "5 myths about hydration and what the science actually says 💧",
+        "reach": 36000,
+        "impressions": 108000,
+        "shares": 620,
+        "comments": ["This is so useful!", "Myths busted", "I needed this reminder", "Great science-backed content", "Very clear explanation", "Love the evidence", "Can you cover sleep too?", "This should be mandatory reading", "Finally a doctor influencer I trust", "Saved!", "Amazing post", "So important", "Helpful and balanced", "Keep educating us"],
+        "reactions": {"LIKE": 4200, "LOVE": 860, "WOW": 150},
+        "manualLabel": "LOVE"
+      },
+      {
+        "platform": "YOUTUBE",
+        "content": "Ask a doctor: Q&A on stress, sleep and daily habits (live replay)",
+        "reach": 18000,
+        "impressions": 54000,
+        "shares": 340,
+        "comments": ["Very informative", "Can you talk about mental health too?", "Thanks for the practical advice", "Clear and compassionate", "I learned a lot", "This felt trustworthy", "More videos like this please", "What about supplements?"],
+        "reactions": {"LIKE": 2400, "LOVE": 500, "WOW": 80},
+        "manualLabel": "LIKE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Study Hacks Launch",
+    "influencerUsername": "inf23",
+    "status": "IN_PROGRESS",
+    "paymentAmount": 250.0,
+    "deliverables": "Short-form study hack content for teens and students",
+    "posts": [
+      {
+        "platform": "TIKTOK",
+        "content": "Study hack: how to revise 3 chapters in 20 minutes ⏱️",
+        "reach": 24000,
+        "impressions": 72000,
+        "shares": 980,
+        "comments": ["This is actually helpful", "Trying this tonight", "Where was this in school?", "Great hack", "Please make a part 2", "So simple and useful", "I need more study tips", "This is genius", "Already shared with classmates", "Loved the pacing"],
+        "reactions": {"LIKE": 3100, "LOVE": 620, "WOW": 110},
+        "manualLabel": "LIKE"
+      },
+      {
+        "platform": "INSTAGRAM",
+        "content": "Exam week checklist ✅ good notes, water bottle, and 8 hours of sleep",
+        "reach": 9000,
+        "impressions": 27000,
+        "shares": 120,
+        "comments": [],
+        "manualLabel": "NEUTRAL"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Esports Finals Weekend",
+    "influencerUsername": "inf24",
+    "status": "COMPLETED",
+    "paymentAmount": 7000.0,
+    "deliverables": "Live streams, highlight clips and tournament recap",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Grand finals live - winner takes all 🏆 🔥",
+        "reach": 180000,
+        "impressions": 540000,
+        "shares": 8400,
+        "comments": ["This stream is insane", "Let's goooo", "Best finals ever", "Peak entertainment", "Chat is moving too fast", "Unreal plays", "That clutch was legendary", "Already clipped", "Tournament of the year", "Need a replay", "The production quality is amazing", "This deserves an award", "Following immediately", "Absolute madness", "What a comeback", "One of the best streams I've watched"],
+        "reactions": {"LIKE": 24000, "LOVE": 5200, "WOW": 1200},
+        "manualLabel": "LOVE"
+      },
+      {
+        "platform": "YOUTUBE",
+        "content": "Esports recap: top 10 moments from the finals weekend",
+        "reach": 76000,
+        "impressions": 228000,
+        "shares": 2100,
+        "comments": ["Great recap", "This was so hype", "Clutch after clutch", "Need more esports content", "Well edited", "Loved the analysis", "Amazing highlights", "This is a must-watch"],
+        "reactions": {"LIKE": 10400, "LOVE": 1900, "WOW": 540},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Worldwide Lifestyle Hub",
+    "influencerUsername": "inf25",
+    "status": "CANCELLED",
+    "paymentAmount": 1500.0,
+    "deliverables": "Lifestyle and travel promo content",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Slow morning routine in London ☕📚",
+        "reach": 45000,
+        "impressions": 135000,
+        "shares": 500,
+        "comments": ["Beautiful vibe", "Very relaxing", "Love this aesthetic", "Could watch this all day", "Where did you get the mug?", "Perfect morning energy", "So calming", "This is why I follow you", "Lovely composition", "Aesthetic goals"],
+        "reactions": {"LIKE": 5200, "LOVE": 960, "WOW": 140},
+        "manualLabel": "LIKE"
+      },
+      {
+        "platform": "FACEBOOK",
+        "content": "Travel story time: from a small town to a global audience.",
+        "reach": 12000,
+        "impressions": 36000,
+        "shares": 110,
+        "comments": ["Inspirational journey", "Well deserved success", "Thank you for sharing", "Great story", "Motivating", "Very honest post", "Nice to see behind the scenes"],
+        "reactions": {"LIKE": 1100, "LOVE": 220, "WOW": 40},
+        "manualLabel": "LIKE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Health & Business Webinar",
+    "influencerUsername": "inf22",
+    "status": "COMPLETED",
+    "paymentAmount": 1100.0,
+    "deliverables": "LinkedIn and YouTube webinar content about wellness at work",
+    "posts": [
+      {
+        "platform": "LINKEDIN",
+        "content": "How employers can support employee wellness without harming productivity.",
+        "reach": 9000,
+        "impressions": 27000,
+        "shares": 260,
+        "comments": ["Excellent professional insight", "Very relevant for HR", "Clear and well structured", "Great topic", "A lot to think about", "Useful for our team", "Balanced and practical"],
+        "reactions": {"LIKE": 1200, "LOVE": 200, "WOW": 30},
+        "manualLabel": "LIKE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Study Hacks Launch",
+    "influencerUsername": "inf23",
+    "status": "REJECTED",
+    "paymentAmount": 120.0,
+    "deliverables": "Rejected due to mismatch with brand tone",
+    "posts": [
+      {
+        "platform": "TIKTOK",
+        "content": "Study with me for 10 minutes — no pressure, just vibes",
+        "reach": 4000,
+        "impressions": 12000,
+        "shares": 30,
+        "comments": ["Too calm for exam prep?", "Actually nice", "This feels real", "Not what I expected", "Good vibes", "Could be better"],
+        "reactions": {"LIKE": 140, "LOVE": 18, "SAD": 4},
+        "manualLabel": "NEUTRAL"
+      }
+    ]
   }
 ]
 
