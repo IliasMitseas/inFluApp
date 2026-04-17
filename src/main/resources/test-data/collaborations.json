@@ -1216,6 +1216,63 @@
         "manualLabel": "LOVE"
       }
     ]
+  },
+  {
+    "campaignTitle": "Healthy Living Awareness",
+    "influencerUsername": "inf22",
+    "status": "ACCEPTED",
+    "paymentAmount": 980.0,
+    "deliverables": "2 educational posts with bilingual Q&A engagement",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Daily hydration myths: τι ισχύει και τι όχι για ενήλικες και εφήβους 💧",
+        "reach": 28000,
+        "impressions": 84000,
+        "shares": 710,
+        "comments": ["Πολύ χρήσιμο post, ευχαριστούμε!", "I needed this reminder today", "Τελικά πόσο νερό πρέπει να πίνουμε;", "Great explanation, very clear", "Μπράβο για την επιστημονική προσέγγιση", "Can you do one on sleep quality?", "Αυτό έπρεπε να το ξέρω νωρίτερα", "Super helpful and practical", "Επιτέλους σωστή ενημέρωση", "Love this kind of content", "Συμφωνώ απόλυτα", "Please share sources next time too", "Εξαιρετικό περιεχόμενο", "Very informative and easy to follow", "Το κράτησα στα αποθηκευμένα", "Thanks doctor!", "Χρήσιμο για όλη την οικογένεια", "More posts like this please"],
+        "reactions": {"LIKE": 5100, "LOVE": 1100, "WOW": 190},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Bakery Week",
+    "influencerUsername": "inf28",
+    "status": "ACCEPTED",
+    "paymentAmount": 360.0,
+    "deliverables": "Recipe showcase with community feedback in two languages",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Vegan bakery collab: αφράτα cinnamon buns με λίγα υλικά και μηδέν άγχος 🥐",
+        "reach": 21000,
+        "impressions": 63000,
+        "shares": 930,
+        "comments": ["Looks amazing!", "Τα δοκίμασα και βγήκαν τέλεια", "Can I replace sugar with honey?", "Φαίνεται πεντανόστιμο", "Saving this for weekend", "Πόση ώρα θέλει ψήσιμο;", "Best vegan recipe so far", "Μυρίζει όλο το σπίτι κανέλα", "Simple and delicious", "Συνταγή για αρχάριους, τέλειο", "My kids loved it", "Πολύ ωραία παρουσίαση", "Can you do gluten-free version?", "Ανέβασε και αλμυρή εκδοχή", "This is bakery quality", "Τέλειο για καφέ", "Already shared with friends", "Έγινε ανάρπαστο στο σπίτι μας", "So fluffy!", "Ευχαριστούμε για τη συνταγή"],
+        "reactions": {"LIKE": 6200, "LOVE": 1400, "WOW": 260},
+        "manualLabel": "LOVE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Explore Greece",
+    "influencerUsername": "inf29",
+    "status": "IN_PROGRESS",
+    "paymentAmount": 920.0,
+    "deliverables": "Long-form itinerary plus destination comparison post",
+    "posts": [
+      {
+        "platform": "YOUTUBE",
+        "content": "Crete family travel guide: budget routes, kid-friendly beaches και local food spots 🇬🇷",
+        "reach": 81000,
+        "impressions": 243000,
+        "shares": 3100,
+        "comments": ["This guide is gold", "Πολύ καλή ανάλυση κόστους", "Exactly what we needed for August", "Μας έλυσες τα χέρια για το ταξίδι", "Great pacing and visuals", "Can you do Rhodes next?", "Τρομερές προτάσεις για οικογένειες", "Very practical itinerary", "Ποιο ξενοδοχείο προτείνεις;", "Loved the beach comparison", "Finally a realistic travel budget", "Επιτέλους χωρίς υπερβολές", "This deserves more views", "Μπράβο για την ποιότητα", "I shared this with my partner", "Θέλουμε και νησιά Ιονίου", "Clear and honest review", "Top travel content", "Πάρα πολύ χρήσιμο βίντεο", "Thanks for all the tips"],
+        "reactions": {"LIKE": 14800, "LOVE": 2600, "WOW": 580},
+        "manualLabel": "LOVE"
+      }
+    ]
   }
 ]
 
