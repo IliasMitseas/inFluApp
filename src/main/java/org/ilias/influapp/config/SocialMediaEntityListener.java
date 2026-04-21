@@ -6,9 +6,7 @@ import org.ilias.influapp.entities.SocialMedia;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * JPA EntityListener to update influencer score whenever SocialMedia metrics change
- */
+
 public class SocialMediaEntityListener {
 
     private static final Logger log = LoggerFactory.getLogger(SocialMediaEntityListener.class);

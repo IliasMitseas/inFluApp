@@ -249,8 +249,4 @@ public class Influencer extends User {
         return PostSentiment.TERRIBLE;
     }
 
-    @Transient
-    public String getInfluencerScorePolicyVersion() {
-        return INFLUENCER_SCORE_POLICY_VERSION;
-    }
 }

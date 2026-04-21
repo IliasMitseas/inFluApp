@@ -228,8 +228,8 @@
         "reach": 300,
         "impressions": 800,
         "shares": 5,
-        "comments": ["🤔 Obvious promotion", "⚠️ Untrustworthy", "🚩 Fake engagement", "🇬🇷 Ψεύτικο", "😤 Απάτη", "👎 Χάλια προσφορές", "Paid promotion", "Not authentic", "Too good to be true", "Suspicious engagement", "Feels forced", "Not genuine", "Questionable quality"],
-        "reactions": {"LIKE": 8, "ANGRY": 15, "SAD": 5, "WOW": 2},
+        "comments": ["🤔 Obvious promotion", "⚠️ Untrustworthy", "🚩 Fake engagement", "🇬🇷 Ψεύτικο", "😤 Απάτη", "👎 Χάλια προσφορές", "Paid promotion", "Not authentic", "Too good to be true", "Suspicious engagement", "Feels forced", "Not genuine", "Questionable quality", "Looks heavily sponsored", "Could use more transparency", "I wouldn't trust this brand", "Hard to believe the claims"],
+        "reactions": {"LIKE": 20, "LOVE": 1, "ANGRY": 28, "SAD": 12, "WOW": 4},
         "manualLabel": "DISLIKE"
       },
       {
@@ -238,8 +238,8 @@
         "reach": 90,
         "impressions": 200,
         "shares": 0,
-        "comments": ["😡 This is disgusting, worst service I've encountered.", "👎 Terrible, do not trust this company.", "❌ Απάτη, δεν ανταποκρίνεται στις προσδοκίες.", "💢 Σοβαρό πρόβλημα, κακή εμπειρία, απαράδεκτο.", "Absolutely horrible", "Ruined my day", "Never returning", "Fraud", "Complete disaster", "Unbelievable incompetence", "Stay away from this", "Worst experience ever"],
-        "reactions": {"ANGRY": 380, "SAD": 90, "LIKE": 2},
+        "comments": ["😡 This is disgusting, worst service I've encountered.", "👎 Terrible, do not trust this company.", "❌ Απάτη, δεν ανταποκρίνεται στις προσδοκίες.", "💢 Σοβαρό πρόβλημα, κακή εμπειρία, απαράδεκτο.", "Absolutely horrible", "Ruined my day", "Never returning", "Fraud", "Complete disaster", "Unbelievable incompetence", "Stay away from this", "Worst experience ever", "This company clearly doesn't care", "Too many red flags", "Customer support is non-existent"],
+        "reactions": {"ANGRY": 420, "SAD": 120, "LIKE": 4, "WOW": 1},
         "manualLabel": "TERRIBLE"
       }
     ]
@@ -257,8 +257,8 @@
         "reach": 40,
         "impressions": 120,
         "shares": 0,
-        "comments": [],
-        "reactions": {"LIKE": 1},
+        "comments": ["This is a good starting point.", "Useful intro for the product.", "Needs more details but looks clean.", "Short and clear.", "Could benefit from a demo.", "Interesting for first impressions.", "The message is understandable.", "Nice to see the brand explained.", "Would like a longer version."],
+        "reactions": {"LIKE": 12, "LOVE": 2, "WOW": 1},
         "manualLabel": "NEUTRAL"
       }
     ]
@@ -943,8 +943,8 @@
         "reach": 36000,
         "impressions": 108000,
         "shares": 620,
-        "comments": ["This is so useful!", "Myths busted", "I needed this reminder", "Great science-backed content", "Very clear explanation", "Love the evidence", "Can you cover sleep too?", "This should be mandatory reading", "Finally a doctor influencer I trust", "Saved!", "Amazing post", "So important", "Helpful and balanced", "Keep educating us"],
-        "reactions": {"LIKE": 4200, "LOVE": 860, "WOW": 150},
+        "comments": ["This is so useful!", "Myths busted", "I needed this reminder", "Great science-backed content", "Very clear explanation", "Love the evidence", "Can you cover sleep too?", "This should be mandatory reading", "Finally a doctor influencer I trust", "Saved!", "Amazing post", "So important", "Helpful and balanced", "Keep educating us", "Excellent breakdown", "Very well referenced", "Clear and practical", "Shared this with my family"],
+        "reactions": {"LIKE": 5200, "LOVE": 1100, "WOW": 260},
         "manualLabel": "LOVE"
       },
       {
@@ -953,8 +953,8 @@
         "reach": 18000,
         "impressions": 54000,
         "shares": 340,
-        "comments": ["Very informative", "Can you talk about mental health too?", "Thanks for the practical advice", "Clear and compassionate", "I learned a lot", "This felt trustworthy", "More videos like this please", "What about supplements?"],
-        "reactions": {"LIKE": 2400, "LOVE": 500, "WOW": 80},
+        "comments": ["Very informative", "Can you talk about mental health too?", "Thanks for the practical advice", "Clear and compassionate", "I learned a lot", "This felt trustworthy", "More videos like this please", "What about supplements?", "Excellent Q&A format", "Very balanced advice", "Please do one on nutrition next", "This builds trust"],
+        "reactions": {"LIKE": 3200, "LOVE": 700, "WOW": 140},
         "manualLabel": "LIKE"
       }
     ]
@@ -972,8 +972,8 @@
         "reach": 24000,
         "impressions": 72000,
         "shares": 980,
-        "comments": ["This is actually helpful", "Trying this tonight", "Where was this in school?", "Great hack", "Please make a part 2", "So simple and useful", "I need more study tips", "This is genius", "Already shared with classmates", "Loved the pacing"],
-        "reactions": {"LIKE": 3100, "LOVE": 620, "WOW": 110},
+        "comments": ["This is actually helpful", "Trying this tonight", "Where was this in school?", "Great hack", "Please make a part 2", "So simple and useful", "I need more study tips", "This is genius", "Already shared with classmates", "Loved the pacing", "Very realistic advice", "Perfect for exam week", "Short and effective", "Clear steps, thanks!"],
+        "reactions": {"LIKE": 3600, "LOVE": 820, "WOW": 180},
         "manualLabel": "LIKE"
       },
       {
@@ -982,7 +982,8 @@
         "reach": 9000,
         "impressions": 27000,
         "shares": 120,
-        "comments": [],
+        "comments": ["Simple but useful", "Exactly what I needed", "Keeping this checklist", "Would add a timer too", "Great reminder before exams"],
+        "reactions": {"LIKE": 240, "LOVE": 35, "WOW": 12, "SAD": 3},
         "manualLabel": "NEUTRAL"
       }
     ]
@@ -1271,6 +1272,140 @@
         "comments": ["This guide is gold", "Πολύ καλή ανάλυση κόστους", "Exactly what we needed for August", "Μας έλυσες τα χέρια για το ταξίδι", "Great pacing and visuals", "Can you do Rhodes next?", "Τρομερές προτάσεις για οικογένειες", "Very practical itinerary", "Ποιο ξενοδοχείο προτείνεις;", "Loved the beach comparison", "Finally a realistic travel budget", "Επιτέλους χωρίς υπερβολές", "This deserves more views", "Μπράβο για την ποιότητα", "I shared this with my partner", "Θέλουμε και νησιά Ιονίου", "Clear and honest review", "Top travel content", "Πάρα πολύ χρήσιμο βίντεο", "Thanks for all the tips"],
         "reactions": {"LIKE": 14800, "LOVE": 2600, "WOW": 580},
         "manualLabel": "LOVE"
+      }
+    ]
+  }
+  ,
+  {
+    "campaignTitle": "Summer Promo",
+    "influencerUsername": "inf12",
+    "status": "ACCEPTED",
+    "paymentAmount": 75.0,
+    "deliverables": "Minimal edge-case post with almost no engagement",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Tiny promo test post — just checking delivery."
+        ,"reach": 18,
+        "impressions": 44,
+        "shares": 0,
+        "comments": ["Just a test post."],
+        "manualLabel": "NEUTRAL"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Product Demo",
+    "influencerUsername": "inf10",
+    "status": "ACCEPTED",
+    "paymentAmount": 95.0,
+    "deliverables": "Sparse demo content with tiny feedback",
+    "posts": [
+      {
+        "platform": "YOUTUBE",
+        "content": "Quick demo clip with very limited audience reach.",
+        "reach": 110,
+        "impressions": 260,
+        "shares": 1,
+        "comments": ["Looks interesting but too short.", "Would like more specs."] ,
+        "reactions": {"LIKE": 1, "WOW": 1},
+        "manualLabel": "NEUTRAL"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Fitness Transformation",
+    "influencerUsername": "inf20",
+    "status": "IN_PROGRESS",
+    "paymentAmount": 210.0,
+    "deliverables": "Mixed-sentiment workout update with low interaction",
+    "posts": [
+      {
+        "platform": "YOUTUBE",
+        "content": "Workout update: some progress, but still room to improve.",
+        "reach": 6000,
+        "impressions": 18000,
+        "shares": 24,
+        "comments": ["Useful update.", "Πολύ καλή προσπάθεια", "Needs a bit more detail.", "Solid but not perfect."],
+        "reactions": {"LIKE": 15, "LOVE": 2, "SAD": 3, "WOW": 1, "ANGRY": 1},
+        "manualLabel": "NEUTRAL"
+      }
+    ]
+  }
+  ,
+  {
+    "campaignTitle": "Brand Awareness",
+    "influencerUsername": "inf26",
+    "status": "IN_PROGRESS",
+    "paymentAmount": 260.0,
+    "deliverables": "Follow-up awareness post with mixed audience reception",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Brand awareness follow-up: practical checklist for evaluating vendors.",
+        "reach": 5400,
+        "impressions": 16200,
+        "shares": 38,
+        "comments": ["Useful framework.", "A bit too generic for me.", "Καλή προσπάθεια, θέλει παραδείγματα.", "Decent overview, not groundbreaking.", "Could be shorter."],
+        "reactions": {"LIKE": 160, "LOVE": 12, "WOW": 6, "SAD": 7, "ANGRY": 5},
+        "manualLabel": "NEUTRAL"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Green Run Series",
+    "influencerUsername": "inf27",
+    "status": "IN_PROGRESS",
+    "paymentAmount": 300.0,
+    "deliverables": "Progress update with mixed feedback from beginners",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Week 2 recap: pace drills and recovery notes for new runners.",
+        "reach": 7200,
+        "impressions": 21600,
+        "shares": 62,
+        "comments": ["Helpful tips", "Too advanced for total beginners", "Nice pacing examples", "I got confused at minute 2", "Καλή ανάλυση αλλά λίγο γρήγορο"],
+        "reactions": {"LIKE": 240, "LOVE": 28, "WOW": 10, "SAD": 14, "ANGRY": 4},
+        "manualLabel": "NEUTRAL"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Summer Promo",
+    "influencerUsername": "inf7",
+    "status": "ACCEPTED",
+    "paymentAmount": 130.0,
+    "deliverables": "Extra promo post with weak audience trust",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Another promo reminder — limited stock available now.",
+        "reach": 180,
+        "impressions": 520,
+        "shares": 2,
+        "comments": ["Looks spammy again", "Not convinced", "Δεν εμπνέει εμπιστοσύνη", "Maybe lower the price first", "Hard pass"],
+        "reactions": {"LIKE": 6, "WOW": 1, "SAD": 5, "ANGRY": 8},
+        "manualLabel": "DISLIKE"
+      }
+    ]
+  },
+  {
+    "campaignTitle": "Product Demo",
+    "influencerUsername": "inf12",
+    "status": "ACCEPTED",
+    "paymentAmount": 90.0,
+    "deliverables": "Problem-focused demo post used for failure-case sentiment",
+    "posts": [
+      {
+        "platform": "INSTAGRAM",
+        "content": "Demo update: the device failed after basic usage. Avoid for now.",
+        "reach": 140,
+        "impressions": 390,
+        "shares": 1,
+        "comments": ["This is unacceptable", "Thanks for the warning", "Απαράδεκτο αποτέλεσμα", "I had the same issue", "Not buying this"],
+        "reactions": {"LIKE": 3, "SAD": 18, "ANGRY": 26, "WOW": 2},
+        "manualLabel": "TERRIBLE"
       }
     ]
   }

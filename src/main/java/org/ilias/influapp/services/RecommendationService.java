@@ -49,10 +49,7 @@ public class RecommendationService {
     private static final int MAX_LIMIT = 5;
 
 
-    /**
-     * Legacy recommendation method for backward compatibility.
-     * Recommend influencers based on keyword, location, age group, and gender target.
-     */
+
     public List<RecommendedInfluencerDto> recommend(String keyword, String location, AgeGroup ageGroup, GenderGroup genderTarget, int limit) {
         return recommendForBusiness(null, null, keyword, location, ageGroup, genderTarget, limit);
     }
@@ -62,10 +59,7 @@ public class RecommendationService {
         return recommendForBusiness(businessId, null, keyword, location, ageGroup, genderTarget, limit);
     }
 
-    /**
-     * Campaign-aware recommendation method.
-     * If campaignId is provided and belongs to the business, campaign context is used in matching.
-     */
+
     public List<RecommendedInfluencerDto> recommendForBusiness(Long businessId, Long campaignId, String keyword, String location,
                                                                AgeGroup ageGroup, GenderGroup genderTarget, int limit) {
         int effectiveLimit = normalizeLimit(limit);

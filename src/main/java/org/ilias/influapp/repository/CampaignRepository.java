@@ -8,7 +8,9 @@ import java.util.List;
 
 @Repository
 public interface CampaignRepository extends JpaRepository<Campaign, Long> {
+
     List<Campaign> findByBusinessId(Long businessId);
+
     Campaign findByTitle(String title);
 }
 

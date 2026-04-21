@@ -575,6 +575,12 @@
         "username": "FitnessCoachYT",
         "accountUrl": "https://youtube.com/fitnesscoach",
         "followers": 10000
+      },
+      {
+        "platform": "TIKTOK",
+        "username": "@fitnesscoach_tk",
+        "accountUrl": "https://tiktok.com/@fitnesscoach",
+        "followers": 12000
       }
     ]
   },
@@ -606,6 +612,12 @@
         "username": "@designminds_tk",
         "accountUrl": "https://tiktok.com/@designminds_tk",
         "followers": 12000
+      },
+      {
+        "platform": "YOUTUBE",
+        "username": "DesignMindsYT",
+        "accountUrl": "https://youtube.com/designminds",
+        "followers": 9000
       }
     ]
   },

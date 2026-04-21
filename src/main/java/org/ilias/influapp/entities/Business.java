@@ -85,9 +85,6 @@ public class Business extends User {
         campaign.setBusiness(null);
     }
 
-    public int getCampaignsSize() {
-        return campaigns != null ? campaigns.size() : 0;
-    }
 
     public double getTotalBudget() {
         if (campaigns == null || campaigns.isEmpty()) {
